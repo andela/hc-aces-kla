@@ -20,11 +20,15 @@ class LoginTestCase(TestCase):
         assert r.status_code == 302
 
         ### Assert that a user was created
+        user = User.objects.all()
+        self.assertEqual(len(user),1)
+        self.assertEqual(user[0].email, "alice@example.org")
 
         # And email sent
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Log in to healthchecks.io')
         ### Assert contents of the email body
+        self.assertEqual(mail.outbox[0].body[0:5], 'Hello')
 
         ### Assert that check is associated with the new user
 
