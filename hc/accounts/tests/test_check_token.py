@@ -21,13 +21,17 @@ class CheckTokenTestCase(BaseTestCase):
         self.profile.refresh_from_db()
         self.assertEqual(self.profile.token, "")
 
-    ### Login and test it redirects already logged in
+    def test_redirects_already_logged_in(self):
+        """test that a logged in user redirects when they log in again""" 
+        #Login and test it redirects already logged in
         self.client.post("/accounts/login/", {"email":"alice@example.org"},follow=True)
         re = self.client.post("/accounts/login/", {"email":"alice@example.org"},follow=True)
         self.assertEqual(re.status_code, 200)
         self.assertRedirects(re, "/accounts/login_link_sent/")
 
-    ### Login with a bad token and check that it redirects
+    def test_login_bad_token_redirects(self):
+        """test that login with bad token redirects back to login page"""
+        ### Login with a bad token and check that it redirects
         self.client.post("/accounts/login/", {"email":"bob@example.org"},follow=True)
         response_bad_token = self.client.post("/accounts/check_token/bob/bad-token/")
         self.assertRedirects(response_bad_token,"/accounts/login/")
