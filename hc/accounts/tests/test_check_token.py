@@ -28,5 +28,7 @@ class CheckTokenTestCase(BaseTestCase):
         self.assertRedirects(re, "/accounts/login_link_sent/")
 
     ### Login with a bad token and check that it redirects
-
+        self.client.post("/accounts/login/", {"email":"bob@example.org"},follow=True)
+        response_bad_token = self.client.post("/accounts/check_token/bob/bad-token/")
+        self.assertRedirects(response_bad_token,"/accounts/login/")
     ### Any other tests?
