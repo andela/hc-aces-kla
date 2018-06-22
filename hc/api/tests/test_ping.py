@@ -1,4 +1,5 @@
 from django.test import Client, TestCase
+import json
 
 from hc.api.models import Check, Ping
 
@@ -49,7 +50,10 @@ class PingTestCase(TestCase):
         r = self.client.get("/ping/%s/" % self.check.code,
                             HTTP_X_FORWARDED_FOR=ip)
         ping = Ping.objects.latest("id")
+       
         ### Assert the expected response status code and ping's remote address
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(ping.remote_addr, ip)
 
         ip = "1.1.1.1, 2.2.2.2"
         r = self.client.get("/ping/%s/" % self.check.code,
@@ -62,12 +66,30 @@ class PingTestCase(TestCase):
         r = self.client.get("/ping/%s/" % self.check.code,
                             HTTP_X_FORWARDED_PROTO="https")
         ping = Ping.objects.latest("id")
+     
         ### Assert the expected response status code and ping's scheme
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(ping.scheme, "https")
 
     def test_it_never_caches(self):
         r = self.client.get("/ping/%s/" % self.check.code)
         assert "no-cache" in r.get("Cache-Control")
 
     ### Test that when a ping is made a check with a paused status changes status
+    def test_ping_made_changes_paused_status_check(self):
+        self.check.status == "paused"
+        r = self.client.get("/ping/%s/" % self.check.code)
+        self.check.refresh_from_db()
+        self.assertEqual(self.check.status, "up")
+
     ### Test that a post to a ping works
+    def test_post_to_a_ping_works(self):
+        r = self.client.post("/ping/%s/" % self.check.code)
+        self.assertEqual(r.status_code, 200)
+
+
     ### Test that the csrf_client head works
+    def csrf_client_head_works(self):
+        csrf_client = Client(enforce_csrf_checks=True)
+        r = csrf_client.head("/ping/%s/" % self.check.code)
+        self.assertEqual(r.status_code, 200)
