@@ -8,7 +8,10 @@ class ApiAdminTestCase(BaseTestCase):
         super(ApiAdminTestCase, self).setUp()
         self.check = Check.objects.create(user=self.alice, tags="foo bar")
 
-        ### Set Alice to be staff and superuser and save her :)
+        #### Set Alice to be staff and superuser
+        self.alice.staff = True
+        self.alice.supersu = True
+        self.alice.save()
 
     def test_it_shows_channel_list_with_pushbullet(self):
         self.client.login(username="alice@example.org", password="password")
@@ -17,3 +20,4 @@ class ApiAdminTestCase(BaseTestCase):
         ch.save()
 
         ### Assert for the push bullet
+        self.assertEqual(ch.kind, "pushbullet")
