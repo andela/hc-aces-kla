@@ -11,4 +11,4 @@ class AddCheckTestCase(BaseTestCase):
         self.assertRedirects(r, "/checks/")
         assert Check.objects.count() == 1
 
-    ### Test that team access works
+    # Test that team access works
