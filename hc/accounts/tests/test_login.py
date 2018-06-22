@@ -58,5 +58,5 @@ class LoginTestCase(TestCase):
         form = {"email": "marcus@example.com", "password":"password"}
         response = self.client.post('/accounts/login/', form, follow = True)
         self.assertRedirects(response, '/checks/')
-        self.assertIn(b'Checks', response.content)
+        self.assertIn(b'When check is late,', response.content)
 

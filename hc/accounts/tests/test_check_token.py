@@ -10,10 +10,12 @@ class CheckTokenTestCase(BaseTestCase):
         self.profile.save()
 
     def test_it_shows_form(self):
+        """test the check_token_submit page loads"""
         r = self.client.get("/accounts/check_token/alice/secret-token/")
         self.assertContains(r, "You are about to log in")
 
     def test_it_redirects(self):
+        """test it redirects to the checks page on successfully login"""
         r = self.client.post("/accounts/check_token/alice/secret-token/")
         self.assertRedirects(r, "/checks/")
 
@@ -24,15 +26,14 @@ class CheckTokenTestCase(BaseTestCase):
     def test_redirects_already_logged_in(self):
         """test that a logged in user redirects when they log in again""" 
         #Login and test it redirects already logged in
-        self.client.post("/accounts/login/", {"email":"alice@example.org"},follow=True)
-        re = self.client.post("/accounts/login/", {"email":"alice@example.org"},follow=True)
-        self.assertEqual(re.status_code, 200)
-        self.assertRedirects(re, "/accounts/login_link_sent/")
+        self.client.post("/accounts/check_token/alice/secret-token/")
+        re = self.client.post("/accounts/check_token/alice/secret-token/")
+        self.assertEqual(re.status_code, 302)
+        self.assertRedirects(re, "/checks/")
 
     def test_login_bad_token_redirects(self):
         """test that login with bad token redirects back to login page"""
-        ### Login with a bad token and check that it redirects
+        #Login with a bad token and check that it redirects
         self.client.post("/accounts/login/", {"email":"bob@example.org"},follow=True)
         response_bad_token = self.client.post("/accounts/check_token/bob/bad-token/")
         self.assertRedirects(response_bad_token,"/accounts/login/")
-    ### Any other tests?
