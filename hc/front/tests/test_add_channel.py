@@ -39,41 +39,35 @@ class AddChannelTestCase(BaseTestCase):
 
     # Test that the team access works
     def test_team_access_works(self):
-        url = "/integrations/add/"
-        form = {"kind": "email", "value": "alice@example.org"}
-
-        # login alice and add channel
-        self.client.login(username="alice@example.org", password="password")
-        self.client.post(url, form)
-
-        channel = Channel.objects.filter(value="alice@example.org")
-        url_check = "/integrations/%s/checks/" % channel[0].code
-
-        # Bob, alice's teammate tries to access Alice's channel
+        form = {"kind": "email", "value": "bob@example.org"}
+        url = "/accounts/switch_team/%s/" % self.alice.username
         self.client.login(username="bob@example.org", password="password")
-        r = self.client.get(url_check)
-        self.assertContains(r, "Assign Checks to Channel", status_code=200)
+
+        """ Bob switches to Alice's team """
+        response = self.client.get(url)
+        self.assertEqual(self.bobs_profile.current_team, self.profile)
+
+        self.assertEqual(response.status_code, 302)
+
+        url = "/integrations/add/"
+        r = self.client.post(url, form)
+        self.assertRedirects(r, "/integrations/")
+        q = Channel.objects.filter(value="bob@example.org").first()
+        """ Check that channel was created by bob who is on  alice's team"""
+        self.assertEqual(q.user, self.alice)
 
     # Test that non-member of team cannot access
     def test_non_member_cannot_access(self):
-        url = "/integrations/add/"
-        form = {"kind": "email", "value": "alice@example.org"}
-
-        # login alice and add channel
-        self.client.login(username="alice@example.org", password="password")
-        self.client.post(url, form)
-
-        q = Channel.objects.filter(value="alice@example.org")
-        channel_code = q[0].code
-        print("test")
-        print(channel_code)
-        url_check = "/integrations/%s/checks/" % q[0].code
-
-        # login with charlie who is not a member of alice's team
-        # and try to assign checks to the channel added by Alice
+        form = {"kind": "email", "value": "charlie@example.org"}
+        url = "/accounts/switch_team/%s/" % self.alice.username
         self.client.login(username="charlie@example.org", password="password")
-        r = self.client.get(url_check)
-        self.assertEqual(r.status_code, 403)
+
+        url = "/integrations/add/"
+        r = self.client.post(url, form)
+        self.assertRedirects(r, "/integrations/")
+        q = Channel.objects.filter(value="charlie@example.org").first()
+        """Check that channel created by charlie is not assigned to alice"""
+        self.assertNotEqual(q.user, self.alice)
 
     # Test that bad kinds don't work
     def test_bad_kinds_dont_work(self):

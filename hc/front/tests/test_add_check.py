@@ -12,3 +12,11 @@ class AddCheckTestCase(BaseTestCase):
         assert Check.objects.count() == 1
 
     # Test that team access works
+    def test_team_access(self):
+        url = "/checks/add/"
+        self.client.login(username="bob@example.org", password="password")
+        r = self.client.post(url)
+        self.assertRedirects(r, "/checks/")
+        c = Check.objects.all()[0]
+        """ Checks if check created by bob is assigned to alice's team """
+        self.assertEqual(c.user, self.alice)
