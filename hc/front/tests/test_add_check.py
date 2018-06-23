@@ -7,8 +7,19 @@ class AddCheckTestCase(BaseTestCase):
     def test_it_works(self):
         url = "/checks/add/"
         self.client.login(username="alice@example.org", password="password")
-        r = self.client.post(url)
-        self.assertRedirects(r, "/checks/")
+        response = self.client.post(url)
+        self.assertRedirects(response, "/checks/")
         assert Check.objects.count() == 1
 
     # Test that team access works
+<<<<<<< HEAD
+=======
+    def test_team_access(self):
+        url = "/checks/add/"
+        self.client.login(username="bob@example.org", password="password")
+        response = self.client.post(url)
+        self.assertRedirects(response, "/checks/")
+        check = Check.objects.all()[0]
+        """ Checks if check created by bob is assigned to alice's team """
+        self.assertEqual(check.user, self.alice)
+>>>>>>> 777b28c... Replaced docstrings in test_add_channel.py with comments
