@@ -50,6 +50,8 @@ class AddChannelTestCase(BaseTestCase):
         self.client.post(url, form)
 =======
         """An added team member should add a channel using the team profile"""
+<<<<<<< HEAD
+<<<<<<< HEAD
         form = {"kind": "email", "value": "bob@example.org"}
         url = "/accounts/switch_team/%s/" % self.alice.username
         self.client.login(username="bob@example.org", password="password")
@@ -74,6 +76,26 @@ class AddChannelTestCase(BaseTestCase):
         # Check that channel was created by bob who is on  alice's team
         self.assertEqual(channel.user, self.alice)
 >>>>>>> 777b28c... Replaced docstrings in test_add_channel.py with comments
+=======
+        url = "/integrations/add/"
+        form = {"kind": "email", "value": "alice@example.org"}
+        self.client.login(username="alice@example.org", password="password")
+        self.client.post(url, form)
+
+=======
+>>>>>>> 4fdf9d8... Adjusted team access tests for Adding channel and checks
+        self.client.login(username="alice@example.org", password="password")
+        channel = Channel(
+            user=self.alice,
+            kind="email",
+            value="alice@example.org")
+        channel.save()
+        self.client.logout()
+
+        self.client.login(username="bob@example.org", password="password")
+        response = self.client.get("/integrations/")
+        self.assertContains(response, "alice@example.org")
+>>>>>>> 1207952... Adjusted test implementation for team access for added checks and channels
 
     def test_non_member_cannot_access(self):
 <<<<<<< HEAD
@@ -98,17 +120,31 @@ class AddChannelTestCase(BaseTestCase):
 =======
         """A non-member should not access team profile to add channel"""
 
-        form = {"kind": "email", "value": "charlie@example.org"}
-        url = "/accounts/switch_team/%s/" % self.alice.username
-        self.client.login(username="charlie@example.org", password="password")
-
+<<<<<<< HEAD
         url = "/integrations/add/"
+<<<<<<< HEAD
         response = self.client.post(url, form)
         self.assertRedirects(response, "/integrations/")
         channel = Channel.objects.filter(value="charlie@example.org").first()
         # Check that channel created by charlie is not assigned to alice
         self.assertNotEqual(channel.user, self.alice)
 >>>>>>> 777b28c... Replaced docstrings in test_add_channel.py with comments
+=======
+        form = {"kind": "email", "value": "alice@example.org"}
+=======
+>>>>>>> 4fdf9d8... Adjusted team access tests for Adding channel and checks
+        self.client.login(username="alice@example.org", password="password")
+        channel = Channel(
+            user=self.alice,
+            kind="email",
+            value="alice@example.org")
+        channel.save()
+        self.client.logout()
+
+        self.client.login(username="charlie@example.org", password="password")
+        response = self.client.get("/integrations/")
+        self.assertNotContains(response, "alice@example.org")
+>>>>>>> 1207952... Adjusted test implementation for team access for added checks and channels
 
     # Test that bad kinds don't work
     def test_bad_kinds_dont_work(self):
