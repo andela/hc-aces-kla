@@ -11,12 +11,10 @@ class AddCheckTestCase(BaseTestCase):
         self.assertRedirects(response, "/checks/")
         assert Check.objects.count() == 1
 
-    # Test that team access works
     def test_team_access(self):
-        url = "/checks/add/"
+        self.check = Check(user=self.alice, name="alice check")
+        self.check.save()
+
         self.client.login(username="bob@example.org", password="password")
-        response = self.client.post(url)
-        self.assertRedirects(response, "/checks/")
-        check = Check.objects.all()[0]
-        """ Checks if check created by bob is assigned to alice's team """
-        self.assertEqual(check.user, self.alice)
+        response = self.client.get("/checks/")
+        self.assertContains(response, "alice check", status_code=200)

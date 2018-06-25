@@ -42,35 +42,26 @@ class AddChannelTestCase(BaseTestCase):
 
     def test_team_access_works(self):
         """An added team member should add a channel using the team profile"""
-        form = {"kind": "email", "value": "bob@example.org"}
-        url = "/accounts/switch_team/%s/" % self.alice.username
-        self.client.login(username="bob@example.org", password="password")
-        # Bob switches to Alice's team
-        response = self.client.get(url)
-        self.assertEqual(self.bobs_profile.current_team, self.profile)
-
-        self.assertEqual(response.status_code, 302)
-
         url = "/integrations/add/"
-        response = self.client.post(url, form)
-        self.assertRedirects(response, "/integrations/")
-        channel = Channel.objects.filter(value="bob@example.org").first()
-        # Check that channel was created by bob who is on  alice's team
-        self.assertEqual(channel.user, self.alice)
+        form = {"kind": "email", "value": "alice@example.org"}
+        self.client.login(username="alice@example.org", password="password")
+        self.client.post(url, form)
+
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.get("/integrations/")
+        self.assertContains(response, "alice@example.org")
 
     def test_non_member_cannot_access(self):
         """A non-member should not access team profile to add channel"""
 
-        form = {"kind": "email", "value": "charlie@example.org"}
-        url = "/accounts/switch_team/%s/" % self.alice.username
-        self.client.login(username="charlie@example.org", password="password")
-
         url = "/integrations/add/"
-        response = self.client.post(url, form)
-        self.assertRedirects(response, "/integrations/")
-        channel = Channel.objects.filter(value="charlie@example.org").first()
-        # Check that channel created by charlie is not assigned to alice
-        self.assertNotEqual(channel.user, self.alice)
+        form = {"kind": "email", "value": "alice@example.org"}
+        self.client.login(username="alice@example.org", password="password")
+        self.client.post(url, form)
+
+        self.client.login(username="charlie@example.org", password="password")
+        response = self.client.get("/integrations/")
+        self.assertNotContains(response, "alice@example.org")
 
     # Test that bad kinds don't work
     def test_bad_kinds_dont_work(self):
