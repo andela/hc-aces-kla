@@ -47,7 +47,7 @@ class AddChannelTestCase(BaseTestCase):
         self.client.login(username="alice@example.org", password="password")
         self.client.post(url, form)
 
-        self.client.login(username="alice@example.org", password="password")
+        self.client.login(username="bob@example.org", password="password")
         response = self.client.get("/integrations/")
         self.assertContains(response, "alice@example.org")
 

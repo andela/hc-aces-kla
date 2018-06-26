@@ -8,3 +8,7 @@ hc-venv/
 .vscode/
 .DS_Store
 static/.DS_Store
+<<<<<<< HEAD
+=======
+.vscode/
+>>>>>>> 353f71901e75b8c1a52ecf9f1c01d6df45e7af55
