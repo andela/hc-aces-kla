@@ -1,6 +1,7 @@
 from django.core import mail
 from django.core.urlresolvers import reverse
 
+
 from hc.test import BaseTestCase
 from hc.accounts.models import Member
 from hc.api.models import Check
@@ -27,6 +28,10 @@ class ProfileTestCase(BaseTestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn("Set password on healthchecks.io",mail.outbox[0].subject)
         self.assertIn("Here's a link to set a password",mail.outbox[0].body)
+        # token = self.alice.profile.token
+        # Assert that the token is set
+
+        # Assert that the email was sent and check email content
 
     def test_it_sends_report(self):
         """test that it sends a report about checks to the user email"""
@@ -39,6 +44,7 @@ class ProfileTestCase(BaseTestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn("Monthly Report", mail.outbox[0].subject)
         self.assertIn("This is a monthly report sent by healthchecks.io.", mail.outbox[0].body)
+        # Assert that the email was sent and check email content
 
     def test_it_adds_team_member(self):
         """tests that a user can be added to a team"""
@@ -52,7 +58,7 @@ class ProfileTestCase(BaseTestCase):
         for member in self.alice.profile.member_set.all():
             member_emails.add(member.user.email)
 
-        ### Assert the existence of the member emails
+        # Assert the existence of the member emails
 
         self.assertTrue("frank@example.org" in member_emails)
 
@@ -60,6 +66,7 @@ class ProfileTestCase(BaseTestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn("You have been invited to join alice@example.org on healthchecks.io", mail.outbox[0].subject)
         self.assertIn("alice@example.org invites you to their healthchecks.io account.", mail.outbox[0].body)
+        # Assert that the email was sent and check email content
 
     def test_add_team_member_checks_team_access_allowed_flag(self):
         """test that team access is allowed flag is true or false"""
@@ -148,3 +155,35 @@ class ProfileTestCase(BaseTestCase):
         response = self.client.post("/accounts/profile/", form)
         self.assertIn(b"Your settings have been updated!",response.content)
 
+    # Test it creates and revokes API key
+
+    # Test configuring reports for daily, weekly and monthly durations
+    def test_configure_daily_reports(self):
+        url = "/accounts/profile/"
+        form = {"update_reports_allowed": "1", "report_frequency": "day"}
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(url, form)
+        assert response.status_code == 200
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.report_frequency, "day")
+
+    def test_configure_weekly_reports(self):
+        url = "/accounts/profile/"
+        form = {"update_reports_allowed": "1", "report_frequency": "week"}
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(url, form)
+        assert response.status_code == 200
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.report_frequency, "week")
+
+    def test_configure_monthly_reports(self):
+        url = "/accounts/profile/"
+        form = {"update_reports_allowed": "1", "report_frequency": "month"}
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(url, form)
+        assert response.status_code == 200
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.report_frequency, "month")
