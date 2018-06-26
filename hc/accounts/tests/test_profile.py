@@ -1,4 +1,4 @@
-from django.core import mail
+
 
 from hc.test import BaseTestCase
 from hc.accounts.models import Member
@@ -16,10 +16,10 @@ class ProfileTestCase(BaseTestCase):
 
         # profile.token should be set now
         self.alice.profile.refresh_from_db()
-        token = self.alice.profile.token
-        ### Assert that the token is set
+        # token = self.alice.profile.token
+        # Assert that the token is set
 
-        ### Assert that the email was sent and check email content
+        # Assert that the email was sent and check email content
 
     def test_it_sends_report(self):
         check = Check(name="Test Check", user=self.alice)
@@ -27,7 +27,7 @@ class ProfileTestCase(BaseTestCase):
 
         self.alice.profile.send_report()
 
-        ###Assert that the email was sent and check email content
+        # Assert that the email was sent and check email content
 
     def test_it_adds_team_member(self):
         self.client.login(username="alice@example.org", password="password")
@@ -40,11 +40,11 @@ class ProfileTestCase(BaseTestCase):
         for member in self.alice.profile.member_set.all():
             member_emails.add(member.user.email)
 
-        ### Assert the existence of the member emails
+        # Assert the existence of the member emails
 
         self.assertTrue("frank@example.org" in member_emails)
 
-        ###Assert that the email was sent and check email content
+        # Assert that the email was sent and check email content
 
     def test_add_team_member_checks_team_access_allowed_flag(self):
         self.client.login(username="charlie@example.org", password="password")
@@ -107,4 +107,35 @@ class ProfileTestCase(BaseTestCase):
         # Expect only Alice's tags
         self.assertNotContains(r, "bobs-tag.svg")
 
-    ### Test it creates and revokes API key
+    # Test it creates and revokes API key
+
+    # Test configuring reports for daily, weekly and monthly durations
+    def test_configure_daily_reports(self):
+        url = "/accounts/profile/"
+        form = {"update_reports_allowed": "1", "report_frequency": "day"}
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(url, form)
+        assert response.status_code == 200
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.report_frequency, "day")
+
+    def test_configure_weekly_reports(self):
+        url = "/accounts/profile/"
+        form = {"update_reports_allowed": "1", "report_frequency": "week"}
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(url, form)
+        assert response.status_code == 200
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.report_frequency, "week")
+
+    def test_configure_monthly_reports(self):
+        url = "/accounts/profile/"
+        form = {"update_reports_allowed": "1", "report_frequency": "month"}
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(url, form)
+        assert response.status_code == 200
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.report_frequency, "month")
