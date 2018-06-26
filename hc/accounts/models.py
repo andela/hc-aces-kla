@@ -58,11 +58,11 @@ class Profile(models.Model):
         # reset next report date first:
         now = timezone.now()
         time = 0
-        if self.report_frequency=="day":
+        if self.report_frequency == "day":
             time = 1
-        elif self.report_frequency=="week":
+        elif self.report_frequency == "week":
             time = 7
-        elif self.report_frequency=="month":
+        elif self.report_frequency == "month":
             time = 30
         self.next_report_date = now + timedelta(days=time)
         self.save()
