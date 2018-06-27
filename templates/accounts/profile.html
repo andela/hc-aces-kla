@@ -32,6 +32,23 @@
                             {% if profile.reports_allowed %} checked {% endif %}>
                         Each month send me a summary of my checks
                     </label>
+                    {% if profile.reports_allowed %}
+                    <label name="report_interval">
+                        Report Frequency
+                        <input
+                            name="reports_frequency"
+                            type="radio"
+                            value="day">Daily<br/>
+                            <input
+                            name="reports_frequency"
+                            type="radio"
+                            value="week">Weekly<br/>
+                            <input
+                            name="reports_frequency"
+                            type="radio"
+                            value="month">Monthly<br/>
+                    </label>
+                    {% endif %}
                     <button
                         name="update_reports_allowed"
                         type="submit"
@@ -323,5 +340,13 @@
 <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/profile.js' %}"></script>
+<script>
+    if ( $('input[name="reports_allowed"]').is(':checked') ) {
+    $('label[name="report_interval"]').show();
+    } 
+    else {
+        $('label[name="report_interval"]').hide();
+    }
+</script>
 {% endcompress %}
 {% endblock %}
