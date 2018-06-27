@@ -13,8 +13,8 @@ class PauseTestCase(BaseTestCase):
         url = "/checks/%s/pause/" % self.check.code
 
         self.client.login(username="alice@example.org", password="password")
-        r = self.client.post(url)
-        self.assertRedirects(r, "/checks/")
+        response = self.client.post(url)
+        self.assertRedirects(response, "/checks/")
 
         self.check.refresh_from_db()
         self.assertEqual(self.check.status, "paused")
