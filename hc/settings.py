@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 import os
 import warnings
-import dj_database_url
-from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -101,14 +99,6 @@ if os.environ.get("DB") == "postgres":
             'TEST': {'CHARSET': 'UTF8'}
         }
     }
-
-
-if os.environ.get("DB") == "heroku":
-    DATABASES = {
-        'default': dj_database_url.config(default=config('DATABASE_URL'))
-    }
-
-
 
 if os.environ.get("DB") == "mysql":
     DATABASES = {

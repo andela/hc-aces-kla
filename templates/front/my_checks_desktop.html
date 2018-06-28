@@ -15,6 +15,7 @@
     {% for check in checks %}
     <tr class="checks-row">
         <td class="indicator-cell">
+            <span>
             {% if check.get_status == "new" %}
                 <span class="status icon-up new"
                     data-toggle="tooltip" title="New. Has never received a ping."></span>
@@ -28,6 +29,8 @@
             {% elif check.get_status == "down" %}
                 <span class="status icon-down"></span>
             {% endif %}
+            </span>
+            
         </td>
         <td class="name-cell">
             <div data-name="{{ check.name }}"
@@ -69,6 +72,11 @@
                 data-timeout="{{ check.nag_intervals.total_seconds }}" 
                 class="nag-interval">
                 {{ check.nag_intervals|hc_duration }}
+                <span>
+                    {% if check.status == "down" and check.alert_after < now %} 
+                        <img src="../../static/img/if_Warning_132234.png">
+                    {% endif %}
+                </span>
                 <br />
                 <!-- <span class="checks-subline">
                     {{ check.grace|hc_duration }}
