@@ -17,15 +17,31 @@ class Command(BaseCommand):
     def handle_many(self):
         """ Send alerts for many checks simultaneously. """
         query = Check.objects.filter(user__isnull=False).select_related("user")
-
+ 
         now = timezone.now()
         going_down = query.filter(alert_after__lt=now, status="up")
         going_up = query.filter(alert_after__gt=now, status="down")
-        # Don't combine this in one query so Postgres can query using index:
-        checks = list(going_down.iterator()) + list(going_up.iterator())
+        repeat_list_approved = query.filter(alert_after__lt=now, status="down", nag_after_time__lt=now)
+        repeat_list = query.filter(alert_after__lt=now, status="down")
+        for check in repeat_list:
+            if check.nag_after_time is None:
+                check.nag_after_time = now + check.nag_intervals
+                check.save()
+        for check in repeat_list_approved:
+                check.nag_after_time = check.nag_after_time + check.nag_intervals
+                check.save()
+        
+        if len(repeat_list_approved) == 1:
+            checks = (list(going_down.iterator()) + list(going_up.iterator()) + list(repeat_list_approved))
+        else:    
+            checks = (list(going_down.iterator()) +
+                    list(going_up.iterator()) + list(repeat_list_approved.iterator()))
+        trial_checks = list(repeat_list_approved.iterator())
+        
         if not checks:
+            print("false")
             return False
-
+        #Solve the problem of the difference of the nag_after_time and now() being huge
         futures = [executor.submit(self.handle_one, check) for check in checks]
         for future in futures:
             future.result()

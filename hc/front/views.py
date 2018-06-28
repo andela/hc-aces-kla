@@ -16,7 +16,7 @@ from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
-                            TimeoutForm)
+                            TimeoutForm, NagIntervalForm)
 
 
 # from itertools recipes:
@@ -166,6 +166,22 @@ def update_timeout(request, code):
         check.grace = td(seconds=form.cleaned_data["grace"])
         check.save()
 
+    return redirect("hc-checks")
+
+
+@login_required
+@uuid_or_400
+def update_nag_interval(request, code):
+    assert request.method == "POST"
+
+    check = get_object_or_404(Check, code=code)
+    if check.user != request.team.user:
+        return HttpResponseForbidden()
+
+    form = NagIntervalForm(request.POST)
+    if form.is_valid():
+        check.nag_intervals = td(seconds=form.cleaned_data["nag_interval"])
+        check.save()
     return redirect("hc-checks")
 
 
