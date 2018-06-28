@@ -23,17 +23,11 @@ pbr==4.0.4
 premailer==2.9.6
 psycopg2==2.7
 pycodestyle==2.4.0
-<<<<<<< HEAD
-<<<<<<< HEAD
 pylint==1.9.2
 python-decouple==3.1
 psycopg2==2.7.3.2
 pycodestyle==2.3.1
-=======
->>>>>>> Implemented unit tests
 pyflakes==1.6.0
-=======
->>>>>>> [chore] Resolve conflicts with develop branch
 pylint==1.9.2
 python-decouple==3.1
 rcssmin==1.0.6
@@ -41,9 +35,4 @@ requests==2.9.1
 rjsmin==1.0.12
 six==1.11.0
 whitenoise==3.3.1
-<<<<<<< HEAD
 wrapt==1.10.11
-
-=======
-wrapt==1.10.11
->>>>>>> [chore] Resolve conflicts with develop branch
