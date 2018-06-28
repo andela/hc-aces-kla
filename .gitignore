@@ -5,10 +5,6 @@ hc.sqlite
 hc/local_settings.py
 static-collected
 hc-venv/
-<<<<<<< HEAD
-=======
-.vscode/
->>>>>>> [feature] fix accounts test
 .DS_Store
 static/.DS_Store
 .vscode/
