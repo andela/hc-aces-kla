@@ -57,7 +57,7 @@ body {
     font-size: 24px;
 }
 
-.status.quiticon-up { color: #5cb85c; }
+.status.icon-up { color: #5cb85c; }
 .status.icon-up.new, .status.icon-paused { color: #CCC; }
 .status.icon-grace { color: #f0ad4e; }
 .status.icon-down { color: #d9534f; }
