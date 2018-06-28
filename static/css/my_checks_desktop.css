@@ -49,7 +49,17 @@ table.table tr > th.th-name {
     display: block;
 }
 
+#checks-table .nag-interval {
+    border: 1px solid rgba(0, 0, 0, 0);
+    padding: 6px;
+    display: block;
+}
+
 #checks-table tr:hover .timeout-grace {
+    border: 1px dotted #AAA;
+}
+
+#checks-table tr:hover .nag-interval {
     border: 1px dotted #AAA;
 }
 

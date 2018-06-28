@@ -8,6 +8,7 @@
             Period <br />
             <span class="checks-subline">Grace</span>
         </th>
+        <th>Nag Interval</th>
         <th>Last Ping</th>
         <th></th>
     </tr>
@@ -60,6 +61,18 @@
                 <span class="checks-subline">
                 {{ check.grace|hc_duration }}
                 </span>
+            </span>
+        </td>
+        <td class="nag-interval-cell">
+            <span 
+                data-url="{% url 'hc-update-nag-interval' check.code %}" 
+                data-timeout="{{ check.nag_intervals.total_seconds }}" 
+                class="nag-interval">
+                {{ check.nag_intervals|hc_duration }}
+                <br />
+                <!-- <span class="checks-subline">
+                    {{ check.grace|hc_duration }}
+                </span> -->
             </span>
         </td>
         <td>
