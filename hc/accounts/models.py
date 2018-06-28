@@ -19,6 +19,7 @@ class Profile(models.Model):
     team_name = models.CharField(max_length=200, blank=True)
     team_access_allowed = models.BooleanField(default=False)
     next_report_date = models.DateTimeField(null=True, blank=True)
+    report_frequency = models.CharField(max_length=20, blank=True, null=True)
     reports_allowed = models.BooleanField(default=True)
     ping_log_limit = models.IntegerField(default=100)
     token = models.CharField(max_length=128, blank=True)
@@ -56,7 +57,14 @@ class Profile(models.Model):
     def send_report(self):
         # reset next report date first:
         now = timezone.now()
-        self.next_report_date = now + timedelta(days=30)
+        time = 0
+        if self.report_frequency == "day":
+            time = 1
+        elif self.report_frequency == "week":
+            time = 7
+        elif self.report_frequency == "month":
+            time = 30
+        self.next_report_date = now + timedelta(days=time)
         self.save()
 
         token = signing.Signer().sign(uuid.uuid4())
