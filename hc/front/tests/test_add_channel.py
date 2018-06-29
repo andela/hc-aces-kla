@@ -41,11 +41,13 @@ class AddChannelTestCase(BaseTestCase):
                 status_code=200)
 
     def test_team_access_works(self):
-        """An added team member should add a channel using the team profile"""
-        url = "/integrations/add/"
-        form = {"kind": "email", "value": "alice@example.org"}
         self.client.login(username="alice@example.org", password="password")
-        self.client.post(url, form)
+        channel = Channel(
+            user=self.alice,
+            kind="email",
+            value="alice@example.org")
+        channel.save()
+        self.client.logout()
 
         self.client.login(username="bob@example.org", password="password")
         response = self.client.get("/integrations/")
@@ -53,11 +55,13 @@ class AddChannelTestCase(BaseTestCase):
 
     def test_non_member_cannot_access(self):
         """A non-member should not access team profile to add channel"""
-
-        url = "/integrations/add/"
-        form = {"kind": "email", "value": "alice@example.org"}
         self.client.login(username="alice@example.org", password="password")
-        self.client.post(url, form)
+        channel = Channel(
+            user=self.alice,
+            kind="email",
+            value="alice@example.org")
+        channel.save()
+        self.client.logout()
 
         self.client.login(username="charlie@example.org", password="password")
         response = self.client.get("/integrations/")
