@@ -20,6 +20,7 @@ premailer==2.9.6
 psycopg2==2.7
 pycodestyle==2.4.0
 PyJWT==1.6.4
+pyflakes==1.6.0
 pylint==1.9.2
 PySocks==1.6.8
 python-decouple==3.1
