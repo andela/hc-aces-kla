@@ -14,10 +14,6 @@ now = datetime.datetime.now()
 from hc.lib import emails
 
 
-# Twilio Account SID and AUTH_TOKEN details
-# TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
-# TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
-
 def tmpl(template_name, **ctx):
     template_path = "integrations/%s" % template_name
     return render_to_string(template_path, ctx).strip()
@@ -249,10 +245,12 @@ class VictorOps(HttpTransport):
 
         return self.post(self.channel.value, payload)
 
+
 def custom_message(check):
     message = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(
-                check.name, check.last_ping.strftime('%x, %X'), check.status)
+        check.name, check.last_ping.strftime('%x, %X'), check.status)
     return message
+
 
 class Telegram(Transport):
     def notify(self, check):
