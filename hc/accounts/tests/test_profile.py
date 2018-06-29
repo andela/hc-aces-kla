@@ -2,6 +2,7 @@ from django.core import mail
 from django.core.urlresolvers import reverse
 
 
+from django.core.urlresolvers import reverse
 from hc.test import BaseTestCase
 from hc.accounts.models import Member
 from hc.api.models import Check
@@ -187,3 +188,9 @@ class ProfileTestCase(BaseTestCase):
 
         self.profile.refresh_from_db()
         self.assertEqual(self.profile.report_frequency, "month")
+        
+    def test_it_loads_reports(self):
+        """tests that reports can be updated""" 
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.get(reverse("hc-reports"))
+        self.assertIn(b"Today's Report",response.content)
