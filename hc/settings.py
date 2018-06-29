@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.8/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
-
+# flake8: noqa
 import os
 import warnings
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'hc.front',
     'hc.payments'
 )
+
 
 MIDDLEWARE = (
     'django.middleware.security.SecurityMiddleware',
@@ -84,7 +85,7 @@ TEST_RUNNER = 'hc.api.tests.CustomRunner'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME':   './hc.sqlite',
+        'NAME': './hc.sqlite',
     }
 }
 
@@ -93,9 +94,9 @@ DATABASES = {
 if os.environ.get("DB") == "postgres":
     DATABASES = {
         'default': {
-            'ENGINE':   'django.db.backends.postgresql',
-            'NAME':     'hc',
-            'USER':     'postgres',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'hc',
+            'USER': 'postgres',
             'TEST': {'CHARSET': 'UTF8'}
         }
     }
@@ -104,8 +105,8 @@ if os.environ.get("DB") == "mysql":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'USER':     'root',
-            'NAME':     'hc',
+            'USER': 'root',
+            'NAME': 'hc',
             'TEST': {'CHARSET': 'UTF8'}
         }
     }
