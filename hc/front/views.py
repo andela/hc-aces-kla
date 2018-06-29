@@ -1,4 +1,5 @@
 from collections import Counter
+from django.utils import timezone
 from datetime import timedelta as td
 from itertools import tee
 
@@ -249,6 +250,22 @@ def log(request, code):
 
     return render(request, "front/log.html", ctx)
 
+@login_required
+def reports(request):
+    next_report_date = request.team.user.profile.next_report_date
+    now = timezone.now()
+    checks = Check.objects.filter(user=request.team.user).order_by("created")
+    message = ''
+    if next_report_date is not None:
+        checks = [check for check in checks if next_report_date >= now ]
+    else:
+        message = "No reports"
+
+    ctx = {
+        "checks": checks,
+        "message": message
+    }
+    return render(request, "front/my_reports.html", ctx)
 
 @login_required
 def channels(request):
@@ -544,7 +561,6 @@ def add_pushover(request):
 def add_victorops(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_victorops.html", ctx)
-
 
 def privacy(request):
     return render(request, "front/privacy.html", {})

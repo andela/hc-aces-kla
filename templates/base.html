@@ -30,6 +30,9 @@
     <link rel="stylesheet" href="{% static 'css/add_pushover.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/settings.css' %}" type="text/css">
     {% endcompress %}
+
+    {% block report_css %}
+    {% endblock report_css %}
 </head>
 <body class="page-{{ page }}">
     <nav class="navbar navbar-default">
@@ -79,6 +82,10 @@
 
                     <li {% if page == 'channels' %} class="active" {% endif %}>
                         <a href="{% url 'hc-channels' %}">Integrations</a>
+                    </li>
+
+                    <li {% if page == 'reports' %} class="active" {% endif %}>
+                        <a href="{% url 'hc-reports' %}">Reports</a>
                     </li>
 
                 {% endif %}

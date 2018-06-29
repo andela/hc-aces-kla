@@ -1,5 +1,4 @@
-
-
+from django.core.urlresolvers import reverse
 from hc.test import BaseTestCase
 from hc.accounts.models import Member
 from hc.api.models import Check
@@ -112,7 +111,7 @@ class ProfileTestCase(BaseTestCase):
     # Test configuring reports for daily, weekly and monthly durations
     def test_configure_daily_reports(self):
         url = "/accounts/profile/"
-        form = {"update_reports_allowed": "1", "report_freq": "day"}
+        form = {"update_reports_allowed": "1", "report_frequency": "day"}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
         assert response.status_code == 200
@@ -122,7 +121,7 @@ class ProfileTestCase(BaseTestCase):
 
     def test_configure_weekly_reports(self):
         url = "/accounts/profile/"
-        form = {"update_reports_allowed": "1", "report_freq": "week"}
+        form = {"update_reports_allowed": "1", "report_frequency": "week"}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
         assert response.status_code == 200
@@ -132,10 +131,16 @@ class ProfileTestCase(BaseTestCase):
 
     def test_configure_monthly_reports(self):
         url = "/accounts/profile/"
-        form = {"update_reports_allowed": "1", "report_freq": "month"}
+        form = {"update_reports_allowed": "1", "report_frequency": "month"}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
         assert response.status_code == 200
 
         self.profile.refresh_from_db()
         self.assertEqual(self.profile.report_frequency, "month")
+        
+    def test_it_loads_reports(self):
+        """tests that reports can be updated""" 
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.get(reverse("hc-reports"))
+        self.assertIn(b"Today's Report",response.content)
