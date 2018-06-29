@@ -19,15 +19,15 @@
 
     <form method="post" class="form-horizontal" action="{% url 'hc-add-channel' %}">
         {% csrf_token %}
-        <input type='hidden' name='kind' value='sms' />
+        <input type='hidden' name='kind' value='twiliosms' />
         <div class="form-group ">
-            <label for="id_label" class="col-sm-2 control-label">Pnone Number</label>
+            <label for="id_label" class="col-sm-2 control-label">Phone Number</label>
             <div class="col-sm-6">
                 <input
                     id="id_label"
                     type="text"
                     class="form-control"
-                    name="label"
+                    name="value"
                     placeholder="Phone Number"
                     value="">
 
