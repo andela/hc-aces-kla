@@ -66,7 +66,7 @@ class Check(models.Model):
     twilio_number = models.TextField(default="+256705357610")
     chat_id = models.TextField(default="549751449")
 
-    twilio_number = models.IntegerField(default=+256705357610)
+    twilio_number = models.TextField(default=+256705357610)
 
     def name_then_code(self):
         if self.name:
@@ -186,7 +186,11 @@ class Channel(models.Model):
     user = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     kind = models.CharField(max_length=20, choices=CHANNEL_KINDS)
+<<<<<<< HEAD
     value = models.TextField(max_length=25, default="+256705357610")
+=======
+    value = models.TextField(max_length=25,default=+256705357610)
+>>>>>>> Add app.json
     email_verified = models.BooleanField(default=False)
     checks = models.ManyToManyField(Check)
 
