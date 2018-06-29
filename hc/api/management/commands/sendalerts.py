@@ -26,10 +26,14 @@ class Command(BaseCommand):
         for check in repeat_list:
             if check.nag_after_time is None:
                 check.nag_after_time = now + check.nag_intervals
-                check.save()
+                check.save()        
         for check in repeat_list_approved:
+            #fix for big time interval between nag_after_time and nag_intervals
+            if (now - check.nag_after_time) > (check.nag_intervals):
+                check.nag_after_time = now + check.nag_intervals
+            else:
                 check.nag_after_time = check.nag_after_time + check.nag_intervals
-                check.save()
+            check.save()
         
         if len(repeat_list_approved) == 1:
             checks = (list(going_down.iterator()) + list(going_up.iterator()) + list(repeat_list_approved))
