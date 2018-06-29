@@ -167,7 +167,7 @@ class ProfileTestCase(BaseTestCase):
         assert response.status_code == 200
 
         self.profile.refresh_from_db()
-        self.assertEqual(self.profile.report_frequency, "week")
+        self.assertEqual(self.profile.reports_allowed, True)
 
     def test_configure_monthly_reports(self):
         url = "/accounts/profile/"
