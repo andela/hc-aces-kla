@@ -151,7 +151,7 @@ class ProfileTestCase(BaseTestCase):
     # Test configuring reports for daily, weekly and monthly durations
     def test_configure_daily_reports(self):
         url = "/accounts/profile/"
-        form = {"update_reports_allowed": "1", "report_frequency": "day"}
+        form = {"update_reports_allowed": True, "report_frequency": "day", "reports_allowed":True}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
         assert response.status_code == 200
@@ -161,7 +161,7 @@ class ProfileTestCase(BaseTestCase):
 
     def test_configure_weekly_reports(self):
         url = "/accounts/profile/"
-        form = {"update_reports_allowed": "1", "report_frequency": "week"}
+        form = {"update_reports_allowed": True, "report_frequency": "week", "reports_allowed":True}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
         assert response.status_code == 200
@@ -171,7 +171,7 @@ class ProfileTestCase(BaseTestCase):
 
     def test_configure_monthly_reports(self):
         url = "/accounts/profile/"
-        form = {"update_reports_allowed": "1", "report_frequency": "month"}
+        form = {"update_reports_allowed": True, "report_frequency": "month", "reports_allowed":True}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
         assert response.status_code == 200
