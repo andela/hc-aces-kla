@@ -11,7 +11,7 @@ env:
 addons:
   postgresql: "9.4"
 script:
-  - coverage run --omit=*/tests/* --source=hc manage.py test
+  - ./manage.py test
 notifications:
  slack: andela:AmE44rzEwEFIoWaF8Z6M4pwQ
   on_failure: always

@@ -155,6 +155,7 @@ def profile(request):
         elif "show_api_key" in request.POST:
             show_api_key = True
         elif "update_reports_allowed" in request.POST:
+            # print(request.POST)
             form = ReportSettingsForm(request.POST)
             if form.is_valid():
                 profile.reports_allowed = form.cleaned_data["reports_allowed"]
