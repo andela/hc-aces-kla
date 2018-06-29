@@ -6,6 +6,7 @@ install:
     - pip install braintree coveralls mock mysqlclient
 env:
   - DJANGO=1.9
+  - DB=sqlite
   - DB=postgres
 addons:
   postgresql: "9.4"
