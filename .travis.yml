@@ -1,3 +1,4 @@
+
 language: python
 python:
 - '2.7'
@@ -7,7 +8,6 @@ install:
 - pip install braintree coveralls mock mysqlclient
 - createdb hc
 env:
-  matrix:
   - DB=postgres
 addons:
   postgresql: '9.4'
