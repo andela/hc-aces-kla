@@ -1,6 +1,6 @@
-
 language: python
 python:
+  - "2.7"
   - "3.4"
 install:
     - pip install -r requirements.txt
@@ -11,9 +11,6 @@ addons:
   postgresql: "9.4"
 script:
   - coverage run --omit=*/tests/* --source=hc manage.py test
-notifications:
- slack: andela:AmE44rzEwEFIoWaF8Z6M4pwQ
-  on_failure: always
 after_success: coveralls
 cache: pip
 
