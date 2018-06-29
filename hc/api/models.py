@@ -59,6 +59,8 @@ class Check(models.Model):
 
     twilio_number = models.TextField(default="+256705357610")
 
+    twilio_number = models.IntegerField(default=+256705357610)
+
     def name_then_code(self):
         if self.name:
             return self.name
