@@ -4,9 +4,15 @@ from django.utils import timezone
 import json
 import requests
 from six.moves.urllib.parse import quote
+from twilio.rest import Client
 
 from hc.lib import emails
 
+
+#Twilio Account SID and AUTH_TOKEN details
+account_sid = "AC06a9064c4ccabad17ac56ade5054916c"
+auth_token = "f323d7a1411ef651daa54dacb4147dfb"
+client = Client(account_sid, auth_token)
 
 def tmpl(template_name, **ctx):
     template_path = "integrations/%s" % template_name
@@ -58,6 +64,23 @@ class Email(Transport):
             "show_upgrade_note": show_upgrade_note
         }
         emails.alert(self.channel.value, ctx)
+
+
+class TwilioSms(Transport):
+    def notify(self, check):
+        message = client.messages.create(
+        body = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(check.name, check.last_ping.strftime('%x, %X'), check.status),
+        to = "+{}".format(check.twilio_number),
+        from_="+19193354949"
+        )
+
+class TwilioVoice(Transport):
+    def notify(self, check):
+        call = client.calls.create(
+        url = "http://demo.twilio.com/docs/voice.xml",
+        to = "+{}".format(check.twilio_number),
+        from_="+19193354949"
+        )
 
 
 class HttpTransport(Transport):

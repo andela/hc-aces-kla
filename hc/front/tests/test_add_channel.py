@@ -1,7 +1,9 @@
 from django.test.utils import override_settings
 
+from django.contrib.auth.models import User
 from hc.api.models import Channel
 from hc.test import BaseTestCase
+import os
 
 
 @override_settings(PUSHOVER_API_TOKEN="token", PUSHOVER_SUBSCRIPTION_URL="url")
@@ -31,7 +33,7 @@ class AddChannelTestCase(BaseTestCase):
 
     def test_instructions_work(self):
         self.client.login(username="alice@example.org", password="password")
-        kinds = ("email", "webhook", "pd", "pushover", "hipchat", "victorops")
+        kinds = ("email", "webhook", "pd", "pushover", "hipchat", "victorops", "twiliosms", "twiliovoice")
         for frag in kinds:
             url = "/integrations/add_%s/" % frag
             r = self.client.get(url)
@@ -39,3 +41,26 @@ class AddChannelTestCase(BaseTestCase):
 
     ### Test that the team access works
     ### Test that bad kinds don't work
+   
+
+    def test_twiliosms_works(self):
+        """ test sms intergration works"""
+        alice_channel = User.objects.get(email="alice@example.org")
+        alice_before = Channel.objects.filter(user=alice_channel).count()
+        self.client.login(username="bob@example.org", password="password")
+        url = "/integrations/add/"
+        form = {"kind": "twiliosms"}
+        self.client.post(url, form)
+        alice_after = Channel.objects.filter(user=alice_channel).count()
+        self.assertEqual(alice_after, (alice_before + 1))
+
+    def test_twiliovoice_works(self):
+        """ test voice intergration works"""
+        alice_channel = User.objects.get(email="alice@example.org")
+        alice_before = Channel.objects.filter(user=alice_channel).count()
+        self.client.login(username="bob@example.org", password="password")
+        url = "/integrations/add/"
+        form = {"kind": "twiliovoice"}
+        self.client.post(url, form)
+        alice_after = Channel.objects.filter(user=alice_channel).count()
+        self.assertEqual(alice_after, (alice_before + 1))  
