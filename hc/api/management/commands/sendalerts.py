@@ -28,7 +28,7 @@ class Command(BaseCommand):
                 check.nag_after_time = now + check.nag_intervals
                 check.save()        
         for check in repeat_list_approved:
-            #fix for big time interval between nag_after_time and nag_intervals
+    
             if (now - check.nag_after_time) > (check.nag_intervals):
                 check.nag_after_time = now + check.nag_intervals
             else:
