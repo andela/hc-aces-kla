@@ -19,6 +19,7 @@ pbr==4.0.4
 premailer==2.9.6
 psycopg2==2.7
 pycodestyle==2.4.0
+pyflakes==1.6.0
 pylint==1.9.2
 python-decouple==3.1
 rcssmin==1.0.6
@@ -27,4 +28,3 @@ rjsmin==1.0.12
 six==1.11.0
 whitenoise==3.3.1
 wrapt==1.10.11
-pyflakes==1.6.0
