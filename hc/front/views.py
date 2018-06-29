@@ -456,6 +456,15 @@ def add_slack(request):
     }
     return render(request, "integrations/add_slack.html", ctx)
 
+@login_required
+def add_twiliosms(request):
+    ctx = {"page": "channels"}
+    return render(request, "integrations/add_twiliosms.html", ctx)
+
+@login_required
+def add_twiliovoice(request):
+    ctx = {"page": "channels"}
+    return render(request, "integrations/add_twiliovoice.html", ctx)
 
 @login_required
 def add_twiliosms(request):
