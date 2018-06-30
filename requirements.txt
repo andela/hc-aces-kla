@@ -24,17 +24,24 @@ mccabe==0.6.1
 mock==2.0.0
 pbr==4.0.4
 premailer==2.9.6
+<<<<<<< HEAD
 psycopg2==2.7.5
 pycodestyle==2.3.0
 psycopg2-binary==2.7.5
+=======
+psycopg2==2.7
+pycodestyle==2.4.0
+>>>>>>> Sms voice (#12)
 pyflakes==1.6.0
 PyJWT==1.6.4
 pylint==1.9.2
-PySocks==1.6.8
 python-decouple==3.1
+<<<<<<< HEAD
 python-http-client==3.1.0
 python-telegram-bot==10.1.0
 pytz==2018.4
+=======
+>>>>>>> Sms voice (#12)
 rcssmin==1.0.6
 requests==2.9.1
 rjsmin==1.0.12

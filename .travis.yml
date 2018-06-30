@@ -9,9 +9,15 @@ install:
 env:
 - DB=postgres
 addons:
+<<<<<<< HEAD
   postgresql: '9.4'
 before_script:
 - python manage.py migrate
+=======
+  postgresql: "9.4"
+before_script:
+  - python manage.py migrate
+>>>>>>> Sms voice (#12)
 script:
 - coverage run --omit=*/tests/* --source=hc manage.py test
 after_success: coveralls
