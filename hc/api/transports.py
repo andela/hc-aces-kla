@@ -68,17 +68,20 @@ class Email(Transport):
 
 class TwilioSms(Transport):
     def notify(self, check):
+        print('Magic here: {}'.format(self.channel.value))
+        # ews = Channel.objects.get()
         message = client.messages.create(
         body = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(check.name, check.last_ping.strftime('%x, %X'), check.status),
-        to = "+{}".format(check.twilio_number),
+        to = self.channel.value,
         from_="+19193354949"
         )
 
 class TwilioVoice(Transport):
     def notify(self, check):
+        print("I am now reaching here")
         call = client.calls.create(
         url = "http://demo.twilio.com/docs/voice.xml",
-        to = "+{}".format(check.twilio_number),
+        to = self.channel.value,
         from_="+19193354949"
         )
 
