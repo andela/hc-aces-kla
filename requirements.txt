@@ -23,12 +23,9 @@ pbr==4.0.4
 premailer==2.9.6
 psycopg2==2.7
 pycodestyle==2.4.0
-PyJWT==1.6.4
 pyflakes==1.6.0
 pylint==1.9.2
-PySocks==1.6.8
 python-decouple==3.1
-pytz==2018.4
 rcssmin==1.0.6
 requests==2.9.1
 rjsmin==1.0.12
