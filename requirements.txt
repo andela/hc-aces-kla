@@ -38,7 +38,11 @@ pytz==2018.4
 rcssmin==1.0.6
 requests==2.9.1
 rjsmin==1.0.12
+<<<<<<< HEAD
 sendgrid==5.4.1
+=======
+singledispatch==3.4.0.3
+>>>>>>> Update requirements file
 six==1.11.0
 twilio==6.14.6
 whitenoise==3.3.1
