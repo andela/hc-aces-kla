@@ -46,6 +46,11 @@ class SendAlertsTestCase(BaseTestCase):
     #  self.assertEqual(Command().handle_many(), True)
 =======
     ### Assert when Command's handle many that when handle_many should return True
+<<<<<<< HEAD
         assert (Command().handle_many())
         
 >>>>>>> Debug tests
+=======
+        assert (Command().handle_many(), True)
+        
+>>>>>>> Fix the UI to allow integrations

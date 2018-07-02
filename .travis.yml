@@ -15,9 +15,12 @@ before_script:
 - python manage.py migrate
 =======
   postgresql: "9.4"
+<<<<<<< HEAD
 before_script:
   - python manage.py migrate
 >>>>>>> Sms voice (#12)
+=======
+>>>>>>> Fix the UI to allow integrations
 script:
 - coverage run --omit=*/tests/* --source=hc manage.py test
 after_success: coveralls
