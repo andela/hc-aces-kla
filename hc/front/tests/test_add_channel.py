@@ -79,23 +79,23 @@ class AddChannelTestCase(BaseTestCase):
         assert response.status_code == 400
         
     def test_twiliosms_works(self):
-        """ test sms intergration works"""
+        """ test sms integration works"""
         alice_channel = User.objects.get(email="alice@example.org")
         alice_before = Channel.objects.filter(user=alice_channel).count()
         self.client.login(username="bob@example.org", password="password")
         url = "/integrations/add/"
-        form = {"kind": "twiliosms"}
+        form = {"kind": "twiliosms", "value": "+256703357610"}
         self.client.post(url, form)
         alice_after = Channel.objects.filter(user=alice_channel).count()
         self.assertEqual(alice_after, (alice_before + 1))
 
     def test_twiliovoice_works(self):
-        """ test voice intergration works"""
+        """ test voice integration works"""
         alice_channel = User.objects.get(email="alice@example.org")
         alice_before = Channel.objects.filter(user=alice_channel).count()
         self.client.login(username="bob@example.org", password="password")
         url = "/integrations/add/"
-        form = {"kind": "twiliovoice"}
+        form = {"kind": "twiliovoice", "value": "+256703357610"}
         self.client.post(url, form)
         alice_after = Channel.objects.filter(user=alice_channel).count()
         self.assertEqual(alice_after, (alice_before + 1))  
