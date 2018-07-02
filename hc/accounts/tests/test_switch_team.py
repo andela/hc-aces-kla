@@ -5,7 +5,7 @@ from hc.api.models import Check
 class SwitchTeamTestCase(BaseTestCase):
 
     def test_it_switches(self):
-        """test that a user can switch to view checks from teams they are members of≠"""
+        """test that a user can switch to view checks from teams they are members of"""
         c = Check(user=self.alice, name="This belongs to Alice")
         c.save()
 
