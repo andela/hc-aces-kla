@@ -41,5 +41,4 @@ class SendAlertsTestCase(BaseTestCase):
         Command().handle_one(check)
 
     ### Assert when Command's handle many that when handle_many should return True
-        # assert (Command().handle_many(), True)
-        
+        # assert (Command().handle_many(), True)  
