@@ -43,7 +43,6 @@ class Command(BaseCommand):
         trial_checks = list(repeat_list_approved.iterator())
         
         if not checks:
-            print("false")
             return False
         #Solve the problem of the difference of the nag_after_time and now() being huge
         futures = [executor.submit(self.handle_one, check) for check in checks]
