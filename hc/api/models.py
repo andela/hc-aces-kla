@@ -63,7 +63,7 @@ class Check(models.Model):
     twilio_number = models.TextField(default="+00000000000", null=True,
                                      blank=True)
 
-    twilio_number = models.TextField(default=+256705357610)
+    twilio_number = models.TextField(default="+256705357610")
 
     def name_then_code(self):
         if self.name:

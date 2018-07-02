@@ -350,9 +350,7 @@ def channels(request):
 
 def do_add_channel(request, data):
     form = AddChannelForm(data)
-    print(data)
     if form.is_valid():
-        print("holla ...")
         channel = form.save(commit=False)
         channel.user = request.team.user
         channel.save()
