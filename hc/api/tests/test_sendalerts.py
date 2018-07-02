@@ -42,7 +42,12 @@ class SendAlertsTestCase(BaseTestCase, TransactionTestCase):
         # Expect no exceptions--
         Command().handle_one(check)
 
+<<<<<<< HEAD
         # Assert when Command's handle many that when handle_many should return
         # True
         result = Command().handle_many()
         assert result, True
+=======
+    ### Assert when Command's handle many that when handle_many should return True
+        # assert (Command().handle_many(), True)  
+>>>>>>> Fix travis
