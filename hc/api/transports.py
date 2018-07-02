@@ -10,10 +10,6 @@ from twilio.rest import Client
 from hc.lib import emails
 
 
-#Twilio Account SID and AUTH_TOKEN details
-# TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
-# TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
-
 def tmpl(template_name, **ctx):
     template_path = "integrations/%s" % template_name
     return render_to_string(template_path, ctx).strip()
