@@ -49,6 +49,7 @@ class SendAlertsTestCase(BaseTestCase):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         assert (Command().handle_many())
         
 >>>>>>> Debug tests
@@ -62,4 +63,8 @@ class SendAlertsTestCase(BaseTestCase):
 >>>>>>> Fix travis
 =======
         # assert (Command().handle_many(), True)  
+>>>>>>> Fix travis
+=======
+        assert (Command().handle_many(), True)
+        
 >>>>>>> Fix travis
