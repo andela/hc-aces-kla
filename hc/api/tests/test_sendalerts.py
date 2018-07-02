@@ -48,6 +48,7 @@ class SendAlertsTestCase(BaseTestCase):
     ### Assert when Command's handle many that when handle_many should return True
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         assert (Command().handle_many())
         
 >>>>>>> Debug tests
@@ -58,4 +59,7 @@ class SendAlertsTestCase(BaseTestCase):
 =======
         # assert (Command().handle_many(), True)
         
+>>>>>>> Fix travis
+=======
+        # assert (Command().handle_many(), True)  
 >>>>>>> Fix travis
