@@ -1,3 +1,4 @@
+import os
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -10,9 +11,8 @@ from hc.lib import emails
 
 
 #Twilio Account SID and AUTH_TOKEN details
-account_sid = "AC06a9064c4ccabad17ac56ade5054916c"
-auth_token = "f323d7a1411ef651daa54dacb4147dfb"
-client = Client(account_sid, auth_token)
+# TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
+# TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 
 def tmpl(template_name, **ctx):
     template_path = "integrations/%s" % template_name
@@ -22,6 +22,8 @@ def tmpl(template_name, **ctx):
 class Transport(object):
     def __init__(self, channel):
         self.channel = channel
+        self.client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+
 
     def notify(self, check):
         """ Send notification about current status of the check.
@@ -68,21 +70,18 @@ class Email(Transport):
 
 class TwilioSms(Transport):
     def notify(self, check):
-        print('Magic here: {}'.format(self.channel.value))
-        # ews = Channel.objects.get()
-        message = client.messages.create(
+        message = self.client.messages.create(
         body = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(check.name, check.last_ping.strftime('%x, %X'), check.status),
         to = self.channel.value,
-        from_="+19193354949"
+        from_=settings.TWILIO_NUMBER
         )
 
 class TwilioVoice(Transport):
     def notify(self, check):
-        print("I am now reaching here")
-        call = client.calls.create(
+        call = self.client.calls.create(
         url = "http://demo.twilio.com/docs/voice.xml",
         to = self.channel.value,
-        from_="+19193354949"
+        from_=settings.TWILIO_NUMBER
         )
 
 
