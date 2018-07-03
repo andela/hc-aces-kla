@@ -142,6 +142,11 @@ class Ping(models.Model):
     method = models.CharField(max_length=10, blank=True)
     ua = models.CharField(max_length=200, blank=True)
 
+class Report(models.Model):
+    checks = models.ManyToManyField(Check)
+    sent_date = models.DateTimeField()
+    user = models.ForeignKey(User)
+
 
 class Channel(models.Model):
     code = models.UUIDField(default=uuid.uuid4, editable=False)

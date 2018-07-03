@@ -1,0 +1,41 @@
+.checks {
+    margin: 30px 0;
+    width: 100%;
+    font-size: 16px;
+}
+
+.checks th {
+    text-align: left;
+    padding: 8px;
+    border-top: none;
+}
+
+.checks td {
+    border-top: 1px solid #EDEFF2;
+    padding: 16px 8px;
+}
+
+.badge {
+    font-size: 10px;
+    color: white;
+    padding: 4px;
+    font-family: sans;
+}
+
+.new { background: #AAA; }
+.up { background: #5cb85c; }
+.grace { background: #f0ad4e; }
+.down { background: #d9534f; }
+
+
+.unnamed {
+    color: #74787E;
+    font-style: italic;
+}
+
+.tag {
+    font-size: 12px;
+    background-color: #eee;
+    padding: 2px 4px;
+    color: #555;
+}

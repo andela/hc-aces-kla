@@ -24,13 +24,29 @@
             <div class="panel-body settings-block">
                 <form method="post">
                     {% csrf_token %}
-                    <h2>Monthly Reports</h2>
+                    <h2>Reports</h2>
                     <label>
                         <input
                             name="reports_allowed"
                             type="checkbox"
                             {% if profile.reports_allowed %} checked {% endif %}>
-                        Each month send me a summary of my checks
+                        Send me a summary of my checks periodically
+                        <hr/>
+                    </label>
+                    <label name="report_interval">
+                        <p>Choose an interval to receive reports</p>
+                        <input
+                               name="reports_frequency"
+                               type="radio"
+                               value="day" checked required> Daily<br/>
+                        <input
+                               name="reports_frequency"
+                               type="radio"
+                               value="week"> Weekly<br/>
+                        <input
+                               name="reports_frequency"
+                               type="radio"
+                               value="month"> Monthly<br/>
                     </label>
                     <button
                         name="update_reports_allowed"
@@ -324,4 +340,28 @@
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/profile.js' %}"></script>
 {% endcompress %}
+<script>
+    $(document).load(function(){
+        if (check_box.checked == true) {
+            $(report_interval).show();
+        }
+        else {
+            $(report_interval).hide();
+        }
+    });
+
+    $(document).ready(function () {
+        var check_box = $("input[name='reports_allowed']");
+        var report_interval = $("label[name='report_interval']");
+
+
+        $(check_box).on('click',function () {
+        if (this.checked == true) {
+                $(report_interval).show();
+            } else {
+                $(report_interval).hide();
+            }
+        });
+    });
+</script>
 {% endblock %}
