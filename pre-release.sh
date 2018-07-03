@@ -1,6 +1,7 @@
 
 echo "Running release tasks"
 echo "Running Migrations"
+heroku config:get os.getenv("DATABASE_URL")
 python manage.py makemigrations 
 python manage.py migrate
 python manage.py ensuretriggers
