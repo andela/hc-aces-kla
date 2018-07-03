@@ -1,7 +1,7 @@
 
 echo "Running release tasks"
 
-if [ "$DB" == "postgres" ]; then 
+if [ "$DB" == "$postgres" ]; then 
   echo "Running Migrations"
   python manage.py makemigrations 
   python manage.py migrate
