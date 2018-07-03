@@ -25,7 +25,7 @@ DEFAULT_NAG_TIME = td(days=1)
 CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("hipchat", "HipChat"),
                  ("slack", "Slack"), ("pd", "PagerDuty"), ("po", "Pushover"),
-                 ("victorops", "VictorOps"))
+                 ("victorops", "VictorOps"), ("twiliosms", "TwilioSms"), ("twiliovoice", "TwilioVoice") )
 
 PO_PRIORITIES = {
     -2: "lowest",
@@ -55,6 +55,8 @@ class Check(models.Model):
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
     nag_intervals = models.DurationField(default=DEFAULT_NAG_TIME)
     nag_after_time = models.DateTimeField(null=True, blank=True)
+
+    twilio_number = models.TextField(default="+256705357610")
 
     def name_then_code(self):
         if self.name:
@@ -149,7 +151,7 @@ class Channel(models.Model):
     user = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     kind = models.CharField(max_length=20, choices=CHANNEL_KINDS)
-    value = models.TextField(blank=True)
+    value = models.TextField(max_length=25,default="+256705357610")
     email_verified = models.BooleanField(default=False)
     checks = models.ManyToManyField(Check)
 
@@ -170,6 +172,10 @@ class Channel(models.Model):
 
     @property
     def transport(self):
+        if self.kind == "twiliosms":
+            return transports.TwilioSms(self)
+        if self.kind == "twiliovoice":
+            return transports.TwilioVoice(self)
         if self.kind == "email":
             return transports.Email(self)
         elif self.kind == "webhook":
