@@ -1,4 +1,6 @@
 # healthchecks
+[![Build Status](https://travis-ci.org/andela/hc-aces-kla.svg?branch=develop)](https://travis-ci.org/andela/hc-aces-kla)
+[![Coverage Status](https://coveralls.io/repos/github/andela/hc-aces-kla/badge.svg?branch=develop)](https://coveralls.io/github/andela/hc-aces-kla?branch=develop)
 
 ![Screenshot of Welcome page](/stuff/screenshots/welcome.png?raw=true "Welcome Page")
 

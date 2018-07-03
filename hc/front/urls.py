@@ -5,6 +5,8 @@ from hc.front import views
 check_urls = [
     url(r'^name/$', views.update_name, name="hc-update-name"),
     url(r'^timeout/$', views.update_timeout, name="hc-update-timeout"),
+    url(r'^nag_interval/$', views.update_nag_interval,
+        name="hc-update-nag-interval"),
     url(r'^pause/$', views.pause, name="hc-pause"),
     url(r'^remove/$', views.remove_check, name="hc-remove-check"),
     url(r'^log/$', views.log, name="hc-log"),
@@ -24,8 +26,9 @@ channel_urls = [
     url(r'^add_victorops/$', views.add_victorops, name="hc-add-victorops"),
     url(r'^([\w-]+)/checks/$', views.channel_checks, name="hc-channel-checks"),
     url(r'^([\w-]+)/remove/$', views.remove_channel, name="hc-remove-channel"),
-    url(r'^([\w-]+)/verify/([\w-]+)/$', views.verify_email,
-        name="hc-verify-email"),
+    url(r'^([\w-]+)/verify/([\w-]+)/$', views.verify_email, name="hc-verify-email"),
+    url(r'^add_twiliosms/$', views.add_twiliosms, name="hc-add-twiliosms"),
+    url(r'^add_twiliovoice/$', views.add_twiliovoice, name="hc-add-twiliovoice"),
 ]
 
 urlpatterns = [
@@ -34,6 +37,7 @@ urlpatterns = [
     url(r'^checks/add/$', views.add_check, name="hc-add-check"),
     url(r'^checks/([\w-]+)/', include(check_urls)),
     url(r'^integrations/', include(channel_urls)),
+    url(r'^reports/', views.reports, name="hc-reports"),
 
     url(r'^docs/$', views.docs, name="hc-docs"),
     url(r'^docs/api/$', views.docs_api, name="hc-docs-api"),
