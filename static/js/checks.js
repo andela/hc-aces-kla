@@ -52,11 +52,42 @@ $(function () {
         }
     });
 
+    var periodSlider2 = document.getElementById("period-slider-2");
+    noUiSlider.create(periodSlider2, {
+        start: [20],
+        connect: "lower",
+        range: {
+            'min': [60, 60],
+            '33%': [3600, 3600],
+            '66%': [86400, 86400],
+            '83%': [604800, 604800],
+            'max': 2592000,
+        },
+        pips: {
+            mode: 'values',
+            values: [60, 1800, 3600, 43200, 86400, 604800, 2592000],
+            density: 4,
+            format: {
+                to: secsToText,
+                from: function () { }
+            }
+        }
+    });
+
+
     periodSlider.noUiSlider.on("update", function(a, b, value) {
         var rounded = Math.round(value);
         $("#period-slider-value").text(secsToText(rounded));
         $("#update-timeout-timeout").val(rounded);
     });
+    
+    periodSlider2.noUiSlider.on("update", function (a, b, value) {
+        var rounded = Math.round(value);
+        console.log(rounded)
+        $("#period-slider-value-2").text(secsToText(rounded));
+        $("#update-timeout-timeout-2").val(rounded);
+    });
+    
 
 
     var graceSlider = document.getElementById("grace-slider");
@@ -87,6 +118,8 @@ $(function () {
         $("#update-timeout-grace").val(rounded);
     });
 
+    
+
 
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -104,12 +137,21 @@ $(function () {
 
     $(".timeout-grace").click(function() {
         var $this = $(this);
-
+        
         $("#update-timeout-form").attr("action", $this.data("url"));
         periodSlider.noUiSlider.set($this.data("timeout"))
         graceSlider.noUiSlider.set($this.data("grace"))
         $('#update-timeout-modal').modal({"show":true, "backdrop":"static"});
 
+        return false;
+    });
+
+    $(".nag-interval").click(function () {
+        var $this = $(this);
+        
+        $("#update-nag-interval-form").attr("action", $this.data("url"));
+        periodSlider2.noUiSlider.set($this.data("timeout"))
+        $('#update-nag-interval-modal').modal({ "show": true, "backdrop": "static" });
         return false;
     });
 

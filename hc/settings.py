@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # flake8: noqa
 import os
 import warnings
-import dj_database_url
-from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -103,14 +101,6 @@ if os.environ.get("DB") == "postgres":
         }
     }
 
-
-if os.environ.get("DB") == "heroku":
-    DATABASES = {
-        'default': dj_database_url.config(default=config('DATABASE_URL'))
-    }
-
-
-
 if os.environ.get("DB") == "mysql":
     DATABASES = {
         'default': {
@@ -145,6 +135,13 @@ STATICFILES_FINDERS = (
 COMPRESS_OFFLINE = True
 
 EMAIL_BACKEND = "djmail.backends.default.EmailBackend"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Slack integration -- override these in local_settings
 SLACK_CLIENT_ID = None
