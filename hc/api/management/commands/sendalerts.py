@@ -40,7 +40,7 @@ class Command(BaseCommand):
         else:    
             checks = (list(going_down.iterator()) +
                     list(going_up.iterator()) + list(repeat_list_approved.iterator()))
-        trial_checks = list(repeat_list_approved.iterator())
+                    
         
         if not checks:
             return False
