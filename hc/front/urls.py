@@ -24,8 +24,9 @@ channel_urls = [
     url(r'^add_victorops/$', views.add_victorops, name="hc-add-victorops"),
     url(r'^([\w-]+)/checks/$', views.channel_checks, name="hc-channel-checks"),
     url(r'^([\w-]+)/remove/$', views.remove_channel, name="hc-remove-channel"),
-    url(r'^([\w-]+)/verify/([\w-]+)/$', views.verify_email,
-        name="hc-verify-email"),
+    url(r'^([\w-]+)/verify/([\w-]+)/$', views.verify_email, name="hc-verify-email"),
+    url(r'^add_twiliosms/$', views.add_twiliosms, name="hc-add-twiliosms"),
+    url(r'^add_twiliovoice/$', views.add_twiliovoice, name="hc-add-twiliovoice"),
 ]
 
 urlpatterns = [

@@ -34,6 +34,9 @@
             {% if ch.kind == "pd" %} PagerDuty {% endif %}
             {% if ch.kind == "po" %} Pushover {% endif %}
             {% if ch.kind == "victorops" %} VictorOps {% endif %}
+            {% if ch.kind == "twiliosms" %} SMS {% endif %}
+            {% if ch.kind == "twiliovoice" %} VOICE CALL {% endif %}
+            
             {% if ch.kind == "pushbullet" %} Pushbullet {% endif %}
             </td>
             <td class="value-cell">
@@ -134,6 +137,22 @@
             <p>A messaging app for teams.</p>
             <a href="{% url 'hc-add-slack' %}" class="btn btn-primary">Add Integration</a>
         </li>
+        <li>
+                <img src="{% static 'img/integrations/sms.jpeg' %}"
+                    class="icon" alt="Sms icon" />
+    
+                <h2>Sms</h2>
+                <p>Get an sms message when check goes up or down.</p>
+                <a href="{% url 'hc-add-twiliosms' %}" class="btn btn-primary">Add Integration</a>
+            </li>
+            <li>
+                    <img src="{% static 'img/integrations/voice1.jpg' %}"
+                        class="icon" alt="Voice icon" />
+        
+                    <h2>Voice Call</h2>
+                    <p>Get a phone call when check goes up or down.</p>
+                    <a href="{% url 'hc-add-twiliovoice' %}" class="btn btn-primary">Add Integration</a>
+                </li>
         <li>
             <img src="{% static 'img/integrations/email.png' %}"
                 class="icon" alt="Email icon" />
