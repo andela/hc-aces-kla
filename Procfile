@@ -1,2 +1,2 @@
-release: source ./pre-release.sh
+release: . ./pre-release.sh
 web: gunicorn hc.wsgi:application
