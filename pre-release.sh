@@ -3,7 +3,6 @@ echo "Running release tasks"
 dataBase=$(printenv DB)
 if [ "$dataBase" == "postgres" ]; then 
   echo "Running Migrations"
-  pip uninstall psycopg2
   PATH=/usr/pgsql-9.3/lib:$PATH pip install psycopg2-binary
   python manage.py migrate
   python manage.py ensuretriggers
