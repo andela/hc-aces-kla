@@ -11,6 +11,7 @@
         <th>Nag Interval</th>
         <th>Last Ping</th>
         <th></th>
+        <th>Priority</th>
     </tr>
     {% for check in checks %}
     <tr class="checks-row">
@@ -132,6 +133,15 @@
                     </li>
                 </ul>
             </div>
+        </td>
+        <td class="check-priority dropdown-menu">
+            {% if check.priority=="high"%}
+            High
+            {% elif check.priority=="medium"%}
+            Medium
+            {% elif check.priority=="normal"%}
+            Low
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
