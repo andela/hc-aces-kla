@@ -1,2 +1,2 @@
-release: python manage.py migrate
+release: bash ./pre-release.sh
 web: gunicorn hc.wsgi:application

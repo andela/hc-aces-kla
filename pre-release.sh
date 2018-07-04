@@ -7,5 +7,5 @@ if [ "$dataBase" == "postgres" ]; then
   python manage.py ensuretriggers
   python manage.py sendalerts
 fi
-echo "$dataBase"
+echo printenv PATH
 echo "Done running pre-release.sh"
