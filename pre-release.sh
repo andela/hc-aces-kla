@@ -3,7 +3,7 @@ echo "Running release tasks"
 dataBase=$(printenv DB)
 if [ "$dataBase"=="postgres" ]; then 
   echo "Running Migrations"
-  ln -s /tmp/.s.PGSQL.5432 /var/run/postgresql/.s.PGSQL.5432
+  export PGHOST=localhost
   python manage.py migrate
   python manage.py ensuretriggers
   python manage.py sendalerts
