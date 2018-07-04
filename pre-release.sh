@@ -1,12 +1,9 @@
 
 echo "Running release tasks"
 dataBase=$(printenv DB)
+export PORT=5432
 if [ "$dataBase"=="postgres" ]; then 
   echo "Running Migrations"
-  db:
-  image: postgres:latest
-  ports:
-    - "5432"
   python manage.py migrate
   python manage.py ensuretriggers
   python manage.py sendalerts
