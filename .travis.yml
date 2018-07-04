@@ -11,9 +11,9 @@ env:
 addons:
   postgresql: '9.4'
 before script:
-- "./manage.py migrate"
-- "./manage.py ensuretriggers"
-- "./manage.py sendalerts"
+- ./manage.py migrate
+- ./manage.py ensuretriggers
+- ./manage.py sendalerts
 script:
 - coverage run --omit=*/tests/* --source=hc manage.py test
 after_success: coveralls
