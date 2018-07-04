@@ -1,7 +1,7 @@
 
 echo "Running release tasks"
 dataBase=$(printenv DB)
-if [ "$database" == "postgres" ]; then 
+if [ "$dataBase" == "postgres" ]; then 
   echo "Running Migrations"
   python manage.py makemigrations 
   python manage.py migrate
