@@ -1,10 +1,9 @@
-import os
-from django.conf import settings
-from django.template.loader import render_to_string
-from django.utils import timezone
 import json
 import requests
 from six.moves.urllib.parse import quote
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils import timezone
 from twilio.rest import Client
 
 from hc.lib import emails
@@ -18,8 +17,9 @@ def tmpl(template_name, **ctx):
 class Transport(object):
     def __init__(self, channel):
         self.channel = channel
-        self.client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-
+        self.client = Client(
+            settings.TWILIO_ACCOUNT_SID,
+            settings.TWILIO_AUTH_TOKEN)
 
     def notify(self, check):
         """ Send notification about current status of the check.
@@ -61,23 +61,27 @@ class Email(Transport):
             "now": timezone.now(),
             "show_upgrade_note": show_upgrade_note
         }
+
         emails.alert(self.channel.value, ctx)
 
 
 class TwilioSms(Transport):
     def notify(self, check):
-        message = self.client.messages.create(
-        body = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(check.name, check.last_ping.strftime('%x, %X'), check.status),
-        to = self.channel.value,
-        from_=settings.TWILIO_NUMBER
-        )
+        self.client.messages.create(
+            body="Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(
+                check.name,
+                check.last_ping.strftime('%x, %X'),
+                check.status),
+            to=self.channel.value,
+            from_=settings.TWILIO_NUMBER)
+
 
 class TwilioVoice(Transport):
     def notify(self, check):
-        call = self.client.calls.create(
-        url = "http://demo.twilio.com/docs/voice.xml",
-        to = self.channel.value,
-        from_=settings.TWILIO_NUMBER
+        self.client.calls.create(
+            url="http://demo.twilio.com/docs/voice.xml",
+            to=self.channel.value,
+            from_=settings.TWILIO_NUMBER
         )
 
 
@@ -229,7 +233,8 @@ class VictorOps(HttpTransport):
     def notify(self, check):
         description = tmpl("victorops_description.html", check=check)
         payload = {
-            "entity_id": str(check.code),
+            "entity_id": str(
+                check.code),
             "message_type": "CRITICAL" if check.status == "down" else "RECOVERY",
             "entity_display_name": check.name_then_code(),
             "state_message": description,

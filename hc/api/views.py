@@ -1,4 +1,5 @@
 from datetime import timedelta as td
+from concurrent.futures import ThreadPoolExecutor
 
 from django.db.models import F
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
@@ -6,6 +7,7 @@ from django.utils import timezone
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 
+from hc.api.management.commands.sendalerts import Command
 from hc.api import schemas
 from hc.api.decorators import check_api_key, uuid_or_400, validate_json
 from hc.api.models import Check, Ping
@@ -16,18 +18,44 @@ from hc.lib.badges import check_signature, get_badge_svg
 @uuid_or_400
 @never_cache
 def ping(request, code):
+
+    executor = ThreadPoolExecutor(max_workers=10)
     try:
         check = Check.objects.get(code=code)
     except Check.DoesNotExist:
         return HttpResponseBadRequest()
 
     check.n_pings = F("n_pings") + 1
-    check.last_ping = timezone.now()
+
     if check.status in ("new", "paused"):
         check.status = "up"
 
+    previous_ping = check.last_ping
+    print(check.name)
+    print("Previous ping: %s" % previous_ping)
+
+    # Set the earliest time allowed that the check should be run
+    if check.last_ping:
+        allowed_ping_time = previous_ping + (check.timeout - check.grace)
+        print("Earliest time for ping: %s" % allowed_ping_time)
+
+    # Update last ping time and check if it is running too often
+    # i.e. running before the earliest expected ping time
+    check.last_ping = timezone.now()
+    print("New ping: %s" % check.last_ping)
+    if previous_ping:
+        print(check.last_ping < allowed_ping_time)
+        if check.last_ping < allowed_ping_time:
+            check.runs_too_often = True
+        else:
+            check.runs_too_often = False
+
     check.save()
     check.refresh_from_db()
+
+    if check.runs_too_often:
+        errors = executor.submit(Command().handle_one, check)
+        print(errors)
 
     ping = Ping(owner=check)
     headers = request.META
@@ -36,6 +64,7 @@ def ping(request, code):
     ping.remote_addr = remote_addr.split(",")[0]
     ping.scheme = headers.get("HTTP_X_FORWARDED_PROTO", "http")
     ping.method = headers["REQUEST_METHOD"]
+
     # If User-Agent is longer than 200 characters, truncate it:
     ping.ua = headers.get("HTTP_USER_AGENT", "")[:200]
     ping.save()
