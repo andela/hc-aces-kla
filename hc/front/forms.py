@@ -21,6 +21,12 @@ class TimeoutForm(forms.Form):
     timeout = forms.IntegerField(min_value=60, max_value=2592000)
     grace = forms.IntegerField(min_value=60, max_value=2592000)
 
+class ShopifyForm(forms.Form):
+    name = forms.CharField(max_length=100, required=False)
+    api_key = forms.CharField(max_length=100, required=False)
+    password = forms.CharField(max_length=100, required=False)
+    event = forms.CharField(max_length=100, required=False)
+    shop_name = forms.CharField(max_length=100, required=False)
 
 class NagIntervalForm(forms.Form):
     nag_interval = forms.IntegerField(min_value=60, max_value=2592000)
