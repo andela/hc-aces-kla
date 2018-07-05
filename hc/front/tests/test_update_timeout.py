@@ -3,6 +3,7 @@ from hc.test import BaseTestCase
 
 from datetime import timedelta as td
 
+
 class UpdateTimeoutTestCase(BaseTestCase):
 
     def setUp(self):
