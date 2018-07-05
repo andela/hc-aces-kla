@@ -21,7 +21,11 @@ from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
 =======
                             TimeoutForm, NagIntervalForm, ShopifyForm)
 import shopify
+<<<<<<< HEAD
 >>>>>>> [Feature #158174601] Add tests, UI and logic for Shopify integration
+=======
+from django.contrib import messages
+>>>>>>> [Feature #158174601] Add flash messages for unauthorized access
 
 
 # from itertools recipes:
@@ -250,9 +254,12 @@ def create_shopify_alerts(request):
             webhook.save()
             return redirect("hc-checks")
         except:
-            return HttpResponseForbidden()
-
-    return redirect("hc-add-shopify")
+            messages.info(request, "Unauthorized Access. Cannot access shop in Shopify")
+            return render(request, "integrations/add_shopify.html",status=403)
+    
+    messages.info(
+        request, "Missing/Wrong field types")
+    return render(request, "integrations/add_shopify.html", status=400)
     
 
 
