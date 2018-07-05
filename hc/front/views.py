@@ -218,6 +218,10 @@ def create_shopify_alerts(request):
             webhook.topic = topic
             check = Check(user=request.team.user)
             check.name = form.cleaned_data["name"]
+            check.shopify = True
+            check.shopify_api_key = API_KEY
+            check.shopify_password = PASSWORD
+            check.shopify_name = SHOP_NAME
             check.save()
             check_created = Check.objects.filter(
                 name=form.cleaned_data["name"]).first()
@@ -258,6 +262,23 @@ def remove_check(request, code):
     check = get_object_or_404(Check, code=code)
     if check.user != request.team.user:
         return HttpResponseForbidden()
+    if check.shopify:
+        try:
+            API_KEY = check.shopify_api_key
+            PASSWORD = check.shopify_password
+            SHOP_NAME = check.shopify_name
+            shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
+                API_KEY, PASSWORD, SHOP_NAME)
+            shopify.ShopifyResource.set_site(shop_url)
+            shopify.Shop.current
+            webhook = shopify.Webhook()
+            shopify.ShopifyResource.set_site(shop_url)
+            webhook = shopify.Webhook.find(address=check.url())
+            webhook.destroy()
+        except:
+            messages.info(
+                request, "Unauthorized Access. Cannot access shop in Shopify to delete Webhook")
+            return redirect("hc-checks")
 
     check.delete()
 
