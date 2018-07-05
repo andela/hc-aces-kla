@@ -129,10 +129,14 @@ USE_L10N = True
 USE_TZ = True
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
 =======
 SITE_ROOT = os.environ.get['SITE_ROOT']
 >>>>>>> [Feature #158174601] Enable site root to be picked from environment
+=======
+SITE_ROOT = "http://localhost:8000"
+>>>>>>> [Feature #158174601] Add site root
 PING_ENDPOINT = SITE_ROOT + "/ping/"
 PING_EMAIL_DOMAIN = HOST
 STATIC_URL = '/static/'
