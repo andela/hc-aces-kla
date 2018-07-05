@@ -32,11 +32,14 @@ channel_urls = [
     url(r'^add_twiliosms/$', views.add_twiliosms, name="hc-add-twiliosms"),
     url(r'^add_twiliovoice/$', views.add_twiliovoice,
         name="hc-add-twiliovoice"),
+    url(r'^add_shopify/$', views.add_shopify, name="hc-add-shopify"),
 ]
 
 urlpatterns = [
     url(r'^$', views.index, name="hc-index"),
     url(r'^checks/$', views.my_checks, name="hc-checks"),
+    url(r'^checks/create_shopify_alert/$', views.create_shopify_alerts,
+        name="hc-create-shopify-alerts"),
     url(r'^checks/add/$', views.add_check, name="hc-add-check"),
     url(r'^checks/([\w-]+)/', include(check_urls)),
     url(r'^integrations/', include(channel_urls)),

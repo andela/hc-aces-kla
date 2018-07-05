@@ -16,7 +16,12 @@ from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
+<<<<<<< HEAD
                             TimeoutForm, NagIntervalForm, PriorityForm)
+=======
+                            TimeoutForm, NagIntervalForm, ShopifyForm)
+import shopify
+>>>>>>> [Feature #158174601] Add tests, UI and logic for Shopify integration
 
 
 # from itertools recipes:
@@ -205,6 +210,56 @@ def update_nag_interval(request, code):
         check.nag_intervals = td(seconds=form.cleaned_data["nag_interval"])
         check.save()
     return redirect("hc-checks")
+
+
+@login_required
+def shopify_alerts(request, code):
+    assert request.method == "POST"
+
+    
+    return redirect("hc-checks")
+
+@login_required
+def create_shopify_alerts(request):
+    assert request.method == "POST"
+
+    form = ShopifyForm(request.POST)
+    if form.is_valid():
+        check = Check(user=request.team.user)
+        check.name = form.cleaned_data["name"]
+        check.save()
+        topic = form.cleaned_data["event"]
+        
+        check_created = Check.objects.filter(name=form.cleaned_data["name"]).first()
+        API_KEY = form.cleaned_data["api_key"]
+        PASSWORD = form.cleaned_data["password"]
+        SHOP_NAME= form.cleaned_data['shop_name']
+        shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
+            API_KEY, PASSWORD, SHOP_NAME)
+        try:   
+            shopify.ShopifyResource.set_site(shop_url)
+            shopify.Shop.current
+            webhook = shopify.Webhook()
+            webhook_list = shopify.Webhook.find(topic=topic)
+            shopify.ShopifyResource.set_site(shop_url)
+            # webhook = shopify.Webhook.find()
+            # print("inside code")
+            # print(webhook)
+            # for hook in webhook:
+            #     print(hook.topic)
+            # print(len(webhook))
+            if len(webhook_list) > 0:
+                return HttpResponseBadRequest()
+            webhook.topic = topic
+            webhook.address = check_created.url()
+            webhook.format = 'json'
+            webhook.save()
+            return redirect("hc-checks")
+        except:
+            return HttpResponseForbidden()
+
+    return redirect("hc-add-shopify")
+    
 
 
 @login_required
@@ -468,6 +523,11 @@ def add_twiliovoice(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_twiliovoice.html", ctx)
 
+
+@login_required
+def add_shopify(request):
+    ctx = {"page": "channels"}
+    return render(request, "integrations/add_shopify.html", ctx)
 
 @login_required
 def add_slack_btn(request):

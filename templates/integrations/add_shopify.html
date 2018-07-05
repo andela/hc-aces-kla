@@ -1,0 +1,84 @@
+ {% extends "base.html" %} 
+ {% load compress humanize staticfiles hc_extras %}
+  {% block title %}Add twiliosms - healthchecks.io{%endblock %} 
+  {% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Shopify</h1>
+
+        <p>
+            Enables create shopify alerts from your shopify application tasks.
+        </p>
+
+        <h2>Integration Settings</h2>
+
+        <span class="help-block"> The url for the alert created for  shopify will be automatically generated. </span>
+
+        <form method="post" class="form-horizontal" action="{% url 'hc-create-shopify-alerts' %}">
+            {% csrf_token %}
+            <div class="form-group ">
+                <label for="id_label" class="col-sm-2 control-label">SHOP NAME</label>
+                <div class="col-sm-6">
+                    <input id="id_shop_name" type="text" class="form-control" name="shop_name" placeholder="Shop Name" value="">
+            
+                    <span class="help-block">
+                        NAME OF SHOP IN SHOPIFY
+                    </span>
+            
+                </div>
+            </div>
+            <div class="form-group ">
+                <label for="id_label" class="col-sm-2 control-label">ALERT NAME</label>
+                <div class="col-sm-6">
+                    <input id="id_name" type="text" class="form-control" name="name" placeholder="Name" value="">
+            
+                    <span class="help-block">
+                        SET THE NAME FOR THE ALERT TO BE CREATED.
+                    </span>
+            
+                </div>
+            </div>
+            <div class="form-group ">
+                <label for="id_label" class="col-sm-2 control-label">API KEY</label>
+                <div class="col-sm-6">
+                    <input id="id_api_key" type="password" class="form-control" name="api_key" placeholder="API KEY" value="">
+
+                    <span class="help-block">
+                        GET THE API KEY CREDENTIALS FROM THE PRIVATE APP CREATED IN THE SHOPIFY ADMIN
+                    </span>
+
+                </div>
+            </div>
+            <div class="form-group ">
+                <label for="id_label" class="col-sm-2 control-label">PASSWORD</label>
+                <div class="col-sm-6">
+                    <input id="id_password" type="password" class="form-control" name="password" placeholder="PASSWORD" value="">
+            
+                    <span class="help-block">
+                        GET THE PASSWORD CREDENTIALS FROM THE PRIVATE APP CREATED IN THE SHOPIFY ADMIN
+                    </span>
+            
+                </div>
+            </div>
+            <div class="form-group ">
+                <label for="id_label" class="col-sm-2 control-label">EVENT</label>
+                <div class="col-sm-6">
+                    <select name="event" style="max-width:90%;">
+                        <option value="products/create">Create Product</option>
+                        <option value="products/delete">Delete Product</option>
+                        <option value="products/update">Update Product</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Save Integration</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %} {% block scripts %} {% compress js %}
+<script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script> {% endcompress %} {% endblock %}
