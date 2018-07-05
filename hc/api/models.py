@@ -56,8 +56,13 @@ class Check(models.Model):
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
     nag_intervals = models.DurationField(default=DEFAULT_NAG_TIME)
     nag_after_time = models.DateTimeField(null=True, blank=True)
-
+    
     twilio_number = models.TextField(default="+256705357610")
+    shopify = models.BooleanField(default=False)
+    shopify_api_key = models.CharField(max_length=500, blank=True)
+    shopify_password = models.CharField(max_length=500, blank=True)
+    shopify_name = models.CharField(max_length=500, blank=True)
+
 
     def name_then_code(self):
         if self.name:
