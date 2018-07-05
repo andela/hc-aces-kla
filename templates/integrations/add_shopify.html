@@ -1,10 +1,19 @@
  {% extends "base.html" %} 
  {% load compress humanize staticfiles hc_extras %}
-  {% block title %}Add twiliosms - healthchecks.io{%endblock %} 
+  {% block title %}Add Shopify Integration - healthchecks.io{%endblock %} 
   {% block content %}
 <div class="row">
     <div class="col-sm-12">
         <h1>Shopify</h1>
+        <div class="row">
+         {% if messages %}
+        <div class="col-sm-12">
+            {% for message in messages %}
+            <p class="alert alert-{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        </div>
 
         <p>
             Enables create shopify alerts from your shopify application tasks.
