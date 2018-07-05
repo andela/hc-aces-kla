@@ -188,6 +188,7 @@ EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
 =======
 EMAIL_BACKEND = "djmail.backends.default.EmailBackend"
+<<<<<<< HEAD
 EMAIL_HOST = 'smtp.gmail.com'
 >>>>>>> [Feature #158174601] Enable site root to be picked from environment
 =======
@@ -214,6 +215,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 >>>>>>> [Feature #158174601] Update requirements.txt
+=======
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+>>>>>>> [Feature #158174601] Add tests, UI and logic for Shopify integration
 
 # Slack integration -- override these in local_settings
 SLACK_CLIENT_ID = None

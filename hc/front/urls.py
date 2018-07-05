@@ -35,6 +35,9 @@ channel_urls = [
 =======
     url(r'^add_twiliovoice/$', views.add_twiliovoice, name="hc-add-twiliovoice"),
     url(r'^add_shopify/$', views.add_shopify, name="hc-add-shopify"),
+<<<<<<< HEAD
+>>>>>>> [Feature #158174601] Add tests, UI and logic for Shopify integration
+=======
 >>>>>>> [Feature #158174601] Add tests, UI and logic for Shopify integration
 ]
 
