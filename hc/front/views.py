@@ -223,13 +223,8 @@ def create_shopify_alerts(request):
     assert request.method == "POST"
 
     form = ShopifyForm(request.POST)
-    if form.is_valid():
-        check = Check(user=request.team.user)
-        check.name = form.cleaned_data["name"]
-        check.save()
-        topic = form.cleaned_data["event"]
-        
-        check_created = Check.objects.filter(name=form.cleaned_data["name"]).first()
+    if form.is_valid():        
+        topic = form.cleaned_data["event"]        
         API_KEY = form.cleaned_data["api_key"]
         PASSWORD = form.cleaned_data["password"]
         SHOP_NAME= form.cleaned_data['shop_name']
