@@ -18,6 +18,7 @@ from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
                     TimeoutForm, NagIntervalForm, ShopifyForm, PriorityForm)
 import shopify
+from django.contrib import messages
 
 from django.contrib import messages
 
