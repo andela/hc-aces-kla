@@ -3,7 +3,6 @@
 
 {% block title %}My Checks - healthchecks.io{% endblock %}
 
-
 {% block content %}
 <div class="row">
     <div class="col-sm-12">
@@ -32,7 +31,15 @@
 </div>
 <div class="row check-list">
     <div class="col-sm-12">
-
+    <div class="row">
+        {% if messages %}
+        <div class="col-sm-12">
+            {% for message in messages %}
+            <p class="alert alert-{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
 
     {% if checks %}
         {% include "front/my_checks_mobile.html" %}

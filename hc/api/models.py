@@ -62,6 +62,11 @@ class Check(models.Model):
     escalate = models.BooleanField(default=False)
     twilio_number = models.TextField(default="+00000000000", null=True,
                                      blank=True)
+    shopify = models.BooleanField(default=False)
+    shopify_api_key = models.CharField(max_length=500, blank=True)
+    shopify_password = models.CharField(max_length=500, blank=True)
+    shopify_name = models.CharField(max_length=500, blank=True)
+
 
     def name_then_code(self):
         if self.name:
