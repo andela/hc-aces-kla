@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 import os
 import dj_database_url
+from decouple import config
 import warnings
 import dj_database_url
 from decouple import config
