@@ -55,6 +55,7 @@ rjsmin==1.0.12
 sendgrid==5.4.1
 singledispatch==3.4.0.3
 PyYAML==3.12
+sendgrid==5.4.1
 shopify-trois==1.0
 ShopifyAPI==3.1.0
 six==1.11.0
