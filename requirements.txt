@@ -24,6 +24,7 @@ python-decouple==3.1
 rcssmin==1.0.6
 requests==2.9.1
 rjsmin==1.0.12
+sendgrid==5.4.1
 six==1.11.0
 whitenoise==3.3.1
 wrapt==1.10.11
