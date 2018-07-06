@@ -220,6 +220,7 @@ COMPRESS_OFFLINE = True
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
 =======
@@ -239,11 +240,16 @@ EMAIL_HOST = os.environ.get('EMAIL_HOST')
 =======
 EMAIL_HOST = 'smtp.gmail.com'
 >>>>>>> [Feature #158174601] Enable site root to be picked from environment
+=======
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+>>>>>>> [Feature #158174601] Update requirements.txt
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -268,6 +274,10 @@ SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 =======
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 >>>>>>> [Feature #158174601] Enable site root to be picked from environment
+=======
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False
+>>>>>>> [Feature #158174601] Update requirements.txt
 
 # Slack integration -- override these in local_settings
 SLACK_CLIENT_ID = None
