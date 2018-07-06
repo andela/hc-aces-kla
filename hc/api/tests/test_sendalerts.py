@@ -46,9 +46,6 @@ class SendAlertsTestCase(BaseTestCase, TransactionTestCase):
         # Assert when Command's handle many that when handle_many should return
         # True
         result = Command().handle_many()
-<<<<<<< HEAD
-        assert result, True
-=======
         assert result, "handle_many should return True"
 
     @skip("Causes Postgres error")
@@ -97,4 +94,3 @@ class SendAlertsTestCase(BaseTestCase, TransactionTestCase):
         self.client.login(username="alice@example.org", password="password")
         response = self.client.get(reverse("hc-reports"))
         self.assertContains(response, "bell.svg")
->>>>>>> [Feature #158174593] Implemented alerts when checks runs too often
