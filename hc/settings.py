@@ -15,6 +15,7 @@ import warnings
 import dj_database_url
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from decouple import config
 =======
 from decople import config
@@ -22,6 +23,9 @@ from decople import config
 =======
 from decouple import config
 >>>>>>> [Feature #158174601] Update settings spelling
+=======
+from decople import config
+>>>>>>> [Feature #158174601] Update settings
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -150,6 +154,7 @@ USE_TZ = True
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
 =======
 SITE_ROOT = os.environ.get['SITE_ROOT']
@@ -193,6 +198,9 @@ SITE_ROOT = os.environ.get('SITE_ROOT')
 =======
 SITE_ROOT = "http://localhost:8000"
 >>>>>>> [Feature #158174601] Remove changes from travis
+=======
+SITE_ROOT = os.environ.get('SITE_ROOT') or "http://localhost:8000"
+>>>>>>> [Feature #158174601] Update settings
 PING_ENDPOINT = SITE_ROOT + "/ping/"
 PING_EMAIL_DOMAIN = HOST
 STATIC_URL = '/static/'
