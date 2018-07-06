@@ -5,7 +5,7 @@ from hc.test import BaseTestCase
 
 class AddCheckTestCase(BaseTestCase):
     """This class contains tests to handle adding checks"""
-    
+
     @skip("Needs fixing")
     def test_it_works(self):
         """Test that a check can be added """
