@@ -130,6 +130,7 @@ USE_TZ = True
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
 =======
 SITE_ROOT = os.environ.get('SITE_ROOT')
@@ -137,6 +138,9 @@ SITE_ROOT = os.environ.get('SITE_ROOT')
 =======
 SITE_ROOT = "http://localhost:8000"
 >>>>>>> [Feature #158174601] Remove changes from travis
+=======
+SITE_ROOT = os.environ.get('SITE_ROOT')
+>>>>>>> [Feature #158174601] Make changes to travis
 PING_ENDPOINT = SITE_ROOT + "/ping/"
 PING_EMAIL_DOMAIN = HOST
 STATIC_URL = '/static/'
