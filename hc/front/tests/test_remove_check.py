@@ -2,6 +2,7 @@ from unittest import skip
 from hc.api.models import Check
 from hc.test import BaseTestCase
 
+
 class RemoveCheckTestCase(BaseTestCase):
 
     def setUp(self):

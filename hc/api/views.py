@@ -39,7 +39,7 @@ def ping(request, code):
     # Update last ping time and check if it is running too often
     # i.e. running before the earliest expected ping time
     check.last_ping = timezone.now()
-    
+
     if previous_ping:
         if check.last_ping < allowed_ping_time:
             check.runs_too_often = True
