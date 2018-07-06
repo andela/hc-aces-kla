@@ -7,8 +7,28 @@ install:
 - pip install braintree coveralls mock mysqlclient
 - createdb hc
 env:
+<<<<<<< HEAD
   matrix:
   - DB=postgres
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+- DB=postgres
+=======
+  - DB=postgres
+<<<<<<< HEAD
+  - SITE_ROOT=http://localhost:8000
+>>>>>>> [Feature #158174601] Update travis file
+=======
+>>>>>>> [Feature #158174601] Remove changes from travis
+=======
+  - DB=postgres SITE_ROOT=http://localhost:8000
+>>>>>>> [Feature #158174601] Make changes to travis
+=======
+  - DB=postgres 
+>>>>>>> [Feature #158174601] Remove changes from travis
+>>>>>>> [Feature #158174601] Remove changes from travis
 addons:
   postgresql: '9.4'
 before_script:
