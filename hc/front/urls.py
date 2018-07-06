@@ -30,8 +30,8 @@ channel_urls = [
     url(r'^([\w-]+)/verify/([\w-]+)/$',
         views.verify_email, name="hc-verify-email"),
     url(r'^add_twiliosms/$', views.add_twiliosms, name="hc-add-twiliosms"),
-    url(r'^add_twiliovoice/$', views.add_twiliovoice,
-        name="hc-add-twiliovoice"),
+    url(r'^add_twiliovoice/$', views.add_twiliovoice, name="hc-add-twiliovoice"),
+    url(r'^add_telegram/$', views.add_telegram, name="hc-add-telegram"),
 ]
 
 urlpatterns = [
