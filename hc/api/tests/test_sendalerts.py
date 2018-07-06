@@ -33,7 +33,7 @@ class SendAlertsTestCase(BaseTestCase):
         # The above assert fails. Make it pass
         # no failure
 
-    @skip("Ignore test for now")
+    @skip("Causes Postgres error")
     def test_it_handles_grace_period(self):
         check = Check(user=self.alice, status="up")
 
@@ -49,7 +49,7 @@ class SendAlertsTestCase(BaseTestCase):
         result = Command().handle_many()
         assert result, "handle_many should return True"
 
-    @skip("Ignore test for now")
+    @skip("Causes Postgres error")
     @patch("hc.api.management.commands.sendalerts.Command.handle_one")
     def test_it_notifies_when_check_run_too_often(self, mock):
         '''

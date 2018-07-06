@@ -31,20 +31,16 @@ def ping(request, code):
         check.status = "up"
 
     previous_ping = check.last_ping
-    print(check.name)
-    print("Previous ping: %s" % previous_ping)
 
     # Set the earliest time allowed that the check should be run
     if check.last_ping:
         allowed_ping_time = previous_ping + (check.timeout - check.grace)
-        print("Earliest time for ping: %s" % allowed_ping_time)
 
     # Update last ping time and check if it is running too often
     # i.e. running before the earliest expected ping time
     check.last_ping = timezone.now()
-    print("New ping: %s" % check.last_ping)
+    
     if previous_ping:
-        print(check.last_ping < allowed_ping_time)
         if check.last_ping < allowed_ping_time:
             check.runs_too_often = True
         else:
@@ -54,8 +50,7 @@ def ping(request, code):
     check.refresh_from_db()
 
     if check.runs_too_often:
-        errors = executor.submit(Command().handle_one, check)
-        print(errors)
+        executor.submit(Command().handle_one, check)
 
     ping = Ping(owner=check)
     headers = request.META
