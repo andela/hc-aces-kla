@@ -16,28 +16,24 @@ def tmpl(template_name, **ctx):
 
 
 class Transport(object):
-    def __init__(self, channel, value):
+    def __init__(self, channel):
         self.channel = channel
-        self.value = value
-        self.client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-
+        self.client = Client(
+            settings.TWILIO_ACCOUNT_SID,
+            settings.TWILIO_AUTH_TOKEN)
 
     def notify(self, check):
         """ Send notification about current status of the check.
-
         This method returns None on success, and error message
         on error.
-
         """
 
         raise NotImplementedError()
 
     def test(self):
         """ Send test message.
-
         This method returns None on success, and error message
         on error.
-
         """
 
         raise NotImplementedError()
@@ -48,12 +44,8 @@ class Transport(object):
 
 class Email(Transport):
     def notify(self, check):
-        if isinstance(self.value, str):
-            if not self.channel.email_verified:
-                return "Email not verified"
-            final_value = self.value
-        else:
-            final_value = self.value['email']
+        if not self.channel.email_verified:
+            return "Email not verified"
 
         show_upgrade_note = False
         if settings.USE_PAYMENTS and check.status == "up":
@@ -66,31 +58,25 @@ class Email(Transport):
             "now": timezone.now(),
             "show_upgrade_note": show_upgrade_note
         }
-        emails.alert(final_value, ctx)
+        emails.alert(self.channel.value, ctx)
 
 
 class TwilioSms(Transport):
     def notify(self, check):
-        if isinstance(self.value, str):
-            final_value = self.value
-        else:
-            final_value = self.value['twiliosms']
         message = self.client.messages.create(
-        body = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(check.name, check.last_ping.strftime('%x, %X'), check.status),
-        to = final_value,
-        from_=settings.TWILIO_NUMBER
+            body="Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(
+                check.name, check.last_ping.strftime('%x, %X'), check.status),
+            to=self.channel.value,
+            from_=settings.TWILIO_NUMBER
         )
+
 
 class TwilioVoice(Transport):
     def notify(self, check):
-        if isinstance(self.value, str):
-            final_value = self.value
-        else:
-            final_value = self.value['twiliosms']
         call = self.client.calls.create(
-        url = "http://demo.twilio.com/docs/voice.xml",
-        to = final_value,
-        from_=settings.TWILIO_NUMBER
+            url="http://demo.twilio.com/docs/voice.xml",
+            to=self.channel.value,
+            from_=settings.TWILIO_NUMBER
         )
 
 

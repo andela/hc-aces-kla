@@ -43,7 +43,7 @@ class UpdatePriorityTestCase(BaseTestCase):
         test it checks for ownership of a check
         """
         url = "/checks/%s/priority/" % self.check.code
-        payload = {"priority": "normal"}
+        payload = {"priority": "low"}
 
         self.client.login(username="charlie@example.org", password="password")
         response = self.client.post(url, data=payload)

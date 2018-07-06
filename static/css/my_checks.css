@@ -75,3 +75,9 @@
  #show-usage-modal .tab-content {
      margin-top: 15px;
  }
+ .row.check-list {
+     height:400px;
+    overflow:auto;
+    width: 1155px;
+    overflow-x: visible;
+}
