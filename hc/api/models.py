@@ -24,7 +24,8 @@ DEFAULT_GRACE = td(hours=1)
 CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("hipchat", "HipChat"),
                  ("slack", "Slack"), ("pd", "PagerDuty"), ("po", "Pushover"),
-                 ("victorops", "VictorOps"), ("twiliosms", "TwilioSms"), ("twiliovoice", "TwilioVoice") )
+                 ("victorops", "VictorOps"), ("twiliosms", "TwilioSms"),
+                 ("twiliovoice", "TwilioVoice"), ("telegram", "Telegram"))
 
 PO_PRIORITIES = {
     -2: "lowest",
@@ -54,6 +55,7 @@ class Check(models.Model):
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
 
     twilio_number = models.TextField(default="+256705357610")
+    chat_id = models.TextField(default="549751449")
 
     def name_then_code(self):
         if self.name:
@@ -173,6 +175,8 @@ class Channel(models.Model):
             return transports.TwilioSms(self)
         if self.kind == "twiliovoice":
             return transports.TwilioVoice(self)
+        if self.kind == "telegram":
+            return transports.Telegram(self)
         if self.kind == "email":
             return transports.Email(self)
         elif self.kind == "webhook":
@@ -198,7 +202,6 @@ class Channel(models.Model):
             error = self.transport.notify(check) or ""
             if error in ("", "no-op"):
                 break  # Success!
-
         if error != "no-op":
             n = Notification(owner=check, channel=self)
             n.check_status = check.status

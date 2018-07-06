@@ -410,6 +410,12 @@ def add_twiliovoice(request):
     return render(request, "integrations/add_twiliovoice.html", ctx)
 
 @login_required
+def add_telegram(request):
+    ctx = {"page": "channels"}
+    return render(request, "integrations/add_telegram.html", ctx)
+
+
+@login_required
 def add_slack_btn(request):
     code = request.GET.get("code", "")
     if len(code) < 8:
