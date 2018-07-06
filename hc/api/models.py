@@ -4,7 +4,8 @@ import hashlib
 import json
 import uuid
 from datetime import timedelta as td
-
+from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import JSONField
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
@@ -40,7 +41,7 @@ class Check(models.Model):
 
     class Meta:
         # sendalerts command will query using these
-        index_together = ["status", "user", "alert_after"]
+        index_together = ["status", "user", "alert_after", "protocol", "n_nags"]
 
     name = models.CharField(max_length=100, blank=True)
     tags = models.CharField(max_length=500, blank=True)
@@ -55,6 +56,10 @@ class Check(models.Model):
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
     nag_intervals = models.DurationField(default=DEFAULT_NAG_TIME)
     nag_after_time = models.DateTimeField(null=True, blank=True)
+    priority = models.IntegerField(default=1)
+    protocol = JSONField(default={})
+    n_nags = models.IntegerField(default=0)
+    escalate = models.BooleanField(default=False)
 
     twilio_number = models.TextField(default="+256705357610")
 
@@ -76,8 +81,27 @@ class Check(models.Model):
     def send_alert(self):
         if self.status not in ("up", "down"):
             raise NotImplementedError("Unexpected status: %s" % self.status)
+        if self.priority==3 and self.n_nags<4:
+            self.escalate = False
+        elif self.priority==3 and self.n_nags>3:
+            self.escalate = True
+        if self.priority==2 and self.n_nags<10:
+            self.escalate = False
+        elif self.priority==3 and self.n_nags>9:
+            self.escalate = False
+        self.n_nags+=1 
+        self.save()
 
         errors = []
+        if self.escalate:
+            # send alert to people on protocol list
+            proto_list = json.loads(self.protocol)
+            for contact in proto_list.itervalues():
+                channel = Channel()
+                error = channel.notify_escalated(self, contact)
+                if error not in ("", "no-op"):
+                    errors.append((channel, error))
+
         for channel in self.channel_set.all():
             error = channel.notify(self)
             if error not in ("", "no-op"):
@@ -178,27 +202,44 @@ class Channel(models.Model):
     @property
     def transport(self):
         if self.kind == "twiliosms":
-            return transports.TwilioSms(self)
+            return transports.TwilioSms(self, self.value)
         if self.kind == "twiliovoice":
-            return transports.TwilioVoice(self)
+            return transports.TwilioVoice(self, self.value)
         if self.kind == "email":
-            return transports.Email(self)
+            return transports.Email(self, self.value)
         elif self.kind == "webhook":
-            return transports.Webhook(self)
+            return transports.Webhook(self, self.value)
         elif self.kind == "slack":
-            return transports.Slack(self)
+            return transports.Slack(self, self.value)
         elif self.kind == "hipchat":
-            return transports.HipChat(self)
+            return transports.HipChat(self, self.value)
         elif self.kind == "pd":
-            return transports.PagerDuty(self)
+            return transports.PagerDuty(self, self.value)
         elif self.kind == "victorops":
-            return transports.VictorOps(self)
+            return transports.VictorOps(self, self.value)
         elif self.kind == "pushbullet":
-            return transports.Pushbullet(self)
+            return transports.Pushbullet(self, self.value)
         elif self.kind == "po":
-            return transports.Pushover(self)
+            return transports.Pushover(self, self.value)
         else:
             raise NotImplementedError("Unknown channel kind: %s" % self.kind)
+
+    @property
+    def transport_escalate(self, protocol):
+        if protocol['email']:
+            return transports.Email(self, protocol['email'])
+        if protocol['twiliosms']:
+            return transports.Email(self, protocol['twiliosms'])
+        if protocol['twiliovoice']:
+            return transports.Email(self, protocol['twiliovoice'])
+        elif self.kind == "webhook":
+            return transports.Webhook(self, self.value)
+        elif self.kind == "pushbullet":
+            return transports.Pushbullet(self, self.value)
+        elif self.kind == "slack":
+            return transports.Slack(self, self.value)
+        else:
+            raise NotImplementedError("Unknown channel kind")
 
     def notify(self, check):
         # Make 3 attempts--
@@ -209,6 +250,22 @@ class Channel(models.Model):
 
         if error != "no-op":
             n = Notification(owner=check, channel=self)
+            n.check_status = check.status
+            n.error = error
+            n.save()
+
+        return error
+
+    @staticmethod
+    def notify_escalated(self, protocol):
+        # Make 3 attempts--
+        for x in range(0, 3):
+            error = self.transport_escalate.notify(protocol) or ""
+            if error in ("", "no-op"):
+                break  # Success!
+
+        if error != "no-op":
+            n = Notification(owner=protocol, channel=self)
             n.check_status = check.status
             n.error = error
             n.save()

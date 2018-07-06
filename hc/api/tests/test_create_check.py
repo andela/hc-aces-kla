@@ -47,6 +47,7 @@ class CreateCheckTestCase(BaseTestCase):
         self.assertEqual(check.grace.total_seconds(), 60)
         self.assertEqual(check.last_ping, None)
         self.assertEqual(check.n_pings, 0)
+        self.assertEqual(check.n_nags, 0)
 
     def test_it_accepts_api_key_in_header(self):
         payload = json.dumps({"name": "Foo", "api_key": "abc"})

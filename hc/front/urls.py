@@ -4,6 +4,7 @@ from hc.front import views
 
 check_urls = [
     url(r'^name/$', views.update_name, name="hc-update-name"),
+    url(r'^priority/$', views.update_priority, name="hc-update-priority"),
     url(r'^timeout/$', views.update_timeout, name="hc-update-timeout"),
     url(r'^nag_interval/$', views.update_nag_interval,
         name="hc-update-nag-interval"),
