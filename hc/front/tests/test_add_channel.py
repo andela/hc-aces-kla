@@ -43,6 +43,7 @@ class AddChannelTestCase(BaseTestCase):
             "twiliosms",
             "twiliovoice",
             "telegram")
+
         for frag in kinds:
             url = "/integrations/add_%s/" % frag
             response = self.client.get(url)
@@ -93,14 +94,8 @@ class AddChannelTestCase(BaseTestCase):
         alice_channel = User.objects.get(email="alice@example.org")
         alice_before = Channel.objects.filter(user=alice_channel).count()
         self.client.login(username="bob@example.org", password="password")
-<<<<<<< HEAD
         form = {"kind": "twiliosms", "value": "+256703357610"}
         self.client.post(reverse("hc-add-channel"), form)
-=======
-        url = "/integrations/add/"
-        form = {"kind": "twiliosms", "value": "+256703357610"}
-        self.client.post(url, form)
->>>>>>> Fix the UI to allow integrations
         alice_after = Channel.objects.filter(user=alice_channel).count()
         self.assertEqual(alice_after, (alice_before + 1))
 
@@ -109,14 +104,8 @@ class AddChannelTestCase(BaseTestCase):
         alice_channel = User.objects.get(email="alice@example.org")
         alice_before = Channel.objects.filter(user=alice_channel).count()
         self.client.login(username="bob@example.org", password="password")
-<<<<<<< HEAD
         form = {"kind": "twiliovoice", "value": "+256703357610"}
         self.client.post(reverse("hc-add-channel"), form)
-=======
-        url = "/integrations/add/"
-        form = {"kind": "twiliovoice", "value": "+256703357610"}
-        self.client.post(url, form)
->>>>>>> Fix the UI to allow integrations
         alice_after = Channel.objects.filter(user=alice_channel).count()
         self.assertEqual(alice_after, (alice_before + 1))
 

@@ -43,8 +43,6 @@ pyflakes==1.6.0
 PyJWT==1.6.4
 pylint==1.9.2
 pyOpenSSL==18.0.0
-PySocks==1.6.8
-python-decouple==3.1
 python-http-client==3.1.0
 python-telegram-bot==10.1.0
 pytz==2018.5
@@ -53,6 +51,13 @@ requests==2.9.1
 rjsmin==1.0.12
 sendgrid==5.4.1
 singledispatch==3.4.0.3
+python-http-client==3.1.0
+python-telegram-bot==10.1.0
+pytz==2018.4
+rcssmin==1.0.6
+requests==2.9.1
+rjsmin==1.0.12
+sendgrid==5.4.1
 six==1.11.0
 twilio==6.14.7
 whitenoise==3.3.1
