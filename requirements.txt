@@ -18,10 +18,14 @@ django-sendgrid-v5==0.6.893
 django-ses-backend==0.1.1
 djmail==0.11.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 flake8==3.5.0
 future==0.16.0
 =======
 >>>>>>> [Feature #158174601] Update requirements.txt with new packages
+=======
+future==0.16.0
+>>>>>>> [Feature #158174601] Update requirements.txt sendgrid
 futures==3.0.3
 gunicorn==19.8.1
 isort==4.3.4
@@ -46,6 +50,7 @@ pylint==1.9.2
 PySocks==1.6.8
 python-decouple==3.1
 <<<<<<< HEAD
+<<<<<<< HEAD
 python-http-client==3.1.0
 python-telegram-bot==10.1.0
 pytz==2018.4
@@ -54,6 +59,9 @@ requests==2.9.1
 rjsmin==1.0.12
 sendgrid==5.4.1
 =======
+=======
+python-http-client==3.1.0
+>>>>>>> [Feature #158174601] Update requirements.txt sendgrid
 pytz==2018.5
 PyYAML==3.12
 rcssmin==1.0.6
