@@ -8,7 +8,10 @@ install:
 - createdb hc
 env:
 - DB=postgres
+<<<<<<< HEAD
 - SITE_ROOT="http://localhost:8000"
+=======
+>>>>>>> Fix travis
 addons:
   postgresql: '9.4'
 before_script:
