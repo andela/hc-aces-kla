@@ -16,7 +16,7 @@ def tmpl(template_name, **ctx):
 
 
 class Transport(object):
-    def __init__(self, channel, value):
+    def __init__(self, channel):
         self.channel = channel
         self.client = Client(
             settings.TWILIO_ACCOUNT_SID,
@@ -24,20 +24,16 @@ class Transport(object):
 
     def notify(self, check):
         """ Send notification about current status of the check.
-
         This method returns None on success, and error message
         on error.
-
         """
 
         raise NotImplementedError()
 
     def test(self):
         """ Send test message.
-
         This method returns None on success, and error message
         on error.
-
         """
 
         raise NotImplementedError()
@@ -48,12 +44,8 @@ class Transport(object):
 
 class Email(Transport):
     def notify(self, check):
-        if isinstance(self.value, str):
-            if not self.channel.email_verified:
-                return "Email not verified"
-            final_value = self.value
-        else:
-            final_value = self.value['email']
+        if not self.channel.email_verified:
+            return "Email not verified"
 
         show_upgrade_note = False
         if settings.USE_PAYMENTS and check.status == "up":
@@ -66,7 +58,7 @@ class Email(Transport):
             "now": timezone.now(),
             "show_upgrade_note": show_upgrade_note
         }
-        emails.alert(final_value, ctx)
+        emails.alert(self.channel.value, ctx)
 
 
 class TwilioSms(Transport):

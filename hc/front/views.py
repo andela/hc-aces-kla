@@ -47,7 +47,7 @@ def my_checks(request):
             elif check.in_grace_period():
                 grace_tags.add(tag)
 
-    state = {1:"normal", 2:"medium", 3:"high"}
+    state = {1:"low", 2:"medium", 3:"high"}
 
     ctx = {
         "page": "checks",
@@ -146,7 +146,7 @@ def update_priority(request, code):
 
     form = PriorityForm(request.POST)
     if form.is_valid():
-        assign_priority={"normal":1, "medium":2, "high":3}
+        assign_priority={"low":1, "medium":2, "high":3}
         check.priority = assign_priority[form.cleaned_data["priority"]]
         check.save()
 
