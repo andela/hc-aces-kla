@@ -18,9 +18,12 @@ django-compressor==2.1
 django-sendgrid-v5==0.6.893
 django-ses-backend==0.1.1
 djmail==0.11.0
+<<<<<<< HEAD
 enum34==1.1.6
 flake8==3.5.0
 funcsigs==1.0.2
+=======
+>>>>>>> [Feature #158174601] Update requirements.txt sendgrid
 future==0.16.0
 futures==3.0.3
 gunicorn==19.8.1
