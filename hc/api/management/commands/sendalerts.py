@@ -38,6 +38,7 @@ class Command(BaseCommand):
             check.save()
 
         if len(repeat_list_approved) == 1:
+
             checks = (
                 list(
                     going_down.iterator()) +
