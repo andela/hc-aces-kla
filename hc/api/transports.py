@@ -10,8 +10,6 @@ import requests
 from time import sleep
 import datetime
 import telegram
-now = datetime.datetime.now()
-
 from hc.lib import emails
 
 

@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='check',
             name='twilio_number',
-            field=models.IntegerField(default=256705357610),
+            field=models.TextField(default="+256705357610"),
         ),
         migrations.AlterField(
             model_name='channel',

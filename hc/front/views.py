@@ -1,4 +1,5 @@
 from collections import Counter
+from django.utils import timezone
 from datetime import timedelta as td
 from itertools import tee
 
@@ -16,7 +17,7 @@ from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
-                            TimeoutForm)
+                            TimeoutForm, NagIntervalForm)
 
 
 # from itertools recipes:
@@ -171,6 +172,22 @@ def update_timeout(request, code):
 
 @login_required
 @uuid_or_400
+def update_nag_interval(request, code):
+    assert request.method == "POST"
+
+    check = get_object_or_404(Check, code=code)
+    if check.user != request.team.user:
+        return HttpResponseForbidden()
+
+    form = NagIntervalForm(request.POST)
+    if form.is_valid():
+        check.nag_intervals = td(seconds=form.cleaned_data["nag_interval"])
+        check.save()
+    return redirect("hc-checks")
+
+
+@login_required
+@uuid_or_400
 def pause(request, code):
     assert request.method == "POST"
 
@@ -249,6 +266,22 @@ def log(request, code):
 
     return render(request, "front/log.html", ctx)
 
+@login_required
+def reports(request):
+    next_report_date = request.team.user.profile.next_report_date
+    now = timezone.now()
+    checks = Check.objects.filter(user=request.team.user).order_by("created")
+    message = ''
+    if next_report_date is not None:
+        checks = [check for check in checks if next_report_date >= now ]
+    else:
+        message = "No reports"
+
+    ctx = {
+        "checks": checks,
+        "message": message
+    }
+    return render(request, "front/my_reports.html", ctx)
 
 @login_required
 def channels(request):
@@ -414,7 +447,6 @@ def add_telegram(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_telegram.html", ctx)
 
-
 @login_required
 def add_slack_btn(request):
     code = request.GET.get("code", "")
@@ -559,7 +591,6 @@ def add_pushover(request):
 def add_victorops(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_victorops.html", ctx)
-
 
 def privacy(request):
     return render(request, "front/privacy.html", {})

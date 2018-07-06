@@ -21,6 +21,5 @@ class AddCheckTestCase(BaseTestCase):
         self.client.logout()
 
         self.client.login(username="bob@example.org", password="password")
-
         response = self.client.get("/checks/")
         self.assertContains(response, "alice check", status_code=200)

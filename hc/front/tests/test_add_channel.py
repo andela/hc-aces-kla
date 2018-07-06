@@ -1,7 +1,9 @@
 from django.test.utils import override_settings
-
 from django.contrib.auth.models import User
 from hc.api.models import Channel, Check
+from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+from hc.api.models import Channel
 from hc.test import BaseTestCase
 import os
 
@@ -93,9 +95,8 @@ class AddChannelTestCase(BaseTestCase):
         alice_channel = User.objects.get(email="alice@example.org")
         alice_before = Channel.objects.filter(user=alice_channel).count()
         self.client.login(username="bob@example.org", password="password")
-        url = "/integrations/add/"
         form = {"kind": "twiliosms", "value": "+256703357610"}
-        self.client.post(url, form)
+        self.client.post(reverse("hc-add-channel"), form)
         alice_after = Channel.objects.filter(user=alice_channel).count()
         self.assertEqual(alice_after, (alice_before + 1))
 
@@ -105,14 +106,9 @@ class AddChannelTestCase(BaseTestCase):
         alice_before = Channel.objects.filter(user=alice_channel).count()
         self.client.login(username="bob@example.org", password="password")
         url = "/integrations/add/"
-        form = {"kind": "twiliovoice", "value": "+256703357610"}
-        self.client.post(url, form)
+       form = {"kind": "twiliovoice", "value": "+256703357610"}
+        self.client.post(reverse("hc-add-channel"), form)
         alice_after = Channel.objects.filter(user=alice_channel).count()
-<<<<<<< Updated upstream
-        self.assertEqual(alice_after, (alice_before + 1))  
-
-
-=======
         self.assertEqual(alice_after, (alice_before + 1))
 
     def test_telegram_works(self):
@@ -130,4 +126,3 @@ class AddChannelTestCase(BaseTestCase):
          self.client.login(username="alice@example.org", password="password")
          response = self.client.get("/integrations/add_telegram/")
          self.assertContains(response, "@aces_kla_bot", status_code=200)
->>>>>>> Stashed changes

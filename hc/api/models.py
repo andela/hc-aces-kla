@@ -21,6 +21,7 @@ STATUSES = (
 )
 DEFAULT_TIMEOUT = td(days=1)
 DEFAULT_GRACE = td(hours=1)
+DEFAULT_NAG_TIME = td(days=1)
 CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("hipchat", "HipChat"),
                  ("slack", "Slack"), ("pd", "PagerDuty"), ("po", "Pushover"),
@@ -53,6 +54,10 @@ class Check(models.Model):
     last_ping = models.DateTimeField(null=True, blank=True)
     alert_after = models.DateTimeField(null=True, blank=True, editable=False)
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
+    nag_intervals = models.DurationField(default=DEFAULT_NAG_TIME)
+    nag_after_time = models.DateTimeField(null=True, blank=True)
+
+    twilio_number = models.TextField(default="+256705357610")
 
     twilio_number = models.TextField(default="+256705357610")
     chat_id = models.TextField(default="549751449")
@@ -143,6 +148,11 @@ class Ping(models.Model):
     remote_addr = models.GenericIPAddressField(blank=True, null=True)
     method = models.CharField(max_length=10, blank=True)
     ua = models.CharField(max_length=200, blank=True)
+
+class Report(models.Model):
+    checks = models.ManyToManyField(Check)
+    sent_date = models.DateTimeField()
+    user = models.ForeignKey(User)
 
 
 class Channel(models.Model):

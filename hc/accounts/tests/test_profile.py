@@ -148,3 +148,39 @@ class ProfileTestCase(BaseTestCase):
         response = self.client.post("/accounts/profile/", form)
         self.assertIn(b"Your settings have been updated!",response.content)
 
+    # Test configuring reports for daily, weekly and monthly durations
+    def test_configure_daily_reports(self):
+        url = "/accounts/profile/"
+        form = {"update_reports_allowed": True, "report_frequency": "day", "reports_allowed":True}
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(url, form)
+        assert response.status_code == 200
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.report_frequency, "day")
+
+    def test_configure_weekly_reports(self):
+        url = "/accounts/profile/"
+        form = {"update_reports_allowed": True, "report_frequency": "week", "reports_allowed":True}
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(url, form)
+        assert response.status_code == 200
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.report_frequency, "week")
+
+    def test_configure_monthly_reports(self):
+        url = "/accounts/profile/"
+        form = {"update_reports_allowed": True, "report_frequency": "month", "reports_allowed":True}
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(url, form)
+        assert response.status_code == 200
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.report_frequency, "month")
+        
+    def test_it_loads_reports(self):
+        """tests that reports can be updated""" 
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.get(reverse("hc-reports"))
+        self.assertIn(b"Today's Report",response.content)
