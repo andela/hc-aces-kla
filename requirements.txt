@@ -54,6 +54,7 @@ requests==2.9.1
 rjsmin==1.0.12
 sendgrid==5.4.1
 singledispatch==3.4.0.3
+pytz==2018.5
 PyYAML==3.12
 sendgrid==5.4.1
 shopify-trois==1.0
