@@ -11,6 +11,7 @@ env:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 - DB=postgres
 =======
   - DB=postgres
@@ -35,6 +36,9 @@ env:
 =======
   - DB=postgres SITE_ROOT=http://localhost:8000
 >>>>>>> [Feature #158174601] Make changes to travis
+=======
+  - DB=postgres 
+>>>>>>> [Feature #158174601] Remove changes from travis
 addons:
   postgresql: '9.4'
 before_script:
