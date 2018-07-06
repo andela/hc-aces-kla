@@ -445,6 +445,7 @@ def add_twiliovoice(request):
     return render(request, "integrations/add_twiliovoice.html", ctx)
 
 @login_required
+<<<<<<< HEAD
 def add_twiliosms(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_twiliosms.html", ctx)
@@ -454,6 +455,11 @@ def add_twiliosms(request):
 def add_twiliovoice(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_twiliovoice.html", ctx)
+=======
+def add_telegram(request):
+    ctx = {"page": "channels"}
+    return render(request, "integrations/add_telegram.html", ctx)
+>>>>>>> Ft Telegram integrations
 
 
 @login_required

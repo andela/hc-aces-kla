@@ -10,6 +10,11 @@ import json
 import requests
 from six.moves.urllib.parse import quote
 from twilio.rest import Client
+import requests
+from time import sleep
+import datetime
+import telegram
+now = datetime.datetime.now()
 
 from hc.lib import emails
 
@@ -55,7 +60,7 @@ class Transport(object):
 
         raise NotImplementedError()
 
-    def checks(self):
+    def checks(self, api=None):
         return self.channel.user.check_set.order_by("created")
 
 
@@ -271,3 +276,15 @@ class VictorOps(HttpTransport):
         }
 
         return self.post(self.channel.value, payload)
+
+def custom_message(check):
+    message = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(
+                check.name, check.last_ping.strftime('%x, %X'), check.status)
+    return message
+
+class Telegram(Transport):
+    def notify(self, check):
+        api = telegram.Bot(token=settings.TELEGRAM_TOKEN)
+        api.send_message(
+            chat_id=self.channel.value, text=custom_message(check))
+        return "no-op"

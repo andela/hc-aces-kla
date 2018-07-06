@@ -170,6 +170,8 @@ TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 TWILIO_NUMBER = os.environ.get("TWILIO_NUMBER")
 
+#Telegram integration
+TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
 
 # Pushbullet integration -- override these in local_settings
 PUSHBULLET_CLIENT_ID = None
