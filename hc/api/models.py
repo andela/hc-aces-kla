@@ -95,7 +95,7 @@ class Check(models.Model):
         errors = []
         if self.escalate:
             # send alert to people on protocol list
-            proto_list = json.loads(self.protocol)
+            proto_list = self.protocol
             for contact in proto_list.itervalues():
                 channel = Channel()
                 error = channel.notify_escalated(self, contact)
