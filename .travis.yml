@@ -7,7 +7,12 @@ install:
 - pip install braintree coveralls mock mysqlclient
 - createdb hc
 env:
+<<<<<<< HEAD
 - DB=postgres
+=======
+  - DB=postgres
+  - SITE_ROOT=http://localhost:8000
+>>>>>>> [Feature #158174601] Update travis file
 addons:
   postgresql: '9.4'
 before_script:
