@@ -7,7 +7,7 @@ install:
 - pip install braintree coveralls mock mysqlclient
 - createdb hc
 env:
-- SITE_ROOT="http://localhost:8000"
+- DB=postgres
 addons:
   postgresql: '9.4'
 before_script:
