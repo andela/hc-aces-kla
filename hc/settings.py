@@ -9,10 +9,8 @@ https://docs.djangoproject.com/en/1.8/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
-# flake8: noqa
 import os
 import dj_database_url
-from decouple import config
 import warnings
 import dj_database_url
 from decouple import config
