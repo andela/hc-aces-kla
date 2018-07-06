@@ -88,11 +88,15 @@ rcssmin==1.0.6
 requests==2.9.1
 rjsmin==1.0.12
 <<<<<<< HEAD
+<<<<<<< HEAD
 sendgrid==5.4.1
 shopify-trois==1.0
 ShopifyAPI==3.1.0
 >>>>>>> [Feature #158174601] Update requirements.txt with new packages
 =======
+=======
+sendgrid==5.4.1
+>>>>>>> [Feature #158174601] Add sendgrid
 shopify-trois==1.0
 ShopifyAPI==3.1.0
 >>>>>>> [Feature #158174601] Update requirements.txt with new packages
