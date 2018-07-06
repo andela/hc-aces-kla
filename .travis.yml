@@ -9,6 +9,7 @@ install:
 env:
   matrix:
   - DB=postgres
+  - SITE_ROOT=http://localhost:8000
 addons:
   postgresql: '9.4'
 before_script:
