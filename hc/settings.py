@@ -16,10 +16,14 @@ from decouple import config
 import warnings
 import dj_database_url
 <<<<<<< HEAD
+<<<<<<< HEAD
 from decouple import config
 =======
 from decople import config
 >>>>>>> [Feature #158174601] Update settings
+=======
+from decouple import config
+>>>>>>> [Feature #158174601] Update settings spelling
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
