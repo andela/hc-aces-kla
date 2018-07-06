@@ -16,8 +16,9 @@ def tmpl(template_name, **ctx):
 
 
 class Transport(object):
-    def __init__(self, channel):
+    def __init__(self, channel, value):
         self.channel = channel
+        self.value = value
         self.client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 
 
@@ -47,8 +48,12 @@ class Transport(object):
 
 class Email(Transport):
     def notify(self, check):
-        if not self.channel.email_verified:
-            return "Email not verified"
+        if isinstance(self.value, str):
+            if not self.channel.email_verified:
+                return "Email not verified"
+            final_value = self.value
+        else:
+            final_value = self.value['email']
 
         show_upgrade_note = False
         if settings.USE_PAYMENTS and check.status == "up":
@@ -61,22 +66,30 @@ class Email(Transport):
             "now": timezone.now(),
             "show_upgrade_note": show_upgrade_note
         }
-        emails.alert(self.channel.value, ctx)
+        emails.alert(final_value, ctx)
 
 
 class TwilioSms(Transport):
     def notify(self, check):
+        if isinstance(self.value, str):
+            final_value = self.value
+        else:
+            final_value = self.value['twiliosms']
         message = self.client.messages.create(
         body = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(check.name, check.last_ping.strftime('%x, %X'), check.status),
-        to = self.channel.value,
+        to = final_value,
         from_=settings.TWILIO_NUMBER
         )
 
 class TwilioVoice(Transport):
     def notify(self, check):
+        if isinstance(self.value, str):
+            final_value = self.value
+        else:
+            final_value = self.value['twiliosms']
         call = self.client.calls.create(
         url = "http://demo.twilio.com/docs/voice.xml",
-        to = self.channel.value,
+        to = final_value,
         from_=settings.TWILIO_NUMBER
         )
 
