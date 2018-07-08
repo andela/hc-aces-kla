@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # flake8: noqa
 import os
 import warnings
+import dj_database_url
+from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -101,6 +103,11 @@ if os.environ.get("DB") == "postgres":
         }
     }
 
+if os.environ.get("DB") == "heroku":
+    DATABASES = {
+        'default': dj_database_url.config(default=config('DATABASE_URL'))
+    }
+
 if os.environ.get("DB") == "mysql":
     DATABASES = {
         'default': {
@@ -121,7 +128,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-SITE_ROOT = "http://localhost:8000"
+SITE_ROOT = os.environ.get('SITE_ROOT')
 PING_ENDPOINT = SITE_ROOT + "/ping/"
 PING_EMAIL_DOMAIN = HOST
 STATIC_URL = '/static/'
@@ -154,7 +161,7 @@ PUSHOVER_SUBSCRIPTION_URL = None
 PUSHOVER_EMERGENCY_RETRY_DELAY = 300
 PUSHOVER_EMERGENCY_EXPIRATION = 86400
 
-#Twilio integration
+# Twilio integration
 TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 TWILIO_NUMBER = os.environ.get("TWILIO_NUMBER")

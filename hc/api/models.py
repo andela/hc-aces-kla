@@ -149,6 +149,7 @@ class Ping(models.Model):
     method = models.CharField(max_length=10, blank=True)
     ua = models.CharField(max_length=200, blank=True)
 
+
 class Report(models.Model):
     checks = models.ManyToManyField(Check)
     sent_date = models.DateTimeField()
@@ -160,7 +161,7 @@ class Channel(models.Model):
     user = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     kind = models.CharField(max_length=20, choices=CHANNEL_KINDS)
-    value = models.TextField(max_length=25,default="+256705357610")
+    value = models.TextField(max_length=25, default="+256705357610")
     email_verified = models.BooleanField(default=False)
     checks = models.ManyToManyField(Check)
 

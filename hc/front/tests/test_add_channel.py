@@ -52,8 +52,8 @@ class AddChannelTestCase(BaseTestCase):
             self.assertContains(
                 response,
                 "Integration Settings",
-                status_code=200)   
-            
+                status_code=200)
+
     def test_team_access_works(self):
         self.client.login(username="alice@example.org", password="password")
         channel = Channel(
@@ -89,7 +89,7 @@ class AddChannelTestCase(BaseTestCase):
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
         assert response.status_code == 400
-        
+
     def test_twiliosms_works(self):
         """ test sms integration works"""
         alice_channel = User.objects.get(email="alice@example.org")
@@ -121,8 +121,8 @@ class AddChannelTestCase(BaseTestCase):
         alice_after = Channel.objects.filter(user=alice_channel).count()
         self.assertEqual(alice_after, (alice_before + 1))
 
-
     def test_it_shows_instructions(self):
          self.client.login(username="alice@example.org", password="password")
          response = self.client.get("/integrations/add_telegram/")
          self.assertContains(response, "@aces_kla_bot", status_code=200)
+
