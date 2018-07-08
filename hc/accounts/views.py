@@ -64,7 +64,7 @@ def login(request):
                 if user is not None and user.is_active:
                     auth_login(request, user)
                     return redirect("hc-checks")
-                    
+
                 bad_credentials = True
             else:
                 try:

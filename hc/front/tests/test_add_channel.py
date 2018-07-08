@@ -33,15 +33,23 @@ class AddChannelTestCase(BaseTestCase):
 
     def test_instructions_work(self):
         self.client.login(username="alice@example.org", password="password")
-        kinds = ("email", "webhook", "pd", "pushover", "hipchat", "victorops", "twiliosms", "twiliovoice")
+        kinds = (
+            "email",
+            "webhook",
+            "pd",
+            "pushover",
+            "hipchat",
+            "victorops",
+            "twiliosms",
+            "twiliovoice")
         for frag in kinds:
             url = "/integrations/add_%s/" % frag
             response = self.client.get(url)
             self.assertContains(
                 response,
                 "Integration Settings",
-                status_code=200)   
-            
+                status_code=200)
+
     def test_team_access_works(self):
         self.client.login(username="alice@example.org", password="password")
         channel = Channel(
@@ -77,7 +85,7 @@ class AddChannelTestCase(BaseTestCase):
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
         assert response.status_code == 400
-        
+
     def test_twiliosms_works(self):
         """ test sms integration works"""
         alice_channel = User.objects.get(email="alice@example.org")
@@ -96,6 +104,4 @@ class AddChannelTestCase(BaseTestCase):
         form = {"kind": "twiliovoice", "value": "+256703357610"}
         self.client.post(reverse("hc-add-channel"), form)
         alice_after = Channel.objects.filter(user=alice_channel).count()
-        self.assertEqual(alice_after, (alice_before + 1))  
-
-
+        self.assertEqual(alice_after, (alice_before + 1))
