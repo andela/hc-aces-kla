@@ -33,7 +33,8 @@ class Command(BaseCommand):
             if (now - check.nag_after_time) > (check.nag_intervals):
                 check.nag_after_time = now + check.nag_intervals
             else:
-                check.nag_after_time = check.nag_after_time + check.nag_intervals
+                check.nag_after_time = check.nag_after_time + \
+                    check.nag_intervals
             check.save()
 
         if len(repeat_list_approved) == 1:
@@ -44,8 +45,10 @@ class Command(BaseCommand):
                     going_up.iterator()) +
                 list(repeat_list_approved))
         else:
-            checks = (list(going_down.iterator()) +
-                      list(going_up.iterator()) + list(repeat_list_approved.iterator()))
+            checks = (
+                list(going_down.iterator()) +
+                list(going_up.iterator()) +
+                list(repeat_list_approved.iterator()))
 
         if not checks:
             return False
