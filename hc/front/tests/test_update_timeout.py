@@ -2,6 +2,7 @@ from hc.api.models import Check
 from hc.test import BaseTestCase
 
 
+
 class UpdateTimeoutTestCase(BaseTestCase):
 
     def setUp(self):
