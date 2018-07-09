@@ -18,6 +18,7 @@ class Command(BaseCommand):
         """ Send alerts for many checks simultaneously. """
 
         query = Check.objects.filter(user__isnull=False).select_related("user")
+
         running_checks = get_running_checks(query)
 
         now = timezone.now()
