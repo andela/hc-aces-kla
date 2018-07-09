@@ -18,13 +18,16 @@ class Command(BaseCommand):
         """ Send alerts for many checks simultaneously. """
 
         query = Check.objects.filter(user__isnull=False).select_related("user")
+        running_checks = get_running_checks(query)
 
         now = timezone.now()
-        going_down = query.filter(alert_after__lt=now, status="up")
-        going_up = query.filter(alert_after__gt=now, status="down")
         repeat_list_approved = query.filter(
-            alert_after__lt=now, status="down", nag_after_time__lt=now)
-        repeat_list = query.filter(alert_after__lt=now, status="down")
+            alert_after__lt=now,
+            status="down",
+            nag_after_time__lt=now)
+        repeat_list = query.filter(
+            alert_after__lt=now,
+            status="down")
 
         for check in repeat_list:
             if check.nag_after_time is None:
@@ -35,22 +38,18 @@ class Command(BaseCommand):
             if (now - check.nag_after_time) > (check.nag_intervals):
                 check.nag_after_time = now + check.nag_intervals
             else:
-                check.nag_after_time = check.nag_after_time+check.nag_intervals
-            check.save()
+                check.nag_after_time = check.nag_after_time + check.nag_intervals
+                check.save()
 
-        if len(repeat_list_approved) == 1:
+        if repeat_list_approved:
             checks = (
                 list(
-                    going_down.iterator()) +
-                list(
-                    going_up.iterator()) +
+                    running_checks.iterator()) +
                 list(repeat_list_approved))
         else:
             checks = (
                 list(
-                    going_down.iterator()) +
-                list(
-                    going_up.iterator()) +
+                    running_checks.iterator()) +
                 list(
                     repeat_list_approved.iterator()))
 
