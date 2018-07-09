@@ -1,5 +1,4 @@
 from datetime import timedelta as td
-from concurrent.futures import ThreadPoolExecutor
 
 from django.db.models import F
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
@@ -19,7 +18,6 @@ from hc.lib.badges import check_signature, get_badge_svg
 @never_cache
 def ping(request, code):
 
-    executor = ThreadPoolExecutor(max_workers=10)
     try:
         check = Check.objects.get(code=code)
     except Check.DoesNotExist:
@@ -50,7 +48,7 @@ def ping(request, code):
     check.refresh_from_db()
 
     if check.runs_too_often:
-        executor.submit(Command().handle_one, check)
+        Command().handle_one, check
 
     ping = Ping(owner=check)
     headers = request.META

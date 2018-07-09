@@ -1,11 +1,9 @@
 from datetime import timedelta
-
 from django.utils import timezone
 from hc.api.management.commands.sendalerts import Command
 from hc.api.models import Check
 from hc.test import BaseTestCase
 from mock import patch
-
 
 
 class SendAlertsUntilResolvedTestCase(BaseTestCase):
@@ -24,5 +22,4 @@ class SendAlertsUntilResolvedTestCase(BaseTestCase):
             check.save()
 
         result = Command().handle_many()
-        self.assertEqual(result, True)
-    
+        self.assertEqual(result, True)  
