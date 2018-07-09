@@ -214,7 +214,9 @@ def create_shopify_alerts(request):
             webhook_list = shopify.Webhook.find(topic=topic)
             shopify.ShopifyResource.set_site(shop_url)
             if len(webhook_list) > 0:
-                return HttpResponseBadRequest()
+                messages.info(
+                    request, "Trying to add alert for event already created.")
+                return render(request, "integrations/add_shopify.html", status=400)
             webhook.topic = topic
             check = Check(user=request.team.user)
             check.name = form.cleaned_data["name"]
@@ -227,8 +229,8 @@ def create_shopify_alerts(request):
                 name=form.cleaned_data["name"]).first()
             webhook.address = check_created.url()
             webhook.format = 'json'
-            webhook.save()
-            return redirect("hc-checks")
+            message = webhook.save()
+            print(message)
         except:
             messages.info(request, "Unauthorized Access. Cannot access shop in Shopify")
             return render(request, "integrations/add_shopify.html",status=403)
@@ -268,13 +270,13 @@ def remove_check(request, code):
             PASSWORD = check.shopify_password
             SHOP_NAME = check.shopify_name
             shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
-                API_KEY, PASSWORD, SHOP_NAME)
+                API_KEY, PASSWORD, SHOP_NAME)   
             shopify.ShopifyResource.set_site(shop_url)
             shopify.Shop.current
-            webhook = shopify.Webhook()
-            shopify.ShopifyResource.set_site(shop_url)
-            webhook = shopify.Webhook.find(address=check.url())
-            webhook.destroy()
+            webhook = shopify.Webhook.find()
+            for hook in webhook:
+                if hook.address == check.url():
+                    hook.destroy()
         except:
             messages.info(
                 request, "Unauthorized Access. Cannot access shop in Shopify to delete Webhook")
