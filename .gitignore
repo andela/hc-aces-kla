@@ -10,3 +10,6 @@ static/.DS_Store
 .vscode/
 pytest.ini
 .pytest_cache/
+.env
+celerybeat-schedule.db
+dump.rdb

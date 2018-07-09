@@ -1,5 +1,4 @@
 from datetime import timedelta as td
-from concurrent.futures import ThreadPoolExecutor
 
 from django.db.models import F
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
@@ -18,11 +17,7 @@ from hc.lib.badges import check_signature, get_badge_svg
 @uuid_or_400
 @never_cache
 def ping(request, code):
-<<<<<<< HEAD
-=======
 
-    executor = ThreadPoolExecutor(max_workers=10)
->>>>>>> [Feature #158174593] Implemented alerts when checks runs too often
     try:
         check = Check.objects.get(code=code)
     except Check.DoesNotExist:
@@ -53,7 +48,7 @@ def ping(request, code):
     check.refresh_from_db()
 
     if check.runs_too_often:
-        executor.submit(Command().handle_one, check)
+        Command().handle_one, check
 
     ping = Ping(owner=check)
     headers = request.META

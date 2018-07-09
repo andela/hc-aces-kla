@@ -1,4 +1,3 @@
-from unittest import skip
 from hc.api.models import Check
 from hc.test import BaseTestCase
 
@@ -6,7 +5,6 @@ from hc.test import BaseTestCase
 class AddCheckTestCase(BaseTestCase):
     """This class contains tests to handle adding checks"""
 
-    @skip("Needs fixing")
     def test_it_works(self):
         """Test that a check can be added """
         url = "/checks/add/"
