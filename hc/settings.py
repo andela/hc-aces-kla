@@ -159,6 +159,7 @@ USE_TZ = True
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
 =======
 SITE_ROOT = os.environ.get['SITE_ROOT']
@@ -205,6 +206,9 @@ SITE_ROOT = "http://localhost:8000"
 =======
 SITE_ROOT = os.environ.get('SITE_ROOT') or "http://localhost:8000"
 >>>>>>> [Feature #158174601] Update settings
+=======
+SITE_ROOT = os.environ.get('SITE_ROOT', 'http://localhost:8000')
+>>>>>>> [Feature #158174601] Fix remove shopify check
 PING_ENDPOINT = SITE_ROOT + "/ping/"
 PING_EMAIL_DOMAIN = HOST
 STATIC_URL = '/static/'
@@ -221,7 +225,12 @@ COMPRESS_OFFLINE = True
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+=======
+EMAIL_BACKEND = os.environ.get(
+    'EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+>>>>>>> [Feature #158174601] Fix remove shopify check
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
 =======
 EMAIL_BACKEND = "djmail.backends.default.EmailBackend"

@@ -229,7 +229,11 @@ def create_shopify_alerts(request):
             webhook.address = check_created.url()
             webhook.format = 'json'
             message = webhook.save()
+<<<<<<< HEAD
             return redirect("hc-checks")
+=======
+            print(message)
+>>>>>>> [Feature #158174601] Fix remove shopify check
         except:
             messages.info(request, "Unauthorized Access. Cannot access shop in Shopify")
             return render(request, "integrations/add_shopify.html",status=403)
