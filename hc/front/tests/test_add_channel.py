@@ -51,6 +51,7 @@ class AddChannelTestCase(BaseTestCase):
                 status_code=200)
 
     def test_team_access_works(self):
+        """A member of a team can access a channel added by a team member"""
         self.client.login(username="alice@example.org", password="password")
         channel = Channel(
             user=self.alice,
