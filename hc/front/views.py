@@ -253,7 +253,7 @@ def create_shopify_alerts(request):
             webhook.address = check_created.url()
             webhook.format = 'json'
             message = webhook.save()
-            print(message)
+            return redirect("hc-checks")
         except:
             messages.info(request, "Unauthorized Access. Cannot access shop in Shopify")
             return render(request, "integrations/add_shopify.html",status=403)
