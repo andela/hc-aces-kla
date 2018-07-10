@@ -6,7 +6,7 @@ from hc.test import BaseTestCase
 class CheckTokenTestCase(BaseTestCase):
 
     def setUp(self):
-        super(CheckTokenTestCase,  self).setUp()
+        super(CheckTokenTestCase, self).setUp()
         self.profile.token = make_password("secret-token")
         self.profile.save()
 
@@ -25,15 +25,26 @@ class CheckTokenTestCase(BaseTestCase):
         self.assertEqual(self.profile.token, "")
 
     def test_redirects_already_logged_in(self):
-        """test that a logged in user redirects when they log in again""" 
-        #Login and test it redirects already logged in
-        self.client.post(reverse('hc-check-token', args = ["alice", "secret-token"]))
-        re = self.client.post(reverse('hc-check-token', args = ["alice", "secret-token"]))
+        """test that a logged in user redirects when they log in again"""
+        # Login and test it redirects already logged in
+        self.client.post(
+            reverse(
+                'hc-check-token',
+                args=[
+                    "alice",
+                    "secret-token"]))
+        re = self.client.post(
+            reverse(
+                'hc-check-token',
+                args=[
+                    "alice",
+                    "secret-token"]))
         self.assertEqual(re.status_code, 302)
         self.assertRedirects(re, reverse("hc-checks"))
 
     def test_login_bad_token_redirects(self):
         """test that login with bad token redirects back to login page"""
-        #Login with a bad token and check that it redirects
-        response_bad_token = self.client.post(reverse('hc-check-token', args = ["bob", "bad-token"]))
+        # Login with a bad token and check that it redirects
+        response_bad_token = self.client.post(
+            reverse('hc-check-token', args=["bob", "bad-token"]))
         self.assertRedirects(response_bad_token, reverse("hc-login"))
