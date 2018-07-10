@@ -7,7 +7,6 @@ from hc.test import BaseTestCase
 from mock import patch
 
 
-
 class SendAlertsUntilResolvedTestCase(BaseTestCase):
 
     @patch("hc.api.management.commands.sendalerts.Command.handle_one")
@@ -25,4 +24,3 @@ class SendAlertsUntilResolvedTestCase(BaseTestCase):
 
         result = Command().handle_many()
         self.assertEqual(result, True)
-    

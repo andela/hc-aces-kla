@@ -22,4 +22,3 @@ class UpdateNagIntervalTestCase(BaseTestCase):
         check = Check.objects.get(code=self.check.code)
         self.assertEqual(check.nag_intervals.total_seconds(), 5000)
         assert check.nag_intervals.total_seconds() == 5000
-
