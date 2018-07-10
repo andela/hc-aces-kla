@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='check',
             name='protocol',
-            field=django.contrib.postgres.fields.jsonb.JSONField(default={}),
+            field=django.contrib.postgres.fields.JSONField(),
         ),
         migrations.AlterIndexTogether(
             name='check',

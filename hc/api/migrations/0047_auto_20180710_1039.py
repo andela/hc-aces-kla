@@ -19,10 +19,6 @@ class Migration(migrations.Migration):
             name='twilio_number',
             field=models.TextField(blank=True, default=b'+00000000000', null=True),
         ),
-        migrations.RemoveField(
-            model_name='check',
-            name='protocol',
-        ),
         migrations.AlterIndexTogether(
             name='check',
             index_together=set([('status', 'user', 'alert_after', 'n_nags')]),
