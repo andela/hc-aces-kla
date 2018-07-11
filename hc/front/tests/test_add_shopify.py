@@ -1,27 +1,22 @@
 from hc.test import BaseTestCase
-from shopify_trois import Credentials, Collection
-from shopify_trois.models import Shop
-from shopify_trois.engines.http import Json as Shopify
 from django.core.urlresolvers import reverse
-import shopify
-import requests
 from hc.api.models import Check
 import os
+
 
 class AddShopifyAlertTestCase(BaseTestCase):
     """This class contains tests to handle adding checks"""
 
-
     def test_it_redirects_add_shopify(self):
-        """test that when the correct authentication keys are given that it returns valid response """
+        """test it renders add_shopify """
 
         self.client.login(username="alice@example.org", password="password")
-        response = self.client.get( "/integrations/add_shopify/")
+        response = self.client.get("/integrations/add_shopify/")
 
         assert response.status_code == 200
 
     def test_it_accepts_connection_to_shopify(self):
-        """test that when the correct authentication keys are given that it returns valid response """
+        """test it accepts connection to shopify """
         API_KEY = os.environ.get('API_KEY')
 
         PASSWORD = os.environ.get('PASSWORD')
@@ -33,13 +28,16 @@ class AddShopifyAlertTestCase(BaseTestCase):
         SHOP_NAME = "Duuka1"
 
         form = {"api_key": API_KEY,
-                "password": PASSWORD, "event": EVENT, "name": NAME, "shop_name": SHOP_NAME}
+                "password": PASSWORD,
+                "event": EVENT, "name": NAME,
+                "shop_name": SHOP_NAME
+                }
 
         url = reverse("hc-create-shopify-alerts")
 
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
-        
+
         self.assertRedirects(response, "/checks/")
 
         assert response.status_code == 302
@@ -56,7 +54,11 @@ class AddShopifyAlertTestCase(BaseTestCase):
         SHOP_NAME = "Duuka1"
 
         form = {"api_key": API_KEY,
-                "password": PASSWORD, "event": EVENT, "name": NAME, "shop_name": SHOP_NAME}
+                "password": PASSWORD,
+                "event": EVENT,
+                "name": NAME,
+                "shop_name": SHOP_NAME
+                }
 
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(
@@ -76,7 +78,11 @@ class AddShopifyAlertTestCase(BaseTestCase):
         SHOP_NAME = "Duuka1"
 
         form = {"api_key": API_KEY,
-                "password": PASSWORD, "event": EVENT, "name": NAME, "shop_name": SHOP_NAME}
+                "password": PASSWORD,
+                "event": EVENT,
+                "name": NAME,
+                "shop_name": SHOP_NAME
+                }
 
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post("/checks/create_shopify_alert/", form)
@@ -88,5 +94,3 @@ class AddShopifyAlertTestCase(BaseTestCase):
 
         response = self.client.get("/checks/")
         self.assertContains(response, "Create Order", status_code=200)
-
-

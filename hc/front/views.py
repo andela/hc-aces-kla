@@ -18,7 +18,6 @@ from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
                     TimeoutForm, NagIntervalForm, ShopifyForm, PriorityForm)
 import shopify
-from django.contrib import messages
 
 from django.contrib import messages
 
@@ -216,22 +215,22 @@ def update_nag_interval(request, code):
 def shopify_alerts(request, code):
     assert request.method == "POST"
 
-    
     return redirect("hc-checks")
+
 
 @login_required
 def create_shopify_alerts(request):
     assert request.method == "POST"
 
     form = ShopifyForm(request.POST)
-    if form.is_valid():        
-        topic = form.cleaned_data["event"]        
+    if form.is_valid():
+        topic = form.cleaned_data["event"]
         API_KEY = form.cleaned_data["api_key"]
         PASSWORD = form.cleaned_data["password"]
-        SHOP_NAME= form.cleaned_data['shop_name']
+        SHOP_NAME = form.cleaned_data['shop_name']
         shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
             API_KEY, PASSWORD, SHOP_NAME)
-        try:   
+        try:
             shopify.ShopifyResource.set_site(shop_url)
             shopify.Shop.current
             webhook = shopify.Webhook()
@@ -240,7 +239,8 @@ def create_shopify_alerts(request):
             if len(webhook_list) > 0:
                 messages.info(
                     request, "Trying to add alert for event already created.")
-                return render(request, "integrations/add_shopify.html", status=400)
+                return render(request, "integrations/add_shopify.html",
+                              status=400)
             webhook.topic = topic
             check = Check(user=request.team.user)
             check.name = form.cleaned_data["name"]
@@ -253,16 +253,16 @@ def create_shopify_alerts(request):
                 name=form.cleaned_data["name"]).first()
             webhook.address = check_created.url()
             webhook.format = 'json'
-            message = webhook.save()
+            webhook.save()
             return redirect("hc-checks")
-        except:
-            messages.info(request, "Unauthorized Access. Cannot access shop in Shopify")
-            return render(request, "integrations/add_shopify.html",status=403)
-    
+        except Exception:
+            messages.info(
+                request, "Unauthorized Access. Cannot access shop in Shopify")
+            return render(request, "integrations/add_shopify.html", status=403)
+
     messages.info(
         request, "Missing/Wrong field types")
     return render(request, "integrations/add_shopify.html", status=400)
-    
 
 
 @login_required
@@ -294,16 +294,17 @@ def remove_check(request, code):
             PASSWORD = check.shopify_password
             SHOP_NAME = check.shopify_name
             shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
-                API_KEY, PASSWORD, SHOP_NAME)   
+                API_KEY, PASSWORD, SHOP_NAME)
             shopify.ShopifyResource.set_site(shop_url)
             shopify.Shop.current
             webhook = shopify.Webhook.find()
             for hook in webhook:
                 if hook.address == check.url():
                     hook.destroy()
-        except:
+        except Exception:
             messages.info(
-                request, "Unauthorized Access. Cannot access shop in Shopify to delete Webhook")
+                request, "Unauthorized Access. Cannot access shop in Shopify\
+                 to delete Webhook")
             return redirect("hc-checks")
 
     check.delete()
@@ -548,6 +549,7 @@ def add_twiliovoice(request):
 def add_shopify(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_shopify.html", ctx)
+
 
 @login_required
 def add_slack_btn(request):
