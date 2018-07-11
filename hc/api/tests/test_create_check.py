@@ -1,6 +1,6 @@
 import json
 
-from hc.api.models import Channel, Check
+from hc.api.models import Check
 from hc.test import BaseTestCase
 
 

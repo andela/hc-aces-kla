@@ -12,8 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='check',
-            name='status',
-            field=models.CharField(default='new', max_length=6, choices=[('up', 'Up'), ('down', 'Down'), ('new', 'New'), ('paused', 'Paused')]),
-        ),
-    ]
+            model_name='check', name='status', field=models.CharField(
+                default='new', max_length=6, choices=[
+                    ('up', 'Up'), ('down', 'Down'), ('new', 'New'),
+                    ('paused', 'Paused')]), ), ]

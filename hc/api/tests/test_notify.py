@@ -5,7 +5,7 @@ from django.test import override_settings
 from hc.api.models import Channel, Check, Notification
 from hc.test import BaseTestCase
 from mock import patch
-from requests.exceptions import ConnectionError, Timeout
+from requests.exceptions import Timeout
 
 
 class NotifyTestCase(BaseTestCase):
@@ -235,7 +235,7 @@ class NotifyTestCase(BaseTestCase):
         self.assertEqual(n.error, "Received status code 500")
 
     @patch("hc.api.transports.requests.request", side_effect=Timeout)
-    def test_webhooks_handle_timeouts(self, mock_post):
+    def test_webhooks_handle_timeouts_post(self, mock_post):
         self._setup_data("webhook", "123")
         self.channel.notify(self.check)
 

@@ -1,4 +1,4 @@
-import os
+
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -63,9 +63,11 @@ class Email(Transport):
 
 class TwilioSms(Transport):
     def notify(self, check):
-        message = self.client.messages.create(
-            body="Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(
-                check.name, check.last_ping.strftime('%x, %X'), check.status),
+        self.client.messages.create(
+            body="Healthchecks updates\n Name: \
+            {}\nLast ping: {}\nstatus:{}".format(
+                check.name, check.last_ping.strftime('%x, %X'),
+                check.status),
             to=self.channel.value,
             from_=settings.TWILIO_NUMBER
         )
@@ -73,7 +75,7 @@ class TwilioSms(Transport):
 
 class TwilioVoice(Transport):
     def notify(self, check):
-        call = self.client.calls.create(
+        self.client.calls.create(
             url="http://demo.twilio.com/docs/voice.xml",
             to=self.channel.value,
             from_=settings.TWILIO_NUMBER
@@ -228,8 +230,10 @@ class VictorOps(HttpTransport):
     def notify(self, check):
         description = tmpl("victorops_description.html", check=check)
         payload = {
-            "entity_id": str(check.code),
-            "message_type": "CRITICAL" if check.status == "down" else "RECOVERY",
+            "entity_id": str(
+                check.code),
+            "message_type": "CRITICAL" if check.status == "down"
+            else "RECOVERY",
             "entity_display_name": check.name_then_code(),
             "state_message": description,
             "monitoring_tool": "healthchecks.io",

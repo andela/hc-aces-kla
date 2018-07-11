@@ -35,4 +35,4 @@ class BaseTestCase(TestCase):
         self.charlie.set_password("password")
         self.charlie.save()
 
-        ### Set Charles not to have access to Alice's stuff
+        # Set Charles not to have access to Alice's stuff
