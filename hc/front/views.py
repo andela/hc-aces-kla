@@ -338,6 +338,7 @@ def log(request, code):
 
     return render(request, "front/log.html", ctx)
 
+
 @login_required
 def reports(request):
     next_report_date = request.team.user.profile.next_report_date
@@ -345,7 +346,7 @@ def reports(request):
     checks = Check.objects.filter(user=request.team.user).order_by("created")
     message = ''
     if next_report_date is not None:
-        checks = [check for check in checks if next_report_date >= now ]
+        checks = [check for check in checks if next_report_date >= now]
     else:
         message = "No reports"
 
@@ -354,6 +355,7 @@ def reports(request):
         "message": message
     }
     return render(request, "front/my_reports.html", ctx)
+
 
 @login_required
 def channels(request):
@@ -381,7 +383,8 @@ def channels(request):
         channel.checks = new_checks
         return redirect("hc-channels")
 
-    channels = Channel.objects.filter(user=request.team.user).order_by("created")
+    channels = Channel.objects.filter(
+        user=request.team.user).order_by("created")
     channels = channels.annotate(n_checks=Count("checks"))
 
     num_checks = Check.objects.filter(user=request.team.user).count()
@@ -504,16 +507,17 @@ def add_slack(request):
     }
     return render(request, "integrations/add_slack.html", ctx)
 
+
 @login_required
 def add_twiliosms(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_twiliosms.html", ctx)
 
+
 @login_required
 def add_twiliovoice(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_twiliovoice.html", ctx)
-
 
 @login_required
 def add_shopify(request):
@@ -664,6 +668,7 @@ def add_pushover(request):
 def add_victorops(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_victorops.html", ctx)
+
 
 def privacy(request):
     return render(request, "front/privacy.html", {})

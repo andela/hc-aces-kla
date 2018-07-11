@@ -29,7 +29,10 @@ class PingTestCase(TestCase):
               "AppleWebKit/537.36 (KHTML, like Gecko) "
               "Chrome/44.0.2403.89 Safari/537.36")
 
-        response = self.client.get("/ping/%s/" % self.check.code, HTTP_USER_AGENT=ua)
+        response = self.client.get(
+            "/ping/%s/" %
+            self.check.code,
+            HTTP_USER_AGENT=ua)
         assert response.status_code == 200
 
         ping = Ping.objects.latest("id")
@@ -38,7 +41,10 @@ class PingTestCase(TestCase):
     def test_it_truncates_long_ua(self):
         ua = "01234567890" * 30
 
-        response = self.client.get("/ping/%s/" % self.check.code, HTTP_USER_AGENT=ua)
+        response = self.client.get(
+            "/ping/%s/" %
+            self.check.code,
+            HTTP_USER_AGENT=ua)
         assert response.status_code == 200
 
         ping = Ping.objects.latest("id")
@@ -48,26 +54,26 @@ class PingTestCase(TestCase):
     def test_it_reads_forwarded_ip(self):
         ip = "1.1.1.1"
         response = self.client.get("/ping/%s/" % self.check.code,
-                            HTTP_X_FORWARDED_FOR=ip)
+                                   HTTP_X_FORWARDED_FOR=ip)
         ping = Ping.objects.latest("id")
-       
-        ### Assert the expected response status code and ping's remote address
+
+        # Assert the expected response status code and ping's remote address
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ping.remote_addr, ip)
 
         ip = "1.1.1.1, 2.2.2.2"
         res = self.client.get("/ping/%s/" % self.check.code,
-                            HTTP_X_FORWARDED_FOR=ip, REMOTE_ADDR="3.3.3.3")
+                              HTTP_X_FORWARDED_FOR=ip, REMOTE_ADDR="3.3.3.3")
         ping = Ping.objects.latest("id")
         assert res.status_code == 200
         assert ping.remote_addr == "1.1.1.1"
 
     def test_it_reads_forwarded_protocol(self):
         response = self.client.get("/ping/%s/" % self.check.code,
-                            HTTP_X_FORWARDED_PROTO="https")
+                                   HTTP_X_FORWARDED_PROTO="https")
         ping = Ping.objects.latest("id")
-     
-        ### Assert the expected response status code and ping's scheme
+
+        # Assert the expected response status code and ping's scheme
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ping.scheme, "https")
 
@@ -75,20 +81,19 @@ class PingTestCase(TestCase):
         response = self.client.get("/ping/%s/" % self.check.code)
         assert "no-cache" in response.get("Cache-Control")
 
-    ### Test that when a ping is made a check with a paused status changes status
+    # Test that when a ping is made a check with a paused status changes status
     def test_ping_made_changes_paused_status_check(self):
         self.check.status == "paused"
         self.client.get("/ping/%s/" % self.check.code)
         self.check.refresh_from_db()
         self.assertEqual(self.check.status, "up")
 
-    ### Test that a post to a ping works
+    # Test that a post to a ping works
     def test_post_to_a_ping_works(self):
         response = self.client.post("/ping/%s/" % self.check.code)
         self.assertEqual(response.status_code, 200)
 
-
-    ### Test that the csrf_client head works
+    # Test that the csrf_client head works
     def csrf_client_head_works(self):
         csrf_client = Client(enforce_csrf_checks=True)
         response = csrf_client.head("/ping/%s/" % self.check.code)
