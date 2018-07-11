@@ -597,3 +597,26 @@ def privacy(request):
 
 def terms(request):
     return render(request, "front/terms.html", {})
+
+
+@login_required
+def unresolved_checks(request):
+    """function for unresolved jobs tab with jobs that are down"""
+    checks = list(
+        Check.objects.filter(
+            user=request.team.user).order_by("created"))
+    unresolved_checks = []
+
+    for check in checks:
+        status = check.get_status()
+        if status == "down":
+            unresolved_checks.append(check)
+
+    ctx = {
+        "page": "unresolved_checks",
+        "checks": unresolved_checks,
+        "now": timezone.now(),
+        "ping_endpoint": settings.PING_ENDPOINT
+    }
+
+    return render(request, "front/unresolved_checks.html", ctx)

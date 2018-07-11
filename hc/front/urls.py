@@ -40,6 +40,8 @@ urlpatterns = [
     url(r'^checks/([\w-]+)/', include(check_urls)),
     url(r'^integrations/', include(channel_urls)),
     url(r'^reports/', views.reports, name="hc-reports"),
+    url(r'^unresolved_checks/', views.unresolved_checks,
+        name="hc-unresolved-checks"),
 
     url(r'^docs/$', views.docs, name="hc-docs"),
     url(r'^docs/api/$', views.docs_api, name="hc-docs-api"),
