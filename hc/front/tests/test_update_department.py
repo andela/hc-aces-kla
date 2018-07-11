@@ -38,5 +38,5 @@ class UpdateDepartmentTestCase(BaseTestCase):
         self.client.login(username="alice@example.org", password="password")
         self.client.post(url, data=payload)
         res = self.client.get("/checks/")
-        self.assertIn("Finance", res.content)
-        self.assertIn("IT", res.content)
+        self.assertIn(b"Finance", res.content)
+        self.assertIn(b"IT", res.content)
