@@ -1,8 +1,6 @@
 from hc.api.models import Check
 from hc.test import BaseTestCase
 
-from datetime import timedelta as td
-
 
 class UpdateTimeoutTestCase(BaseTestCase):
 

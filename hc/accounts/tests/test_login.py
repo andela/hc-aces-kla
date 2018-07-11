@@ -50,7 +50,9 @@ class LoginTestCase(TestCase):
         self.assertIn(b'Please enter your email address.', response.content)
 
     def test_it_redirects_when_password_given(self):
-        """test that login redirects to checks dashboard when password is supplied"""
+        """test that login redirects to checks
+            dashboard when password is supplied
+        """
         marcus = User(email="marcus@example.com")
         marcus.set_password("password")
         marcus.save()

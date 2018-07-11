@@ -1,4 +1,3 @@
-import json
 from datetime import timedelta as td
 from django.utils.timezone import now
 from django.conf import settings
@@ -45,7 +44,7 @@ class ListChecksTestCase(BaseTestCase):
         # Assert the expected length of checks
         self.assertEqual(len(checks), 2)
 
-        # Assert the checks Alice 1 and Alice 2's timeout, grace, ping_url, status,
+        # Assert the checks, timeout, grace, ping_url, status,
         # alice 1
         self.assertEqual(checks["Alice 1"]["timeout"], 3600)
         self.assertEqual(checks["Alice 1"]["grace"], 900)
@@ -58,7 +57,7 @@ class ListChecksTestCase(BaseTestCase):
         self.assertEqual(checks["Alice 2"]["ping_url"], self.a2.url())
         self.assertEqual(checks["Alice 2"]["status"], "up")
 
-        ### last_ping, n_pings and pause_url
+        # last_ping, n_pings and pause_url
         self.assertEqual(checks['Alice 1']["n_pings"], 1)
         self.assertEqual(checks['Alice 1']["last_ping"], self.now.isoformat())
         self.assertEqual(
