@@ -35,6 +35,7 @@
         </td>
         <td class="name-cell">
             <div data-name="{{ check.name }}"
+                    data-department="{{ check.departments }}"
                     data-tags="{{ check.tags }}"
                     data-url="{% url 'hc-update-name' check.code %}"
                     class="my-checks-name {% if not check.name %}unnamed{% endif %}">

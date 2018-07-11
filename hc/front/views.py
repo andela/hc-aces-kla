@@ -39,6 +39,7 @@ def my_checks(request):
     checks = list(q)
 
     counter = Counter()
+    deck = Counter()
     down_tags, grace_tags = set(), set()
     for check in checks:
         status = check.get_status()
@@ -56,6 +57,11 @@ def my_checks(request):
 
     state = {1: "low", 2: "medium", 3: "high"}
 
+    for department in check.departments.split(" "):
+        if department == "":
+            continue
+        deck[department] += 1
+    departments = [department[0] for department in deck.most_common()]
     ctx = {
         "page": "checks",
         "checks": checks,
@@ -64,6 +70,7 @@ def my_checks(request):
         "tags": counter.most_common(),
         "down_tags": down_tags,
         "grace_tags": grace_tags,
+        "departments": departments,
         "ping_endpoint": settings.PING_ENDPOINT
     }
 
@@ -170,10 +177,11 @@ def update_name(request, code):
     if check.user_id != request.team.user.id:
         return HttpResponseForbidden()
 
-    form = NameTagsForm(request.POST)
+    form = NameTagsDepartmentForm(request.POST)
     if form.is_valid():
         check.name = form.cleaned_data["name"]
         check.tags = form.cleaned_data["tags"]
+        check.departments = form.cleaned_data["department"]
         check.save()
 
     return redirect("hc-checks")
