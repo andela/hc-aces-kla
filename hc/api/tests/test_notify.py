@@ -235,7 +235,7 @@ class NotifyTestCase(BaseTestCase):
         self.assertEqual(n.error, "Received status code 500")
 
     @patch("hc.api.transports.requests.request", side_effect=Timeout)
-    def test_webhooks_handle_timeouts(self, mock_post):
+    def test_webhooks_handle_timeouts_post(self, mock_post):
         self._setup_data("webhook", "123")
         self.channel.notify(self.check)
 

@@ -67,7 +67,7 @@ class Email(Transport):
 
 class TwilioSms(Transport):
     def notify(self, check):
-        message = self.client.messages.create(
+        self.client.messages.create(
             body="Healthchecks updates\n Name: \
             {}\nLast ping: {}\nstatus:{}".format(
                 check.name, check.last_ping.strftime('%x, %X'),
@@ -79,7 +79,7 @@ class TwilioSms(Transport):
 
 class TwilioVoice(Transport):
     def notify(self, check):
-        call = self.client.calls.create(
+        self.client.calls.create(
             url="http://demo.twilio.com/docs/voice.xml",
             to=self.channel.value,
             from_=settings.TWILIO_NUMBER

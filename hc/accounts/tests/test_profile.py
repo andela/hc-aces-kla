@@ -62,7 +62,7 @@ class ProfileTestCase(BaseTestCase):
         # Assert that the email was sent and check email content
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn(
-            "You have been invited to join alice@example.org on healthchecks.io",
+            "You have been invited to join alice@example.org",
             mail.outbox[0].subject)
         self.assertIn(
             "alice@example.org invites you to their healthchecks.io account.",
@@ -140,7 +140,7 @@ class ProfileTestCase(BaseTestCase):
     def test_it_creates_and_revokes_api(self):
         """test that the api key can be set and revoked"""
         self.client.login(username="alice@example.org", password="password")
-        session = self.client.session
+        self.client.session
         form = {"create_api_key": True, "show_api_key": True}
         response = self.client.post("/accounts/profile/", form)
         self.assertIn(b"The API key has been created!", response.content)
