@@ -4,8 +4,6 @@ import hashlib
 import json
 import uuid
 from datetime import timedelta as td
-from django.contrib.postgres.fields import ArrayField
-from django.contrib.postgres.fields import JSONField
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
@@ -62,7 +60,8 @@ class Check(models.Model):
     n_nags = models.IntegerField(default=0)
     escalate = models.BooleanField(default=False)
 
-    twilio_number = models.TextField(default="+00000000000", null=True, blank=True)
+    twilio_number = models.TextField(default="+00000000000", null=True,
+                                     blank=True)
 
     def name_then_code(self):
         if self.name:
@@ -90,18 +89,18 @@ class Check(models.Model):
             self.escalate = False
         elif self.priority == 2 and self.n_nags > 9:
             self.escalate = True
-        self.n_nags += 1 
+        self.n_nags += 1
         self.save()
 
         errors = []
         if self.escalate:
             # send alert to people on same team
-            #find members in team of user
+            # find members in team of user
             profile = Profile.objects.filter(user=self.user)
             team_members = Profile.objects.filter(current_team=profile)
             # get channels they ascribe to
             for member in team_members:
-                team_member = member.user 
+                team_member = member.user
                 channels = Channel.objects.filter(user=team_member)
                 for channel in channels:
                     error = channel.notify(self)

@@ -47,12 +47,12 @@ def my_checks(request):
             elif check.in_grace_period():
                 grace_tags.add(tag)
 
-    state = {1:"low", 2:"medium", 3:"high"}
+    state = {1: "low", 2: "medium", 3: "high"}
 
     ctx = {
         "page": "checks",
         "checks": checks,
-        "state":state,
+        "state": state,
         "now": timezone.now(),
         "tags": counter.most_common(),
         "down_tags": down_tags,
@@ -135,6 +135,7 @@ def add_check(request):
 
     return redirect("hc-checks")
 
+
 @login_required
 @uuid_or_400
 def update_priority(request, code):
@@ -146,7 +147,7 @@ def update_priority(request, code):
 
     form = PriorityForm(request.POST)
     if form.is_valid():
-        assign_priority={"low":1, "medium":2, "high":3}
+        assign_priority = {"low": 1, "medium": 2, "high": 3}
         check.priority = assign_priority[form.cleaned_data["priority"]]
         check.save()
 

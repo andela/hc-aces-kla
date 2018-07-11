@@ -17,11 +17,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='check',
             name='twilio_number',
-            field=models.TextField(blank=True, default=b'+00000000000', null=True),
-        ),
-        migrations.RemoveField(
-            model_name='check',
-            name='protocol',
+            field=models.TextField(blank=True, default=b'+00000000000',
+                                   null=True),
         ),
         migrations.AlterIndexTogether(
             name='check',

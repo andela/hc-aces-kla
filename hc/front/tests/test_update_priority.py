@@ -24,7 +24,7 @@ class UpdatePriorityTestCase(BaseTestCase):
         assert check.priority == 3
 
     def test_team_access_works(self):
-        """ 
+        """
         tests that team members have access to change priority
         """
         url = "/checks/%s/priority/" % self.check.code
