@@ -1,5 +1,4 @@
 from django.test import Client, TestCase
-import json
 
 from hc.api.models import Check, Ping
 

@@ -11,7 +11,6 @@ from django.db.models import Count
 from django.http import Http404, HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
@@ -529,7 +528,8 @@ def add_pushbullet(request):
 
 @login_required
 def add_pushover(request):
-    if settings.PUSHOVER_API_TOKEN is None or settings.PUSHOVER_SUBSCRIPTION_URL is None:
+    if settings.PUSHOVER_API_TOKEN is None \
+            or settings.PUSHOVER_SUBSCRIPTION_URL is None:
         raise Http404("pushover integration is not available")
 
     if request.method == "POST":
@@ -538,14 +538,11 @@ def add_pushover(request):
         request.session["po_nonce"] = nonce
 
         failure_url = settings.SITE_ROOT + reverse("hc-channels")
-        success_url = settings.SITE_ROOT + reverse("hc-add-pushover") + "?" + urlencode({
-            "nonce": nonce,
-            "prio": request.POST.get("po_priority", "0"),
-        })
-        subscription_url = settings.PUSHOVER_SUBSCRIPTION_URL + "?" + urlencode({
-            "success": success_url,
-            "failure": failure_url,
-        })
+        success_url = settings.SITE_ROOT + reverse("hc-add-pushover") + "?" \
+            + urlencode(
+            {"nonce": nonce, "prio": request.POST.get("po_priority", "0"), })
+        subscription_url = settings.PUSHOVER_SUBSCRIPTION_URL + "?" + \
+            urlencode({"success": success_url, "failure": failure_url, })
 
         return redirect(subscription_url)
 
