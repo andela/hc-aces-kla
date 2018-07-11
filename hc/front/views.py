@@ -135,6 +135,23 @@ def add_check(request):
 
     return redirect("hc-checks")
 
+@login_required
+@uuid_or_400
+def update_priority(request, code):
+    assert request.method == "POST"
+
+    check = get_object_or_404(Check, code=code)
+    if check.user_id != request.team.user.id:
+        return HttpResponseForbidden()
+
+    form = PriorityForm(request.POST)
+    if form.is_valid():
+        assign_priority={"low":1, "medium":2, "high":3}
+        check.priority = assign_priority[form.cleaned_data["priority"]]
+        check.save()
+
+    return redirect("hc-checks")
+
 
 @login_required
 @uuid_or_400
