@@ -106,7 +106,7 @@ class AddChannelTestCase(BaseTestCase):
         alice_before = Channel.objects.filter(user=alice_channel).count()
         self.client.login(username="bob@example.org", password="password")
         url = "/integrations/add/"
-       form = {"kind": "twiliovoice", "value": "+256703357610"}
+        form = {"kind": "twiliovoice", "value": "+256703357610"}
         self.client.post(reverse("hc-add-channel"), form)
         alice_after = Channel.objects.filter(user=alice_channel).count()
         self.assertEqual(alice_after, (alice_before + 1))
