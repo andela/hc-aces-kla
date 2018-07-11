@@ -3,7 +3,6 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from hc.api.models import Channel
 from hc.test import BaseTestCase
-import os
 
 
 @override_settings(PUSHOVER_API_TOKEN="token", PUSHOVER_SUBSCRIPTION_URL="url")

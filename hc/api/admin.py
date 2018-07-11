@@ -95,7 +95,7 @@ class LargeTablePaginator(Paginator):
             cursor.execute("SELECT reltuples FROM pg_class WHERE relname = %s",
                            [self.object_list.query.model._meta.db_table])
             return int(cursor.fetchone()[0])
-        except:
+        except (KeyboardInterrupt, SystemExit):
             return 0
 
     def _get_count(self):

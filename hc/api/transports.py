@@ -68,9 +68,9 @@ class Email(Transport):
 class TwilioSms(Transport):
     def notify(self, check):
         self.client.messages.create(
-            body="Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(
-                check.name,
-                check.last_ping.strftime('%x, %X'),
+            body="Healthchecks updates\n Name: \
+            {}\nLast ping: {}\nstatus:{}".format(
+                check.name, check.last_ping.strftime('%x, %X'),
                 check.status),
             to=self.channel.value,
             from_=settings.TWILIO_NUMBER)
@@ -235,7 +235,8 @@ class VictorOps(HttpTransport):
         payload = {
             "entity_id": str(
                 check.code),
-            "message_type": "CRITICAL" if check.status == "down" else "RECOVERY",
+            "message_type": "CRITICAL" if check.status == "down"
+            else "RECOVERY",
             "entity_display_name": check.name_then_code(),
             "state_message": description,
             "monitoring_tool": "healthchecks.io",

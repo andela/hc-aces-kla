@@ -10,6 +10,5 @@ class SubsAdmin(admin.ModelAdmin):
 
     list_filter = ("plan_id", )
 
-
     def email(self, obj):
         return obj.user.email if obj.user else None
