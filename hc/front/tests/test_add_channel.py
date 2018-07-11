@@ -117,6 +117,10 @@ class AddChannelTestCase(BaseTestCase):
         alice_before = Channel.objects.filter(user=alice_channel).count()
         self.client.login(username="bob@example.org", password="password")
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        url = "/integrations/add/"
+>>>>>>> Fix travis
         form = {"kind": "twiliovoice", "value": "+256703357610"}
         self.client.post(reverse("hc-add-channel"), form)
 =======
