@@ -1,6 +1,5 @@
 from hc.api.models import Check
 from hc.test import BaseTestCase
-from datetime import timedelta as td
 
 
 class UpdateNagIntervalTestCase(BaseTestCase):
@@ -22,4 +21,3 @@ class UpdateNagIntervalTestCase(BaseTestCase):
         check = Check.objects.get(code=self.check.code)
         self.assertEqual(check.nag_intervals.total_seconds(), 5000)
         assert check.nag_intervals.total_seconds() == 5000
-

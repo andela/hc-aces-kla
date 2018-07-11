@@ -64,7 +64,7 @@ def login(request):
                 if user is not None and user.is_active:
                     auth_login(request, user)
                     return redirect("hc-checks")
-                    
+
                 bad_credentials = True
             else:
                 try:
@@ -159,7 +159,8 @@ def profile(request):
             form = ReportSettingsForm(request.POST)
             if form.is_valid():
                 profile.reports_allowed = form.cleaned_data["reports_allowed"]
-                profile.report_frequency = form.cleaned_data["report_frequency"]
+                profile.report_frequency = \
+                    form.cleaned_data["report_frequency"]
                 profile.save()
                 messages.success(request, "Your settings have been updated!")
         elif "invite_team_member" in request.POST:

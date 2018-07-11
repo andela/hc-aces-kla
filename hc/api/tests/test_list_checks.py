@@ -1,4 +1,3 @@
-import json
 from datetime import timedelta as td
 from django.utils.timezone import now
 from django.conf import settings
@@ -35,17 +34,17 @@ class ListChecksTestCase(BaseTestCase):
 
     def test_it_works(self):
         r = self.get()
-        ### Assert the response status code
+        # Assert the response status code
         self.assertEqual(r.status_code, 200)
 
         doc = r.json()
         self.assertTrue("checks" in doc)
 
         checks = {check["name"]: check for check in doc["checks"]}
-        ### Assert the expected length of checks
+        # Assert the expected length of checks
         self.assertEqual(len(checks), 2)
 
-        ### Assert the checks Alice 1 and Alice 2's timeout, grace, ping_url, status,
+        # Assert the checks, timeout, grace, ping_url, status,
         # alice 1
         self.assertEqual(checks["Alice 1"]["timeout"], 3600)
         self.assertEqual(checks["Alice 1"]["grace"], 900)
@@ -58,14 +57,26 @@ class ListChecksTestCase(BaseTestCase):
         self.assertEqual(checks["Alice 2"]["ping_url"], self.a2.url())
         self.assertEqual(checks["Alice 2"]["status"], "up")
 
-        ### last_ping, n_pings and pause_url
+        # last_ping, n_pings and pause_url
         self.assertEqual(checks['Alice 1']["n_pings"], 1)
         self.assertEqual(checks['Alice 1']["last_ping"], self.now.isoformat())
-        self.assertEqual(checks['Alice 1']['pause_url'], settings.SITE_ROOT + reverse("hc-api-pause", args=[self.a1.code]))
+        self.assertEqual(
+            checks['Alice 1']['pause_url'],
+            settings.SITE_ROOT +
+            reverse(
+                "hc-api-pause",
+                args=[
+                    self.a1.code]))
 
         self.assertEqual(checks['Alice 2']["n_pings"], 0)
         self.assertEqual(checks['Alice 2']["last_ping"], self.now.isoformat())
-        self.assertEqual(checks['Alice 2']['pause_url'], settings.SITE_ROOT + reverse("hc-api-pause", args=[self.a2.code]))
+        self.assertEqual(
+            checks['Alice 2']['pause_url'],
+            settings.SITE_ROOT +
+            reverse(
+                "hc-api-pause",
+                args=[
+                    self.a2.code]))
 
     def test_it_shows_only_users_checks(self):
         bobs_check = Check(user=self.bob, name="Bob 1")
@@ -77,7 +88,7 @@ class ListChecksTestCase(BaseTestCase):
         for check in data["checks"]:
             self.assertNotEqual(check["name"], "Bob 1")
 
-    ### Test that it accepts an api_key in the request
+    # Test that it accepts an api_key in the request
     def test_it_accepts_api_key_in_request(self):
         r = self.client.get("/api/v1/checks/", HTTP_X_API_KEY="abc")
         self.assertEqual(r.status_code, 200)

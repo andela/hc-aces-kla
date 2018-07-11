@@ -11,7 +11,6 @@ from django.db.models import Count
 from django.http import Http404, HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
@@ -266,6 +265,7 @@ def log(request, code):
 
     return render(request, "front/log.html", ctx)
 
+
 @login_required
 def reports(request):
     next_report_date = request.team.user.profile.next_report_date
@@ -273,7 +273,7 @@ def reports(request):
     checks = Check.objects.filter(user=request.team.user).order_by("created")
     message = ''
     if next_report_date is not None:
-        checks = [check for check in checks if next_report_date >= now ]
+        checks = [check for check in checks if next_report_date >= now]
     else:
         message = "No reports"
 
@@ -282,6 +282,7 @@ def reports(request):
         "message": message
     }
     return render(request, "front/my_reports.html", ctx)
+
 
 @login_required
 def channels(request):
@@ -309,7 +310,8 @@ def channels(request):
         channel.checks = new_checks
         return redirect("hc-channels")
 
-    channels = Channel.objects.filter(user=request.team.user).order_by("created")
+    channels = Channel.objects.filter(
+        user=request.team.user).order_by("created")
     channels = channels.annotate(n_checks=Count("checks"))
 
     num_checks = Check.objects.filter(user=request.team.user).count()
@@ -432,15 +434,18 @@ def add_slack(request):
     }
     return render(request, "integrations/add_slack.html", ctx)
 
+
 @login_required
 def add_twiliosms(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_twiliosms.html", ctx)
 
+
 @login_required
 def add_twiliovoice(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_twiliovoice.html", ctx)
+
 
 @login_required
 def add_slack_btn(request):
@@ -523,7 +528,8 @@ def add_pushbullet(request):
 
 @login_required
 def add_pushover(request):
-    if settings.PUSHOVER_API_TOKEN is None or settings.PUSHOVER_SUBSCRIPTION_URL is None:
+    if settings.PUSHOVER_API_TOKEN is None \
+            or settings.PUSHOVER_SUBSCRIPTION_URL is None:
         raise Http404("pushover integration is not available")
 
     if request.method == "POST":
@@ -532,14 +538,11 @@ def add_pushover(request):
         request.session["po_nonce"] = nonce
 
         failure_url = settings.SITE_ROOT + reverse("hc-channels")
-        success_url = settings.SITE_ROOT + reverse("hc-add-pushover") + "?" + urlencode({
-            "nonce": nonce,
-            "prio": request.POST.get("po_priority", "0"),
-        })
-        subscription_url = settings.PUSHOVER_SUBSCRIPTION_URL + "?" + urlencode({
-            "success": success_url,
-            "failure": failure_url,
-        })
+        success_url = settings.SITE_ROOT + reverse("hc-add-pushover") + "?" \
+            + urlencode(
+            {"nonce": nonce, "prio": request.POST.get("po_priority", "0"), })
+        subscription_url = settings.PUSHOVER_SUBSCRIPTION_URL + "?" + \
+            urlencode({"success": success_url, "failure": failure_url, })
 
         return redirect(subscription_url)
 
@@ -586,6 +589,7 @@ def add_pushover(request):
 def add_victorops(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_victorops.html", ctx)
+
 
 def privacy(request):
     return render(request, "front/privacy.html", {})

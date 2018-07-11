@@ -5,7 +5,8 @@ from hc.api.models import Check
 class SwitchTeamTestCase(BaseTestCase):
 
     def test_it_switches(self):
-        """test that a user can switch to view checks from teams they are members of"""
+        """test that a user can switch to view
+        checks from teams they are members of"""
         c = Check(user=self.alice, name="This belongs to Alice")
         c.save()
 
@@ -14,16 +15,15 @@ class SwitchTeamTestCase(BaseTestCase):
         url = "/accounts/switch_team/%s/" % self.alice.username
         r = self.client.get(url, follow=True)
 
-        ### Assert the contents of r
-        self.assertIn(b"This belongs to Alice",r.content)
-
+        # Assert the contents of r
+        self.assertIn(b"This belongs to Alice", r.content)
 
     def test_it_checks_team_membership(self):
         self.client.login(username="charlie@example.org", password="password")
 
         url = "/accounts/switch_team/%s/" % self.alice.username
         r = self.client.get(url)
-        ### Assert the expected error code
+        # Assert the expected error code
         assert r.status_code == 403
 
     def test_it_switches_to_own_team(self):
@@ -31,5 +31,5 @@ class SwitchTeamTestCase(BaseTestCase):
 
         url = "/accounts/switch_team/%s/" % self.alice.username
         r = self.client.get(url, follow=True)
-        ### Assert the expected error code
+        # Assert the expected error code
         assert r.status_code == 200
