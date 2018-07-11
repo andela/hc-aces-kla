@@ -25,7 +25,8 @@ DEFAULT_NAG_TIME = td(days=1)
 CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("hipchat", "HipChat"),
                  ("slack", "Slack"), ("pd", "PagerDuty"), ("po", "Pushover"),
-                 ("victorops", "VictorOps"), ("twiliosms", "TwilioSms"), ("twiliovoice", "TwilioVoice"))
+                 ("victorops", "VictorOps"), ("twiliosms", "TwilioSms"),
+                 ("twiliovoice", "TwilioVoice"))
 
 PO_PRIORITIES = {
     -2: "lowest",
