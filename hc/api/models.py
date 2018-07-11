@@ -41,7 +41,7 @@ class Check(models.Model):
 
     class Meta:
         # sendalerts command will query using these
-        index_together = ["status", "user", "alert_after", "n_nags"]
+        index_together = ["status", "user", "alert_after", "number_of_nags"]
 
     name = models.CharField(max_length=100, blank=True)
     tags = models.CharField(max_length=500, blank=True)
@@ -57,7 +57,7 @@ class Check(models.Model):
     nag_intervals = models.DurationField(default=DEFAULT_NAG_TIME)
     nag_after_time = models.DateTimeField(null=True, blank=True)
     priority = models.IntegerField(default=1)
-    n_nags = models.IntegerField(default=0)
+    number_of_nags = models.IntegerField(default=0)
     escalate = models.BooleanField(default=False)
 
     twilio_number = models.TextField(default="+00000000000", null=True,
@@ -81,15 +81,15 @@ class Check(models.Model):
     def send_alert(self):
         if self.status not in ("up", "down"):
             raise NotImplementedError("Unexpected status: %s" % self.status)
-        if self.priority == 3 and self.n_nags < 4:
+        if self.priority == 3 and self.number_of_nags < 4:
             self.escalate = False
-        elif self.priority == 3 and self.n_nags > 3:
+        elif self.priority == 3 and self.number_of_nags > 3:
             self.escalate = True
-        if self.priority == 2 and self.n_nags < 10:
+        if self.priority == 2 and self.number_of_nags < 10:
             self.escalate = False
-        elif self.priority == 2 and self.n_nags > 9:
+        elif self.priority == 2 and self.number_of_nags > 9:
             self.escalate = True
-        self.n_nags += 1
+        self.number_of_nags += 1
         self.save()
 
         errors = []

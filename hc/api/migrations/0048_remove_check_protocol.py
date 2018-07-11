@@ -16,4 +16,9 @@ class Migration(migrations.Migration):
             model_name='check',
             name='protocol',
         ),
+        migrations.RenameField(
+            model_name='check',
+            old_name='n_nags',
+            new_name='number_of_nags',
+        ),
     ]

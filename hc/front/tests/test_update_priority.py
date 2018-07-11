@@ -9,7 +9,7 @@ class UpdatePriorityTestCase(BaseTestCase):
         self.check = Check(user=self.alice)
         self.check.save()
 
-    def test_it_works(self):
+    def test_priority_is_updated(self):
         """
         test the update method works
         """
