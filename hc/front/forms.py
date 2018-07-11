@@ -18,8 +18,8 @@ class NameTagsForm(forms.Form):
 
 
 class TimeoutForm(forms.Form):
-    timeout = forms.IntegerField(min_value=60, max_value=2592000)
-    grace = forms.IntegerField(min_value=60, max_value=2592000)
+    timeout = forms.IntegerField(min_value=60, max_value=7776000)
+    grace = forms.IntegerField(min_value=60, max_value=7776000)
 
 class ShopifyForm(forms.Form):
     name = forms.CharField(max_length=100, required=False)
