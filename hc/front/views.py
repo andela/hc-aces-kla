@@ -210,7 +210,6 @@ def create_shopify_alerts(request):
             shopify.Shop.current
             webhook = shopify.Webhook()
             webhook_list = shopify.Webhook.find(topic=topic)
-            shopify.ShopifyResource.set_site(shop_url)
             if len(webhook_list) > 0:
                 messages.info(
                     request, "Trying to add alert for event already created.")
