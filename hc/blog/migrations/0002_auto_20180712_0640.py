@@ -23,24 +23,24 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='author',
-            field=models.ForeignKey(default=django.utils.timezone.now, on_delete=django.db.models.deletion.CASCADE, related_name='blog_posts', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(default="author", on_delete=django.db.models.deletion.CASCADE, related_name='blog_posts', to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='post',
             name='created',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            field=models.DateTimeField(auto_now_add=True, default="created"),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='post',
             name='publish',
-            field=models.DateTimeField(default=django.utils.timezone.now),
+            field=models.DateTimeField(default="publish"),
         ),
         migrations.AddField(
             model_name='post',
             name='slug',
-            field=models.SlugField(default=django.utils.timezone.now, max_length=250, unique_for_date=b'publish'),
+            field=models.SlugField(default="slug", max_length=250, unique_for_date=b'publish'),
             preserve_default=False,
         ),
         migrations.AddField(
