@@ -166,6 +166,16 @@ $(function () {
         return false;
     });
 
+    $(".check-priority-update").click(function() {
+        var $this = $(this);
+
+        $("#update-check-form").attr("action", $this.data("url"));
+        $("#update-check-input").attr("value", $this.data("priority"));
+        $('#update-check-modal').modal("show");
+
+        return false;
+    });
+
 
     $("#my-checks-tags button").click(function() {
         // .active has not been updated yet by bootstrap code,

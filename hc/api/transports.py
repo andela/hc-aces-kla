@@ -24,20 +24,16 @@ class Transport(object):
 
     def notify(self, check):
         """ Send notification about current status of the check.
-
         This method returns None on success, and error message
         on error.
-
         """
 
         raise NotImplementedError()
 
     def test(self):
         """ Send test message.
-
         This method returns None on success, and error message
         on error.
-
         """
 
         raise NotImplementedError()

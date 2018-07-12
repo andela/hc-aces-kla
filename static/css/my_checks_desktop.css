@@ -76,6 +76,10 @@ table.table tr > th.th-name {
     font-size: 16px;
 }
 
+.check-priority {
+    visibility: visible;
+}
+
 .dropdown-menu > li > a.check-menu-remove {
     color: #B71C1C;
 }
