@@ -1,7 +1,5 @@
 from hc.test import BaseTestCase
-from django.core.urlresolvers import reverse
-from hc.api.models import Check
-import os
+from mock import patch
 
 
 class AddShopifyAlertTestCase(BaseTestCase):
@@ -15,82 +13,103 @@ class AddShopifyAlertTestCase(BaseTestCase):
 
         assert response.status_code == 200
 
-    def test_it_accepts_connection_to_shopify(self):
-        """test it accepts connection to shopify """
-        API_KEY = os.environ.get('API_KEY')
+    @patch('hc.front.views.shopify')
+    def test_it_accepts_connection_to_shopify(self, mock):
+        api_key = "84895nfjdufer0n5jnru553jdmfi9"
 
-        PASSWORD = os.environ.get('PASSWORD')
+        password = "d602f072d117438yjfjfjfu9582ce3"
 
-        EVENT = "order/create"
+        event = "order/create"
 
-        NAME = "Create Order"
+        name = "Create Order"
 
-        SHOP_NAME = "Duuka1"
+        shop_name = "Duuka1"
 
-        form = {"api_key": API_KEY,
-                "password": PASSWORD,
-                "event": EVENT, "name": NAME,
-                "shop_name": SHOP_NAME
+        form = {"api_key": api_key,
+                "password": password,
+                "event": event,
+                "name": name,
+                "shop_name": shop_name
                 }
-
-        url = reverse("hc-create-shopify-alerts")
-
-        self.client.login(username="alice@example.org", password="password")
-        response = self.client.post(url, form)
-
-        self.assertRedirects(response, "/checks/")
-
-        assert response.status_code == 302
-
-    def test_it_doesnot_accept_wrong_details(self):
-        API_KEY = "84895nfjdufer0n5jnru553jdmfi9"
-
-        PASSWORD = "d602f072d117438yjfjfjfu9582ce3"
-
-        EVENT = "order/create"
-
-        NAME = "Create Order"
-
-        SHOP_NAME = "Duuka1"
-
-        form = {"api_key": API_KEY,
-                "password": PASSWORD,
-                "event": EVENT,
-                "name": NAME,
-                "shop_name": SHOP_NAME
-                }
-
+        url = "https://%s:%s@%s.myshopify.com/admin" % (
+            api_key, password, shop_name)
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(
             "/checks/create_shopify_alert/", form)
+        mock.ShopifyResource.set_site.assert_called_with(url)
+        self.assertEqual(response.status_code, 302)
 
-        assert response.status_code == 403
+    @patch('hc.front.views.shopify.ShopifyResource')
+    @patch('hc.front.views.shopify')
+    def test_it_doesnot_accept_wrong_details(self, mock, mock_hook):
+        api_key = "84895nfjdufer0n5jnru553jdmfi9"
 
-    def test_it_creates_alert_for_check_shopify_and_redirects(self):
-        API_KEY = os.environ.get('API_KEY')
+        password = "d602f072d117438yjfjfjfu9582ce3"
 
-        PASSWORD = os.environ.get('PASSWORD')
+        event = "order/create"
 
-        EVENT = "order/create"
+        name = "Create Order"
 
-        NAME = "Create Order"
+        shop_name = "Duuka1"
 
-        SHOP_NAME = "Duuka1"
-
-        form = {"api_key": API_KEY,
-                "password": PASSWORD,
-                "event": EVENT,
-                "name": NAME,
-                "shop_name": SHOP_NAME
+        form = {"api_key": api_key,
+                "password": password,
+                "event": event,
+                "name": name,
+                "shop_name": shop_name
                 }
-
+        mock_hook.set_site.side_effect = Exception
         self.client.login(username="alice@example.org", password="password")
-        response = self.client.post("/checks/create_shopify_alert/", form)
+        response = self.client.post(
+            "/checks/create_shopify_alert/", form)
+        self.assertEqual(response.status_code, 403)
 
-        self.assertRedirects(response, "/checks/")
-        self.assertEqual(Check.objects.count(), 1)
+    @patch('hc.front.views.shopify.Webhook')
+    @patch('hc.front.views.shopify')
+    def est_it_creates_alert_and_redirects(self, mock, mock_hook):
+        api_key = "84895nfjdufer0n5jnru553jdmfi9"
 
+        password = "d602f072d117438yjfjfjfu9582ce3"
+
+        event = "order/create"
+
+        name = "Create Order"
+
+        shop_name = "Duuka1"
+
+        form = {"api_key": api_key,
+                "password": password,
+                "event": event,
+                "name": name,
+                "shop_name": shop_name
+                }
+        mock_hook.find.return_value = []
         self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(
+            "/checks/create_shopify_alert/", form)
+        self.assertEqual(response.status_code, 302)
 
-        response = self.client.get("/checks/")
-        self.assertContains(response, "Create Order", status_code=200)
+    @patch('hc.front.views.shopify.Webhook')
+    @patch('hc.front.views.shopify')
+    def test_doesnt_create_event_twice(self, mock, mock_hook):
+        api_key = "84895nfjdufer0n5jnru553jdmfi9"
+
+        password = "d602f072d117438yjfjfjfu9582ce3"
+
+        event = "order/create"
+
+        name = "Create Order"
+
+        shop_name = "Duuka1"
+
+        form = {"api_key": api_key,
+                "password": password,
+                "event": event,
+                "name": name,
+                "shop_name": shop_name
+                }
+        mock_hook.find.return_value = [4, 5]
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post(
+            "/checks/create_shopify_alert/", form)
+        self.assertEqual(response.status_code, 400)
