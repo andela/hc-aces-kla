@@ -1,6 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 asn1crypto==0.24.0
+=======
+amqp==2.3.2
+>>>>>>> [Feature #158174602]Added task and task schedule models
 astroid==1.6.5
+atomicwrites==1.1.5
+attrs==18.1.0
 autoflake==1.2
 autopep8==1.3.5
 =======
@@ -8,10 +14,15 @@ astroid==1.6.5
 autoflake==1.2
 >>>>>>> [Chore #158174593] Fixed environment settings
 backports.functools-lru-cache==1.5
+billiard==3.5.0.4
 boto==2.48.0
+<<<<<<< HEAD
 cffi==1.11.5
 certifi==2018.4.16
 coverage==4.5.1
+=======
+celery==4.2.0
+>>>>>>> [Feature #158174602]Added task and task schedule models
 configparser==3.5.0
 cryptography==2.2.2
 cssselect==1.0.3
@@ -20,6 +31,7 @@ dj-database-url==0.5.0
 Django==1.10
 django-appconf==1.0.1
 django-compressor==2.1
+django-model-utils==3.1.2
 django-sendgrid-v5==0.6.893
 django-ses-backend==0.1.1
 djmail==0.11.0
@@ -32,12 +44,18 @@ gunicorn==19.8.1
 idna==2.7
 ipaddress==1.0.22
 isort==4.3.4
+kombu==4.2.1
 lazy-object-proxy==1.3.1
 lxml==4.2.1
 mccabe==0.6.1
 mock==2.0.0
+<<<<<<< HEAD
 ndg-httpsclient==0.5.0
+=======
+more-itertools==4.2.0
+>>>>>>> [Feature #158174602]Added task and task schedule models
 pbr==4.0.4
+pluggy==0.6.0
 premailer==2.9.6
 <<<<<<< HEAD
 psycopg2==2.7.5
@@ -47,14 +65,20 @@ pycodestyle==2.3.1
 pycparser==2.18
 =======
 psycopg2==2.7.1
+py==1.5.4
 pycodestyle==2.3.0
 >>>>>>> [Chore #158174593] Fixed environment settings
 pyflakes==1.6.0
 pyactiveresource==2.1.2
 PyJWT==1.6.4
 pylint==1.9.2
+<<<<<<< HEAD
 pyOpenSSL==18.0.0
 PySocks==1.6.8
+=======
+pytest==3.6.3
+pytest-django==3.3.2
+>>>>>>> [Feature #158174602]Added task and task schedule models
 python-decouple==3.1
 python-http-client==3.1.0
 <<<<<<< HEAD
@@ -63,6 +87,7 @@ python-telegram-bot==10.1.0
 >>>>>>> [Chore #158174593] Fixed environment settings
 pytz==2018.5
 rcssmin==1.0.6
+redis==2.10.6
 requests==2.9.1
 rjsmin==1.0.12
 sendgrid==5.4.1
@@ -76,6 +101,11 @@ sendgrid==5.4.1
 shopify-trois==1.0
 ShopifyAPI==3.1.0
 six==1.11.0
+<<<<<<< HEAD
 twilio==6.14.7
+=======
+twilio==6.14.6
+vine==1.1.4
+>>>>>>> [Feature #158174602]Added task and task schedule models
 whitenoise==3.3.1
 wrapt==1.10.11

@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from model_utils import Choices
+from hc.accounts.models import Profile
 from hc.api import transports
 from hc.accounts.models import Profile
 from hc.lib import emails
@@ -27,6 +29,13 @@ CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("slack", "Slack"), ("pd", "PagerDuty"), ("po", "Pushover"),
                  ("victorops", "VictorOps"), ("twiliosms", "TwilioSms"),
                  ("twiliovoice", "TwilioVoice"))
+
+SCHEDULE_INTERVALS = Choices(
+                    ('DAILY', 'daily'),
+                    ('WEEKLY', 'weekly'),
+                    ('MONTHLY', 'monthly'),
+                    ('SPECIFIC', 'specific')
+                    )
 
 PO_PRIORITIES = {
     -2: "lowest",
@@ -305,3 +314,15 @@ class Notification(models.Model):
     channel = models.ForeignKey(Channel)
     created = models.DateTimeField(auto_now_add=True)
     error = models.CharField(max_length=200, blank=True)
+
+class Task(models.Model):
+    name = models.CharField(max_length=100, blank=True)
+    description = models.CharField(max_length=100, blank=True)
+    profile = models.ManyToManyField(Profile)
+
+class TaskSchedule(models.Model):
+    task = models.ForeignKey(Task, blank=True, null=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    next_run_date = models.DateTimeField()
+    frequency = models.IntegerField(default=SCHEDULE_INTERVALS.DAILY,choices=SCHEDULE_INTERVALS)
+    run_count = models.IntegerField(default=0)
