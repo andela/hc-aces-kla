@@ -6,10 +6,7 @@ from django.core.urlresolvers import reverse
 import shopify
 import requests
 from hc.api.models import Check
-<<<<<<< HEAD
 import os
-=======
->>>>>>> [Feature #158174601] Add tests, UI and logic for Shopify integration
 
 class AddShopifyAlertTestCase(BaseTestCase):
     """This class contains tests to handle adding checks"""
@@ -25,15 +22,9 @@ class AddShopifyAlertTestCase(BaseTestCase):
 
     def test_it_accepts_connection_to_shopify(self):
         """test that when the correct authentication keys are given that it returns valid response """
-<<<<<<< HEAD
         API_KEY = os.environ.get('API_KEY')
 
         PASSWORD = os.environ.get('PASSWORD')
-=======
-        API_KEY = "2ea13bd64c9c06f5ff5501dd6872ecda"
-
-        PASSWORD = "d602f072d114aceca3c21a2234582ce3"
->>>>>>> [Feature #158174601] Add tests, UI and logic for Shopify integration
 
         EVENT = "order/create"
 
@@ -54,11 +45,7 @@ class AddShopifyAlertTestCase(BaseTestCase):
         assert response.status_code == 302
 
     def test_it_doesnot_accept_wrong_details(self):
-<<<<<<< HEAD
         API_KEY = "84895nfjdufer0n5jnru553jdmfi9"
-=======
-        API_KEY = "2ea13bd64c9c06f5ff5501dd6872ecda"
->>>>>>> [Feature #158174601] Add tests, UI and logic for Shopify integration
 
         PASSWORD = "d602f072d117438yjfjfjfu9582ce3"
 
@@ -78,15 +65,9 @@ class AddShopifyAlertTestCase(BaseTestCase):
         assert response.status_code == 403
 
     def test_it_creates_alert_for_check_shopify_and_redirects(self):
-<<<<<<< HEAD
         API_KEY = os.environ.get('API_KEY')
 
         PASSWORD = os.environ.get('PASSWORD')
-=======
-        API_KEY = "2ea13bd64c9c06f5ff5501dd6872ecda"
-
-        PASSWORD = "d602f072d114aceca3c21a2234582ce3"
->>>>>>> [Feature #158174601] Add tests, UI and logic for Shopify integration
 
         EVENT = "order/create"
 
