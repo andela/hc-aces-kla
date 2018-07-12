@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
 
         migrations.AlterIndexTogether(
             name='check',
-            index_together=set([('status', 'user', 'alert_after', 'number_of_nags')]),
+            index_together=set([('status', 'user', 'alert_after',
+                                 'number_of_nags')]),
         ),
     ]
