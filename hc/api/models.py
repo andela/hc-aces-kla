@@ -31,11 +31,11 @@ CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("twiliovoice", "TwilioVoice"))
 
 SCHEDULE_INTERVALS = Choices(
-                    ('DAILY', 'daily'),
-                    ('WEEKLY', 'weekly'),
-                    ('MONTHLY', 'monthly'),
-                    ('SPECIFIC', 'specific')
-                    )
+    ('DAILY', 'daily'),
+    ('WEEKLY', 'weekly'),
+    ('MONTHLY', 'monthly'),
+    ('SPECIFIC', 'specific')
+)
 
 PO_PRIORITIES = {
     -2: "lowest",
@@ -315,14 +315,18 @@ class Notification(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     error = models.CharField(max_length=200, blank=True)
 
+
 class Task(models.Model):
     name = models.CharField(max_length=100, blank=True)
     description = models.CharField(max_length=100, blank=True)
     profile = models.ManyToManyField(Profile)
 
+
 class TaskSchedule(models.Model):
     task = models.ForeignKey(Task, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     next_run_date = models.DateTimeField()
-    frequency = models.IntegerField(default=SCHEDULE_INTERVALS.DAILY,choices=SCHEDULE_INTERVALS)
+    frequency = models.IntegerField(
+        default=SCHEDULE_INTERVALS.DAILY,
+        choices=SCHEDULE_INTERVALS)
     run_count = models.IntegerField(default=0)
