@@ -160,6 +160,7 @@ USE_TZ = True
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
 =======
 SITE_ROOT = os.environ.get['SITE_ROOT']
@@ -209,6 +210,9 @@ SITE_ROOT = os.environ.get('SITE_ROOT') or "http://localhost:8000"
 =======
 SITE_ROOT = os.environ.get('SITE_ROOT', 'http://localhost:8000')
 >>>>>>> [Feature #158174601] Fix remove shopify check
+=======
+SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
+>>>>>>> Fix conflicts
 PING_ENDPOINT = SITE_ROOT + "/ping/"
 PING_EMAIL_DOMAIN = HOST
 STATIC_URL = '/static/'
