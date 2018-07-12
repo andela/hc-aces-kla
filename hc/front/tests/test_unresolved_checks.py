@@ -33,7 +33,7 @@ class UnresolvedChecksTestCase(BaseTestCase):
     def test_only_unresolved_checks_are_returned(self):
         """Test checks with status down are the only ones returned"""
 
-        self.check.last_ping = timezone.now() - td(days=1)
+        self.check.last_ping = timezone.now() - td(days=3)
         self.check.status = "down"
         self.check.save()
 
