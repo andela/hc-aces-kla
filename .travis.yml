@@ -24,7 +24,7 @@ deploy:
     secure: kg/YJsYRXxT3MjtdSjgOpNJKKP5LGy8SQE+fYqyMphp/trpEkVAezYmII+BdvAVScqh4pwAvqkcttYpFCUgfzxyy0hhOcVQaDbusUF5bbs5ChAbwR4ftIIDUr82Gd6xEaWIy0SQWUel4QBeezXACI70hN0G/N/znPojGmxzZdcsZm3d90yVF+AraXW1Z1/BLmFlx+LAhbzlg8888QfM5m5F7bKlcqC5koKxWcZc9SrZugIQGhR/MHoBxvK9OpkHBgAh4iOxqxYA90A4Xj2PNBXV2aVSpNDw3RVEW6p7w3pc0wSmiOqzUrwU2ZzvYUVXKTLfGfxokv3Kj9kqGDKqOIL8xzaMP1cU1JkEZtim6xanYokVU4ySVqcODQ57zA55zLK+uc1G1b7BT/SDrGyindpuC5Px3fteoydMabczeQxTi3vxPAN+rjzxWD2JeYUX5hSlk9wKhfh8OyU4ve/F/UThqoVvPcZxbRG4cmMimnsx7g/sFhJDgBzG1/zUjLb4vyYL8M1lIacGtCF2lvACP5UvTak4UoDKHKNDzIkxaAQfd2YzX12bWrYVyMDeM3m4zjm9+GvRWzk0/cPd5cNleraErYVqeCYBPJJXFF/1ErYXPZozOLJh7NYqvtzsrp64QyedH0AOHcdOCly5FetQ4kX3tu6Bj2TSMcV5TQLsnpq0=
   on:
     all_branches: true
-    condition: $DB = heroku
+    condition: $DB = postgres
   run:
     - python manage.py makemigrations --merge
     - python manage.py ensuretriggers
