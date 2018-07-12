@@ -67,31 +67,3 @@ class AddShopifyAlertTestCase(BaseTestCase):
 
         assert response.status_code == 403
 
-    def test_it_creates_alert_for_check_shopify_and_redirects(self):
-        API_KEY = os.environ.get('API_KEY')
-
-        PASSWORD = os.environ.get('PASSWORD')
-
-        EVENT = "order/create"
-
-        NAME = "Create Order"
-
-        SHOP_NAME = "Duuka1"
-
-        form = {"api_key": API_KEY,
-                "password": PASSWORD,
-                "event": EVENT,
-                "name": NAME,
-                "shop_name": SHOP_NAME
-                }
-
-        self.client.login(username="alice@example.org", password="password")
-        response = self.client.post("/checks/create_shopify_alert/", form)
-
-        self.assertRedirects(response, "/checks/")
-        self.assertEqual(Check.objects.count(), 1)
-
-        self.client.login(username="alice@example.org", password="password")
-
-        response = self.client.get("/checks/")
-        self.assertContains(response, "Create Order", status_code=200)
