@@ -37,7 +37,6 @@ class AddShopifyAlertTestCase(BaseTestCase):
 
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
-
         self.assertRedirects(response, "/checks/")
 
         assert response.status_code == 302
