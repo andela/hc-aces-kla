@@ -323,6 +323,7 @@ class Task(models.Model):
         max_length=20)
 
 
+
 class TaskSchedule(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
