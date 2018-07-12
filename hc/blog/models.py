@@ -31,7 +31,7 @@ class Post(models.Model):
     author = models.ForeignKey(
         User, related_name='blog_posts', on_delete=models.CASCADE)
     category = models.ForeignKey(
-        Category, related_name="posts", on_delete=models.CASCADE)
+        Category, related_name="posts", on_delete=models.CASCADE, default=1)
     slug = models.SlugField(max_length=250, unique_for_date='publish')
     publish = models.DateTimeField(default=timezone.now)
     body = models.TextField()
