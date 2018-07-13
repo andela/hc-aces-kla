@@ -90,6 +90,8 @@ table.channels-table > tbody > tr > th {
 .add-integration {
     list-style: none;
     padding: 0;
+    height: 400px;
+    overflow: auto;
 }
 
 .add-integration li {
