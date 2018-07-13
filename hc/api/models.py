@@ -31,10 +31,14 @@ CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("twiliovoice", "TwilioVoice"))
 
 SCHEDULE_INTERVALS = Choices(
-    ('DAILY', 'daily'),
-    ('WEEKLY', 'weekly'),
-    ('MONTHLY', 'monthly'),
-    ('SPECIFIC', 'specific')
+    ('daily', 'Daily'),
+    ('weekly', 'Weekly'),
+    ('monthly', 'Monthly')
+)
+
+TASK_TYPES = Choices(
+    ('database_backups', 'Database_backups'),
+    ('export_reports', 'Export_Reports')
 )
 
 PO_PRIORITIES = {
@@ -318,15 +322,22 @@ class Notification(models.Model):
 
 class Task(models.Model):
     name = models.CharField(max_length=100, blank=True)
-    description = models.CharField(max_length=100, blank=True)
+    task_type = models.CharField(default=TASK_TYPES.database_backups,
+        max_length=100,
+        choices=TASK_TYPES)
     profile = models.ManyToManyField(Profile)
 
 
 class TaskSchedule(models.Model):
     task = models.ForeignKey(Task, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
+    send_email_updates = models.BooleanField(default=False)
+    frequency = models.CharField(
+        choices=SCHEDULE_INTERVALS,
+        default=SCHEDULE_INTERVALS.daily,
+        max_length=20)
     next_run_date = models.DateTimeField()
-    frequency = models.IntegerField(
-        default=SCHEDULE_INTERVALS.DAILY,
-        choices=SCHEDULE_INTERVALS)
     run_count = models.IntegerField(default=0)
+
+
+
