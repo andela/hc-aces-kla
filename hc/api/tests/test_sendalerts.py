@@ -31,8 +31,7 @@ class SendAlertsTestCase(BaseTestCase, TransactionTestCase):
         # The above assert fails. Make it pass
         # no failure
 
-    @patch("hc.api.management.commands.sendalerts.\
-    Command.handle_many")
+    @patch("hc.api.management.commands.sendalerts.Command.handle_many")
     def test_it_handles_grace_period(self, mock):
         check = Check(user=self.alice, status="up")
 

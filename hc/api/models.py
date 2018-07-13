@@ -59,10 +59,9 @@ class Check(models.Model):
     runs_too_often = models.BooleanField(default=False)
     priority = models.IntegerField(default=1)
     number_of_nags = models.IntegerField(default=0)
-    escalate = models.BooleanField(default=False) 
+    escalate = models.BooleanField(default=False)
     twilio_number = models.TextField(default="+00000000000", null=True,
                                      blank=True)
-
 
     def name_then_code(self):
         if self.name:

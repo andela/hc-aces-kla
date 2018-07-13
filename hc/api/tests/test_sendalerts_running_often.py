@@ -1,4 +1,3 @@
-import pytest
 from datetime import timedelta
 from django.utils import timezone
 from mock import patch
@@ -7,7 +6,6 @@ from hc.api.models import Check
 from hc.test import BaseTestCase
 
 
-@pytest.mark.django_db(transaction=True)
 class SendAlertsRunningTooOftenTestCase(BaseTestCase):
 
     def setUp(self):
