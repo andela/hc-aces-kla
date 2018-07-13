@@ -32,8 +32,10 @@ class SendAlertsRunningTooOftenTestCase(BaseTestCase):
     @patch("hc.api.management.commands.sendalerts.Command.handle_many")
     def test_it_notifies_when_check_run_too_often(self, mock):
         '''
-            Tests that a check is not too often i.e. it should not be run before the time left
-            before its timeout period expires is less than or equal to its grace period
+            Tests that a check is not too often i.e.
+            it should not be run before the time left
+            before its timeout period expires is
+            less than or equal to its grace period
         '''
 
         # Ping check

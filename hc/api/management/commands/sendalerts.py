@@ -2,10 +2,10 @@ import logging
 import time
 from concurrent.futures import ThreadPoolExecutor
 from django.core.management.base import BaseCommand
+from django.db.models import Q
 from django.db import connection
 from django.utils import timezone
 from hc.api.models import Check
-from hc.api.helpers import get_running_checks
 
 executor = ThreadPoolExecutor(max_workers=10)
 logger = logging.getLogger(__name__)
@@ -19,7 +19,8 @@ class Command(BaseCommand):
 
         query = Check.objects.filter(user__isnull=False).select_related("user")
 
-        running_checks = get_running_checks(query)
+        running_checks = running_checks = query.filter(
+            Q(status="up") | Q(status="down"))
 
         now = timezone.now()
         repeat_list_approved = query.filter(

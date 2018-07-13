@@ -75,7 +75,7 @@ class TwilioSms(Transport):
             to=self.channel.value,
             from_=settings.TWILIO_NUMBER)
 
-  
+
 class TwilioVoice(Transport):
     def notify(self, check):
         self.client.calls.create(

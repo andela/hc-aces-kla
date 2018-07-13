@@ -1,14 +1,11 @@
 from datetime import timedelta
-from unittest import skip
-import pytest
-from django.core import mail
 from django.utils import timezone
-from django.core.urlresolvers import reverse
 from django.test import TransactionTestCase
 from mock import patch
 from hc.api.management.commands.sendalerts import Command
 from hc.api.models import Check
 from hc.test import BaseTestCase
+
 
 class SendAlertsTestCase(BaseTestCase, TransactionTestCase):
 
@@ -34,7 +31,8 @@ class SendAlertsTestCase(BaseTestCase, TransactionTestCase):
         # The above assert fails. Make it pass
         # no failure
 
-    @patch("hc.api.management.commands.sendalerts.Command.handle_many")
+    @patch("hc.api.management.commands.sendalerts.\
+    Command.handle_many")
     def test_it_handles_grace_period(self, mock):
         check = Check(user=self.alice, status="up")
 
@@ -49,4 +47,3 @@ class SendAlertsTestCase(BaseTestCase, TransactionTestCase):
         # True
         result = Command().handle_many()
         assert result, True
-
