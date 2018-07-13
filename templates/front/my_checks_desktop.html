@@ -10,6 +10,7 @@
         </th>
         <th>Nag Interval</th>
         <th>Last Ping</th>
+        <th>Priority</th>
         <th></th>
     </tr>
     {% for check in checks %}
@@ -102,6 +103,45 @@
             Never
         {% endif %}
         </td>
+        <td>        
+        {% for key, value in state.items%}
+            {% ifequal key check.priority %}
+                <div class="check-priority dropdown">
+                        {%ifequal value "high" %}
+                            <button class="btn btn-xs btn-danger dropdown-toggle" type="button" data-toggle="dropdown">
+                        {% endifequal %}
+                        {% ifequal value "medium" %}
+                            <button class="btn btn-xs btn-warning dropdown-toggle" type="button" data-toggle="dropdown">
+                        {% endifequal %}
+                        {% ifequal value "low" %}
+                            <button class="btn btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+                        {% endifequal %}
+                    <span  aria-hidden="true"> {{ value }}</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for key, value in state.items%}
+                            {% ifnotequal key check.priority %}
+                                <li>
+                                    <a href="#" class="check-priority-update"
+                                    data-priority="{{ value }}"
+                                    data-url="{% url 'hc-update-priority' check.code %}">
+                                            {{ value }}
+                                    </a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                            {% endifnotequal %}
+                        {% endfor %}
+
+                    </ul>
+                </div>
+
+            {% endifequal %}
+        {% endfor%}
+                        
+                        
+                   
+        </td>
+    
         <td>
             <div class="check-menu dropdown">
                 <button class="btn btn-sm btn-default dropdown-toggle" type="button" data-toggle="dropdown">
@@ -117,7 +157,7 @@
                     </li>
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="{% url 'hc-log' check.code %}">
+                        <a href="{% url 'hc-log' check.code %}" method="post">
                             Log
                         </a>
                     </li>
