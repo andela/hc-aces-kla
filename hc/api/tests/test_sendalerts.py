@@ -40,37 +40,6 @@ class SendAlertsTestCase(BaseTestCase):
         # Expect no exceptions--
         Command().handle_one(check)
 
-<<<<<<< HEAD
     # Assert when Command's handle many that when
     # handle_many should return True
     #  self.assertEqual(Command().handle_many(), True)
-=======
-    ### Assert when Command's handle many that when handle_many should return True
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        assert (Command().handle_many())
-        
->>>>>>> Debug tests
-=======
-        assert (Command().handle_many(), True)
-        
->>>>>>> Fix the UI to allow integrations
-=======
-        # assert (Command().handle_many(), True)
-        
->>>>>>> Fix travis
-=======
-        # assert (Command().handle_many(), True)  
->>>>>>> Fix travis
-=======
-        assert (Command().handle_many(), True)
-        
->>>>>>> Fix travis
-=======
-        #assert (Command().handle_many(), True)
- 
-
->>>>>>> Fix travis

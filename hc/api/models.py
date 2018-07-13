@@ -26,11 +26,7 @@ CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("hipchat", "HipChat"),
                  ("slack", "Slack"), ("pd", "PagerDuty"), ("po", "Pushover"),
                  ("victorops", "VictorOps"), ("twiliosms", "TwilioSms"),
-<<<<<<< HEAD
-                 ("twiliovoice", "TwilioVoice"))
-=======
                  ("twiliovoice", "TwilioVoice"), ("telegram", "Telegram"))
->>>>>>> Ft Telegram integrations
 
 PO_PRIORITIES = {
     -2: "lowest",
@@ -63,8 +59,7 @@ class Check(models.Model):
 
     twilio_number = models.TextField(default="+256705357610")
 
-    twilio_number = models.TextField(default="+256705357610")
-    chat_id = models.TextField(default="549751449")
+    twilio_number = models.TextField(default=+256705357610)
 
     def name_then_code(self):
         if self.name:
@@ -165,15 +160,7 @@ class Channel(models.Model):
     user = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     kind = models.CharField(max_length=20, choices=CHANNEL_KINDS)
-<<<<<<< HEAD
-<<<<<<< HEAD
     value = models.TextField(max_length=25, default="+256705357610")
-=======
-    value = models.TextField(max_length=25,default=+256705357610)
->>>>>>> Add app.json
-=======
-    value = models.TextField(max_length=25,default="+256705357610")
->>>>>>> Fix the UI to allow integrations
     email_verified = models.BooleanField(default=False)
     checks = models.ManyToManyField(Check)
 
@@ -198,8 +185,6 @@ class Channel(models.Model):
             return transports.TwilioSms(self)
         if self.kind == "twiliovoice":
             return transports.TwilioVoice(self)
-        if self.kind == "telegram":
-            return transports.Telegram(self)
         if self.kind == "email":
             return transports.Email(self)
         elif self.kind == "webhook":
@@ -225,6 +210,7 @@ class Channel(models.Model):
             error = self.transport.notify(check) or ""
             if error in ("", "no-op"):
                 break  # Success!
+
         if error != "no-op":
             n = Notification(owner=check, channel=self)
             n.check_status = check.status

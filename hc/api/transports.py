@@ -1,27 +1,15 @@
-<<<<<<< HEAD
-
-=======
-import os
->>>>>>> Fix the UI to allow integrations
 from django.conf import settings
+from hc.lib import emails
 from django.template.loader import render_to_string
 from django.utils import timezone
 import json
 import requests
 from six.moves.urllib.parse import quote
 from twilio.rest import Client
-import requests
-from time import sleep
 import datetime
 import telegram
 now = datetime.datetime.now()
 
-from hc.lib import emails
-
-
-#Twilio Account SID and AUTH_TOKEN details
-# TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
-# TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 
 def tmpl(template_name, **ctx):
     template_path = "integrations/%s" % template_name
@@ -31,14 +19,9 @@ def tmpl(template_name, **ctx):
 class Transport(object):
     def __init__(self, channel):
         self.channel = channel
-<<<<<<< HEAD
         self.client = Client(
             settings.TWILIO_ACCOUNT_SID,
             settings.TWILIO_AUTH_TOKEN)
-=======
-        self.client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-
->>>>>>> Fix the UI to allow integrations
 
     def notify(self, check):
         """ Send notification about current status of the check.
@@ -85,7 +68,6 @@ class Email(Transport):
 
 class TwilioSms(Transport):
     def notify(self, check):
-<<<<<<< HEAD
         self.client.messages.create(
             body="Healthchecks updates\n Name: \
             {}\nLast ping: {}\nstatus:{}".format(
@@ -93,28 +75,15 @@ class TwilioSms(Transport):
                 check.status),
             to=self.channel.value,
             from_=settings.TWILIO_NUMBER
-=======
-        message = self.client.messages.create(
-        body = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(check.name, check.last_ping.strftime('%x, %X'), check.status),
-        to = self.channel.value,
-        from_=settings.TWILIO_NUMBER
->>>>>>> Fix the UI to allow integrations
         )
 
 
 class TwilioVoice(Transport):
     def notify(self, check):
-<<<<<<< HEAD
         self.client.calls.create(
             url="http://demo.twilio.com/docs/voice.xml",
             to=self.channel.value,
             from_=settings.TWILIO_NUMBER
-=======
-        call = self.client.calls.create(
-        url = "http://demo.twilio.com/docs/voice.xml",
-        to = self.channel.value,
-        from_=settings.TWILIO_NUMBER
->>>>>>> Fix the UI to allow integrations
         )
 
 
@@ -277,14 +246,14 @@ class VictorOps(HttpTransport):
 
         return self.post(self.channel.value, payload)
 
-def custom_message(check):
-    message = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(
-                check.name, check.last_ping.strftime('%x, %X'), check.status)
-    return message
 
 class Telegram(Transport):
+    def telegram_message(self, check):
+        return "HealthchecksUpdates\nName:{}\nLastPing:{}\nstatus:{}".format(
+            check.name, check.last_ping.strftime('%x, %X'), check.status)
+
     def notify(self, check):
         api = telegram.Bot(token=settings.TELEGRAM_TOKEN)
         api.send_message(
-            chat_id=self.channel.value, text=custom_message(check))
+            chat_id=self.channel.value, text=self.telegram_message(check))
         return "no-op"

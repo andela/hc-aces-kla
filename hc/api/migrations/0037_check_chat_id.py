@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='check',
             name='chat_id',
-            field=models.TextField(default='549751449'),
+            field=models.TextField(default='549751449', null=True),
         ),
     ]
