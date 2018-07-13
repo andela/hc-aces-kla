@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.utils import timezone
 from hc.blog.models import Post, Category, Comment
 
+
 class ViewPostsTestCase(BaseTestCase):
     def setUp(self):
         super(ViewPostsTestCase, self).setUp()

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.urls import reverse
 
+
 class Category(models.Model):
     owner = models.ForeignKey(
         User, related_name='categories', on_delete=models.CASCADE)
@@ -14,12 +15,13 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+
 class PublishedManager(models.Manager):
     def get_queryset(self):
         today = timezone.now()
         return super(PublishedManager,
-                    self).get_queryset()\
-                    .filter(status='published').filter(Q(publish__lte=today))
+                     self).get_queryset()\
+            .filter(status='published').filter(Q(publish__lte=today))
 
 
 class Post(models.Model):
@@ -52,6 +54,7 @@ class Post(models.Model):
     objects = models.Manager()
     published = PublishedManager()
 
+
 class Comment(models.Model):
     post = models.ForeignKey(
         Post, related_name="comments", on_delete=models.CASCADE)
@@ -62,5 +65,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.name
-
-

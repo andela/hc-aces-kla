@@ -2,6 +2,7 @@ from django import forms
 from django.forms.utils import ErrorList
 from .models import Post, Category, Comment
 
+
 class AddPostForm(forms.ModelForm):
     class Meta:
         model = Post
