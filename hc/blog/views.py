@@ -98,7 +98,8 @@ def add_category(request):
             category.save()
             messages.success(
                 request, "Category has been created successfully.")
-            return HttpResponse({"message": "Category has been added successfully"}, 200)
+            return HttpResponse(
+                {"message": "Category has been added successfully"}, 200)
     else:
         return HttpResponse({"message": "Http method not allowed"}, 405)
 
@@ -124,7 +125,11 @@ def articles_list(request):
 
 def article_detail(request, year, month, day, slug):
     post = get_object_or_404(
-        Post, slug=slug, publish__year=year, publish__month=month, publish__day=day)
+        Post,
+        slug=slug,
+        publish__year=year,
+        publish__month=month,
+        publish__day=day)
     if request.method == "POST":
         form = AddCommentForm(request.POST)
         comment = form.save(commit=False)

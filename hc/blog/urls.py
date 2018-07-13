@@ -4,7 +4,8 @@ from hc.blog import views
 urlpatterns = [
     url(r'^my-blogs/$', views.my_posts, name="hc-my-posts"),
     url(r'^add-post/$', views.add_post, name='hc-add-post'),
-    url(r'^post/(?P<post_id>\d+)/edit/$', views.edit_post, name='hc-edit-post'),
+    url(r'^post/(?P<post_id>\d+)/edit/$', views.edit_post,
+        name='hc-edit-post'),
     url(r'^post/(?P<post_id>\d+)/remove/$',
         views.remove_post, name='hc-remove-post'),
     url(r'^category/add/$', views.add_category, name="hc-add-category"),

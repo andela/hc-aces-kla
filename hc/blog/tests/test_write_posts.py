@@ -8,8 +8,13 @@ class WritePostsTestCase(BaseTestCase):
         super(WritePostsTestCase, self).setUp()
         self.category = Category(title="test category", owner=self.alice)
         self.category.save()
-        self.post = Post(title="test post", slug="test-post", body="test content",
-                         author=self.alice, status="draft", category=self.category)
+        self.post = Post(
+            title="test post",
+            slug="test-post",
+            body="test content",
+            author=self.alice,
+            status="draft",
+            category=self.category)
         self.post.save()
         self.client.login(username="alice@example.org", password="password")
         self.form = {
@@ -30,7 +35,11 @@ class WritePostsTestCase(BaseTestCase):
 
     def test_it_edits_post(self):
         res = self.client.post(
-            reverse("hc-edit-post", kwargs={"post_id": self.post.id}), self.form)
+            reverse(
+                "hc-edit-post",
+                kwargs={
+                    "post_id": self.post.id}),
+            self.form)
         self.assertRedirects(res, reverse("hc-my-posts"))
         self.post.refresh_from_db()
         self.assertEqual(self.post.title, self.form.get("title"))
@@ -56,5 +65,9 @@ class WritePostsTestCase(BaseTestCase):
     def test_does_not_edit_post_with_wrong_date(self):
         self.form['publish'] = "Wrong date"
         res = self.client.post(
-            reverse("hc-edit-post", kwargs={"post_id": self.post.id}), self.form)
+            reverse(
+                "hc-edit-post",
+                kwargs={
+                    "post_id": self.post.id}),
+            self.form)
         self.assertContains(res, "<li>Enter valid date and time</li>")

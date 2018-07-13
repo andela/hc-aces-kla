@@ -9,9 +9,14 @@ class ViewPostsTestCase(BaseTestCase):
         super(ViewPostsTestCase, self).setUp()
         self.category = Category(title="test-category", owner=self.alice)
         self.category.save()
-        self.post = Post(title="test post", slug="test-post", body="test content",
-                         author=self.alice, status="published",
-                         category=self.category, publish=timezone.now())
+        self.post = Post(
+            title="test post",
+            slug="test-post",
+            body="test content",
+            author=self.alice,
+            status="published",
+            category=self.category,
+            publish=timezone.now())
         self.post.save()
         self.client.login(username="alice@example.org", password="password")
 
