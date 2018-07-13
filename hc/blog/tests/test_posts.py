@@ -1,7 +1,7 @@
 from hc.test import BaseTestCase
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from hc.blog.models import Post, Category, Comment
+from hc.blog.models import Category, Post
 
 
 class ViewPostsTestCase(BaseTestCase):

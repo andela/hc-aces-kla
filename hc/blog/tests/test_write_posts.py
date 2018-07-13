@@ -1,6 +1,6 @@
 from hc.test import BaseTestCase
 from django.urls import reverse
-from hc.blog.models import Post, Category, Comment
+from hc.blog.models import Category, Post
 
 
 class WritePostsTestCase(BaseTestCase):

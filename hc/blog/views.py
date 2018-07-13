@@ -2,11 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.utils.text import slugify
 from django.contrib import messages
 from dateutil import parser as date_parser
-from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from .forms import AddPostForm, AddCategoryForm, AddCommentForm
-from .models import Post, Category
+from .models import Post
 from django.views.decorators.csrf import csrf_exempt
 
 
