@@ -24,7 +24,7 @@ deploy:
   api_key:
     secure: m7Whuwm0yWmSvQBo36/anP6K68CXvBoBg2QEcBoencs2U48M9C8qhSS32dbGJU9wgGtzkq0uIhtf+vO00hr7Q0YMB0NAqvHPQACZOtbp1OM9RzBmp25vlLf65jy0jVlkM7aOwDoWS3KV3ooJeDvEUMwlmLjqPwG5Y/yWiogsotS8wF1j3sc/f/IRv8yAUXeo/lVbOZA0gY0iJ0k1op7D6uiojyPnt4ylkPtcRu340uG9iGotWmlcHk0ClfS32u55b6MfKSJW49jcm44y+c2cAVj3XtJrNGsAO2laAAAFu8Gfz6zhpKXgrwl4LVIPJ9WP/MI0CjK2ZBO4IMi/e1b9eYcLCERkjNvXZnd9ALiZG5ZxccAnx1edGFMPgaOHa4A5RFYTxBH5W2Sg5NVi6XJIeWuWYgMxL96WlyVGuwzEm7S78Lq/vzU2EZknmzh/rncuXp4yMCfiTa8FlJgl5gl+Kj3yDPFtI16WQ/3CnFr1tXfqBKG2wTqNu+bk6Gx6l91bp7zPc7fHNpSQhFwAb0xfZokFb2OzsTEylpXbu8Nu5RvEkXwRq0kbgZTKRoQhYKm81UUayR16dhcmiYd+KliTtO1eohL3MNV/SetLtibNdHcdhUO8K9aXvrIn2vWiZoKvNsU6mvilt1bR3lJ40q+v55MxWhu6svSX1nUqiBQQgcU=
   skip_cleanup: true
-  app: hc-aces-kla
+  app: health-checks-staging
   on:
     repo: andela/hc-aces-kla
     all_branches: true 
