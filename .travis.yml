@@ -28,7 +28,3 @@ deploy:
   on:
     repo: andela/hc-aces-kla
     all_branches: true 
-  run:
-  - python manage.py migrate
-  - python manage.py ensuretriggers
-  - python manage.py sendalerts
