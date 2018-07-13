@@ -128,11 +128,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-<<<<<<< HEAD
 SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
-=======
-SITE_ROOT = os.environ.get('SITE_ROOT', 'http://localhost:8000')
->>>>>>> Fix travis
 PING_ENDPOINT = SITE_ROOT + "/ping/"
 PING_EMAIL_DOMAIN = HOST
 STATIC_URL = '/static/'
@@ -166,12 +162,14 @@ PUSHOVER_EMERGENCY_RETRY_DELAY = 300
 PUSHOVER_EMERGENCY_EXPIRATION = 86400
 
 # Twilio integration
-TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
-TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
-TWILIO_NUMBER = os.environ.get("TWILIO_NUMBER")
+TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID", "1326573647")
+TWILIO_AUTH_TOKEN = os.environ.get(
+    "TWILIO_AUTH_TOKEN", "qwertyuiopEVJ123456789")
+TWILIO_NUMBER = os.environ.get("TWILIO_NUMBER", "+256700000000")
 
 # Telegram integration
-TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
+TELEGRAM_TOKEN = os.environ.get(
+    'TELEGRAM_TOKEN', "QWERTdfghj5ghYUIOP123456789")
 
 # Pushbullet integration -- override these in local_settings
 PUSHBULLET_CLIENT_ID = None

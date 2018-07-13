@@ -5,8 +5,6 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils import timezone
 from twilio.rest import Client
-import requests
-from time import sleep
 import datetime
 import telegram
 now = datetime.datetime.now()
@@ -253,8 +251,12 @@ def custom_message(check):
 
 
 class Telegram(Transport):
+    def telegram_message(self, check):
+        return "HealthchecksUpdates\nName:{}\nLastPing:{}\nstatus:{}".format(
+            check.name, check.last_ping.strftime('%x, %X'), check.status)
+
     def notify(self, check):
         api = telegram.Bot(token=settings.TELEGRAM_TOKEN)
         api.send_message(
-            chat_id=self.channel.value, text=custom_message(check))
+            chat_id=self.channel.value, text=self.telegram_message(check))
         return "no-op"

@@ -1,9 +1,8 @@
 from django.test.utils import override_settings
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from hc.api.models import Channel, Check
+from hc.api.models import Channel
 from hc.test import BaseTestCase
-import os
 
 
 @override_settings(PUSHOVER_API_TOKEN="token", PUSHOVER_SUBSCRIPTION_URL="url")
@@ -43,7 +42,6 @@ class AddChannelTestCase(BaseTestCase):
             "twiliosms",
             "twiliovoice",
             "telegram")
-
         for frag in kinds:
             url = "/integrations/add_%s/" % frag
             response = self.client.get(url)
@@ -113,7 +111,7 @@ class AddChannelTestCase(BaseTestCase):
         """ test telegram integration works"""
         alice_channel = User.objects.get(email="alice@example.org")
         alice_before = Channel.objects.filter(user=alice_channel).count()
-        self.client.login(username="bob@example.org", password="password")
+        self.client.login(username="alice@example.org", password="password")
         form = {"kind": "telegram", "value": "549751449"}
         self.client.post(reverse("hc-add-channel"), form)
         alice_after = Channel.objects.filter(user=alice_channel).count()
