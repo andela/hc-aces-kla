@@ -4,13 +4,13 @@ import hashlib
 import json
 import uuid
 from datetime import timedelta as td
-
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from hc.api import transports
+from hc.accounts.models import Profile
 from hc.lib import emails
 
 STATUSES = (
@@ -41,7 +41,7 @@ class Check(models.Model):
 
     class Meta:
         # sendalerts command will query using these
-        index_together = ["status", "user", "alert_after"]
+        index_together = ["status", "user", "alert_after", "number_of_nags"]
 
     name = models.CharField(max_length=100, blank=True)
     tags = models.CharField(max_length=500, blank=True)
@@ -56,8 +56,12 @@ class Check(models.Model):
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
     nag_intervals = models.DurationField(default=DEFAULT_NAG_TIME)
     nag_after_time = models.DateTimeField(null=True, blank=True)
+    priority = models.IntegerField(default=1)
+    number_of_nags = models.IntegerField(default=0)
+    escalate = models.BooleanField(default=False)
 
-    twilio_number = models.TextField(default="+256705357610")
+    twilio_number = models.TextField(default="+00000000000", null=True,
+                                     blank=True)
 
     def name_then_code(self):
         if self.name:
@@ -77,12 +81,37 @@ class Check(models.Model):
     def send_alert(self):
         if self.status not in ("up", "down"):
             raise NotImplementedError("Unexpected status: %s" % self.status)
+        if self.priority == 3 and self.number_of_nags < 4:
+            self.escalate = False
+        elif self.priority == 3 and self.number_of_nags > 3:
+            self.escalate = True
+        if self.priority == 2 and self.number_of_nags < 10:
+            self.escalate = False
+        elif self.priority == 2 and self.number_of_nags > 9:
+            self.escalate = True
+        self.number_of_nags += 1
+        self.save()
 
         errors = []
-        for channel in self.channel_set.all():
-            error = channel.notify(self)
-            if error not in ("", "no-op"):
-                errors.append((channel, error))
+        if self.escalate:
+            # send alert to people on same team
+            # find members in team of user
+            profile = Profile.objects.filter(user=self.user)
+            team_members = Profile.objects.filter(current_team=profile)
+            # get channels they ascribe to
+            for member in team_members:
+                team_member = member.user
+                channels = Channel.objects.filter(user=team_member)
+                for channel in channels:
+                    error = channel.notify(self)
+                    if error not in ("", "no-op"):
+                        errors.append((channel, error))
+
+        else:
+            for channel in self.channel_set.all():
+                error = channel.notify(self)
+                if error not in ("", "no-op"):
+                    errors.append((channel, error))
 
         return errors
 
