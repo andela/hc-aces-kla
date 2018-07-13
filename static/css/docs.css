@@ -1,3 +1,8 @@
+.col-sm-10.doc-list {
+    height: 400px;
+    overflow: auto;
+}
+
 .docs-nav {
     margin: 20px 0 0 0;
     padding: 0;
@@ -51,3 +56,4 @@ a.section {
 a.section:hover  {
     text-decoration: none;
 }
+
