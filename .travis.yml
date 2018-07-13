@@ -7,7 +7,8 @@ install:
 - pip install braintree coveralls mock mysqlclient
 - createdb hc
 env:
-- DB=postgres
+  matrix:
+  - DB=postgres
 addons:
   postgresql: '9.4'
 before_script:
@@ -21,10 +22,10 @@ notifications:
 deploy:
   provider: heroku
   api_key:
-    secure: kg/YJsYRXxT3MjtdSjgOpNJKKP5LGy8SQE+fYqyMphp/trpEkVAezYmII+BdvAVScqh4pwAvqkcttYpFCUgfzxyy0hhOcVQaDbusUF5bbs5ChAbwR4ftIIDUr82Gd6xEaWIy0SQWUel4QBeezXACI70hN0G/N/znPojGmxzZdcsZm3d90yVF+AraXW1Z1/BLmFlx+LAhbzlg8888QfM5m5F7bKlcqC5koKxWcZc9SrZugIQGhR/MHoBxvK9OpkHBgAh4iOxqxYA90A4Xj2PNBXV2aVSpNDw3RVEW6p7w3pc0wSmiOqzUrwU2ZzvYUVXKTLfGfxokv3Kj9kqGDKqOIL8xzaMP1cU1JkEZtim6xanYokVU4ySVqcODQ57zA55zLK+uc1G1b7BT/SDrGyindpuC5Px3fteoydMabczeQxTi3vxPAN+rjzxWD2JeYUX5hSlk9wKhfh8OyU4ve/F/UThqoVvPcZxbRG4cmMimnsx7g/sFhJDgBzG1/zUjLb4vyYL8M1lIacGtCF2lvACP5UvTak4UoDKHKNDzIkxaAQfd2YzX12bWrYVyMDeM3m4zjm9+GvRWzk0/cPd5cNleraErYVqeCYBPJJXFF/1ErYXPZozOLJh7NYqvtzsrp64QyedH0AOHcdOCly5FetQ4kX3tu6Bj2TSMcV5TQLsnpq0=
+    secure: m7Whuwm0yWmSvQBo36/anP6K68CXvBoBg2QEcBoencs2U48M9C8qhSS32dbGJU9wgGtzkq0uIhtf+vO00hr7Q0YMB0NAqvHPQACZOtbp1OM9RzBmp25vlLf65jy0jVlkM7aOwDoWS3KV3ooJeDvEUMwlmLjqPwG5Y/yWiogsotS8wF1j3sc/f/IRv8yAUXeo/lVbOZA0gY0iJ0k1op7D6uiojyPnt4ylkPtcRu340uG9iGotWmlcHk0ClfS32u55b6MfKSJW49jcm44y+c2cAVj3XtJrNGsAO2laAAAFu8Gfz6zhpKXgrwl4LVIPJ9WP/MI0CjK2ZBO4IMi/e1b9eYcLCERkjNvXZnd9ALiZG5ZxccAnx1edGFMPgaOHa4A5RFYTxBH5W2Sg5NVi6XJIeWuWYgMxL96WlyVGuwzEm7S78Lq/vzU2EZknmzh/rncuXp4yMCfiTa8FlJgl5gl+Kj3yDPFtI16WQ/3CnFr1tXfqBKG2wTqNu+bk6Gx6l91bp7zPc7fHNpSQhFwAb0xfZokFb2OzsTEylpXbu8Nu5RvEkXwRq0kbgZTKRoQhYKm81UUayR16dhcmiYd+KliTtO1eohL3MNV/SetLtibNdHcdhUO8K9aXvrIn2vWiZoKvNsU6mvilt1bR3lJ40q+v55MxWhu6svSX1nUqiBQQgcU=
   on:
     branch: ch-travis-permit-develop-deployment
   run:
-    - python manage.py makemigrations --merge
-    - python manage.py ensuretriggers
-    - python manage.py sendalerts
+  - python manage.py makemigrations --merge
+  - python manage.py ensuretriggers
+  - python manage.py sendalerts
