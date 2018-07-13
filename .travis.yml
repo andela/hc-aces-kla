@@ -27,4 +27,4 @@ deploy:
   app: health-checks-aces-staging
   on:
     repo: andela/hc-aces-kla
-    branch: ch-travis-permit-develop-deployment
+    branch: develop
