@@ -58,6 +58,12 @@
                 <th>Last Ping</th>
                 <td>
                     {% if check.last_ping %}
+                        {% if check.runs_too_often %}
+                            <span class="status icon-bell" 
+                            data-toggle="tooltip" 
+                            data-placement="top" 
+                            title="Check running too often"></span>
+                        {% endif %}
                         {{ check.last_ping|naturaltime }}
                     {% else %}
                         Never

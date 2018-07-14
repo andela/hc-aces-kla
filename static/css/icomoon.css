@@ -60,3 +60,17 @@
 .icon-settings:before {
   content: "\e8b8";
 }
+.icon-alarm:before {
+  content: "\e950";
+}
+.icon-bell:before{
+  display: inline-block;
+  content: '   ';
+  background-image: url('../img/bell.svg');
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  height: 16px;
+  width: 16px;
+  left: -12px;
+  margin-right: 5px;
+}

@@ -15,7 +15,6 @@ class AddCheckTestCase(BaseTestCase):
 
     def test_team_access(self):
         """A team member should access checks added by a teammate"""
-        self.client.login(username="bob@example.org", password="password")
         self.check = Check(user=self.alice, name="alice check")
         self.check.save()
         self.client.logout()
