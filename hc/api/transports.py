@@ -1,10 +1,9 @@
-
-from django.conf import settings
-from django.template.loader import render_to_string
-from django.utils import timezone
 import json
 import requests
 from six.moves.urllib.parse import quote
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils import timezone
 from twilio.rest import Client
 
 from hc.lib import emails
@@ -58,6 +57,7 @@ class Email(Transport):
             "now": timezone.now(),
             "show_upgrade_note": show_upgrade_note
         }
+
         emails.alert(self.channel.value, ctx)
 
 
@@ -69,8 +69,7 @@ class TwilioSms(Transport):
                 check.name, check.last_ping.strftime('%x, %X'),
                 check.status),
             to=self.channel.value,
-            from_=settings.TWILIO_NUMBER
-        )
+            from_=settings.TWILIO_NUMBER)
 
 
 class TwilioVoice(Transport):

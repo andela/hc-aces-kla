@@ -15,7 +15,6 @@ class RemoveCheckTestCase(BaseTestCase):
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url)
         self.assertRedirects(response, "/checks/")
-
         assert Check.objects.count() == 0
 
     def test_team_access_works(self):

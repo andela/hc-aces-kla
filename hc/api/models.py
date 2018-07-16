@@ -60,6 +60,7 @@ class Check(models.Model):
     shopify_api_key = models.CharField(max_length=500, blank=True)
     shopify_password = models.CharField(max_length=500, blank=True)
     shopify_name = models.CharField(max_length=500, blank=True)
+    runs_too_often = models.BooleanField(default=False)
     priority = models.IntegerField(default=1)
     number_of_nags = models.IntegerField(default=0)
     escalate = models.BooleanField(default=False)
@@ -176,12 +177,6 @@ class Ping(models.Model):
     remote_addr = models.GenericIPAddressField(blank=True, null=True)
     method = models.CharField(max_length=10, blank=True)
     ua = models.CharField(max_length=200, blank=True)
-
-
-class Report(models.Model):
-    checks = models.ManyToManyField(Check)
-    sent_date = models.DateTimeField()
-    user = models.ForeignKey(User)
 
 
 class Channel(models.Model):
