@@ -15,23 +15,8 @@ from django.utils.crypto import get_random_string
 from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
-<<<<<<< HEAD
-<<<<<<< HEAD
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
                     TimeoutForm, NagIntervalForm, ShopifyForm, PriorityForm)
-=======
-=======
->>>>>>> c0cc05692d499ba8ec4336a8a1d2d79fdb912e37
-from hc.front.forms import (
-    AddChannelForm,
-    AddWebhookForm,
-    NameTagsForm,
-    TimeoutForm,
-    NagIntervalForm,
-    ShopifyForm,
-    PriorityForm)
-<<<<<<< HEAD
->>>>>>> [Feature #158174601] Make variables used in shopify test global
 import shopify
 
 from django.contrib import messages
