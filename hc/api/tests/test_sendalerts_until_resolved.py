@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from django.utils import timezone
 from hc.api.management.commands.sendalerts import Command
 from hc.api.models import Check
@@ -24,3 +23,6 @@ class SendAlertsUntilResolvedTestCase(BaseTestCase):
 
         result = Command().handle_many()
         self.assertEqual(result, True)
+
+    # def test_set_priority_level(self)
+    

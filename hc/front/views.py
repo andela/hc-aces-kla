@@ -16,7 +16,7 @@ from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
-                            TimeoutForm, NagIntervalForm)
+                            TimeoutForm, NagIntervalForm, PriorityForm)
 
 
 # from itertools recipes:
@@ -29,13 +29,14 @@ def pairwise(iterable):
 
 @login_required
 def my_checks(request):
-    q = Check.objects.filter(user=request.team.user).order_by("created")
+    q = Check.objects.filter(user=request.team.user).order_by("-priority")
     checks = list(q)
 
     counter = Counter()
     down_tags, grace_tags = set(), set()
     for check in checks:
         status = check.get_status()
+
         for tag in check.tags_list():
             if tag == "":
                 continue
@@ -47,9 +48,12 @@ def my_checks(request):
             elif check.in_grace_period():
                 grace_tags.add(tag)
 
+    state = {1: "low", 2: "medium", 3: "high"}
+
     ctx = {
         "page": "checks",
         "checks": checks,
+        "state": state,
         "now": timezone.now(),
         "tags": counter.most_common(),
         "down_tags": down_tags,
@@ -129,6 +133,24 @@ def add_check(request):
     check.save()
 
     check.assign_all_channels()
+
+    return redirect("hc-checks")
+
+
+@login_required
+@uuid_or_400
+def update_priority(request, code):
+    assert request.method == "POST"
+
+    check = get_object_or_404(Check, code=code)
+    if check.user_id != request.team.user.id:
+        return HttpResponseForbidden()
+
+    form = PriorityForm(request.POST)
+    if form.is_valid():
+        assign_priority = {"low": 1, "medium": 2, "high": 3}
+        check.priority = assign_priority[form.cleaned_data["priority"]]
+        check.save()
 
     return redirect("hc-checks")
 
