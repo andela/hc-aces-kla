@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from django.utils import timezone
 from hc.api.management.commands.sendalerts import Command
 from hc.api.models import Check
