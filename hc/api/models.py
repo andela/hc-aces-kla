@@ -57,6 +57,13 @@ class Check(models.Model):
     nag_intervals = models.DurationField(default=DEFAULT_NAG_TIME)
     nag_after_time = models.DateTimeField(null=True, blank=True)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    shopify = models.BooleanField(default=False)
+    shopify_api_key = models.CharField(max_length=500, blank=True)
+    shopify_password = models.CharField(max_length=500, blank=True)
+    shopify_name = models.CharField(max_length=500, blank=True)
+>>>>>>> c0cc05692d499ba8ec4336a8a1d2d79fdb912e37
     runs_too_often = models.BooleanField(default=False)
     priority = models.IntegerField(default=1)
     number_of_nags = models.IntegerField(default=0)

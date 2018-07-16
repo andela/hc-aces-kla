@@ -145,6 +145,10 @@ USE_TZ = True
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> c0cc05692d499ba8ec4336a8a1d2d79fdb912e37
 SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
 =======
 SITE_ROOT = os.environ.get('SITE_ROOT')
@@ -246,6 +250,7 @@ COMPRESS_OFFLINE = True
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 EMAIL_BACKEND = os.environ.get(
     'EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 =======
@@ -266,12 +271,18 @@ EMAIL_HOST = 'smtp.gmail.com'
 >>>>>>> [Feature #158174601] Update requirements.txt
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
+=======
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'EMAIL_HOST')
+>>>>>>> c0cc05692d499ba8ec4336a8a1d2d79fdb912e37
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get(
+    'EMAIL_HOST_PASSWORD', 'EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
-SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL',
+     'DEFAULT_FROM_EMAIL')
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', 'SENDGRID_API_KEY')
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 
 # Slack integration -- override these in local_settings
