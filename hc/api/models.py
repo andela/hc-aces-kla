@@ -56,10 +56,10 @@ class Check(models.Model):
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
     nag_intervals = models.DurationField(default=DEFAULT_NAG_TIME)
     nag_after_time = models.DateTimeField(null=True, blank=True)
+    runs_too_often = models.BooleanField(default=False)
     priority = models.IntegerField(default=1)
     number_of_nags = models.IntegerField(default=0)
     escalate = models.BooleanField(default=False)
-
     twilio_number = models.TextField(default="+00000000000", null=True,
                                      blank=True)
 
@@ -177,12 +177,6 @@ class Ping(models.Model):
     remote_addr = models.GenericIPAddressField(blank=True, null=True)
     method = models.CharField(max_length=10, blank=True)
     ua = models.CharField(max_length=200, blank=True)
-
-
-class Report(models.Model):
-    checks = models.ManyToManyField(Check)
-    sent_date = models.DateTimeField()
-    user = models.ForeignKey(User)
 
 
 class Channel(models.Model):
