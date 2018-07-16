@@ -22,6 +22,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Channel',
             fields=[
+<<<<<<< HEAD
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('code', models.UUIDField(default=uuid.uuid4, editable=False)),
                 ('created', models.DateTimeField(auto_now_add=True)),
@@ -89,6 +90,25 @@ class Migration(migrations.Migration):
                 ('task_type', models.CharField(choices=[(b'database_backups', b'database_backups'), (b'export_reports', b'export_reports')], max_length=100)),
                 ('frequency', models.CharField(choices=[(b'daily', b'daily'), (b'weekly', b'weekly'), (b'monthly', b'monthly')], max_length=20)),
                 ('profile', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='accounts.Profile')),
+=======
+                ('id',
+                 models.AutoField(
+                     auto_created=True,
+                     primary_key=True,
+                     verbose_name='ID',
+                     serialize=False)),
+                ('code',
+                 models.UUIDField(
+                     default=uuid.uuid4,
+                     editable=False)),
+                ('last_ping',
+                 models.DateTimeField(
+                     null=True,
+                     blank=True)),
+                ('user',
+                 models.ForeignKey(
+                     to=settings.AUTH_USER_MODEL)),
+>>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
             ],
         ),
         migrations.CreateModel(

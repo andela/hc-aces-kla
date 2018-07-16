@@ -1,12 +1,11 @@
 from datetime import timedelta
 from django.utils import timezone
 from django.test import TransactionTestCase
-from django.core.urlresolvers import reverse
-from django.test import TransactionTestCase
 from mock import patch
 from hc.api.management.commands.sendalerts import Command
 from hc.api.models import Check
 from hc.test import BaseTestCase
+
 
 class SendAlertsTestCase(BaseTestCase, TransactionTestCase):
 

@@ -321,7 +321,10 @@ class Task(models.Model):
     frequency = models.CharField(
         choices=SCHEDULE_INTERVALS,
         max_length=20)
+<<<<<<< HEAD
 
+=======
+>>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
 
 
 class TaskSchedule(models.Model):
@@ -330,6 +333,7 @@ class TaskSchedule(models.Model):
     send_email_updates = models.BooleanField(default=False)
     next_run_date = models.DateTimeField(null=True, blank=True)
     run_count = models.IntegerField(default=0)
+<<<<<<< HEAD
 
 
 class Backup(models.Model):
@@ -337,3 +341,5 @@ class Backup(models.Model):
     schedule = models.ForeignKey(TaskSchedule, on_delete=models.CASCADE)
     file_name = models.CharField(max_length=100)
     date_run = models.DateTimeField(auto_now_add=True)
+=======
+>>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
