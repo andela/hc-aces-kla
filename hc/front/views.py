@@ -21,10 +21,6 @@ import shopify
 
 from django.contrib import messages
 
-=======
-import shopify
->>>>>>> c0cc05692d499ba8ec4336a8a1d2d79fdb912e37
-
 
 # from itertools recipes:
 def pairwise(iterable):
