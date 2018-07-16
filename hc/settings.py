@@ -130,110 +130,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> c0cc05692d499ba8ec4336a8a1d2d79fdb912e37
 SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
-=======
-SITE_ROOT = os.environ.get('SITE_ROOT')
->>>>>>> [Feature #158174601] Update travis file
-=======
-SITE_ROOT = "http://localhost:8000"
->>>>>>> [Feature #158174601] Remove changes from travis
-=======
-SITE_ROOT = os.environ.get('SITE_ROOT')
->>>>>>> [Feature #158174601] Make changes to travis
-=======
-SITE_ROOT = "http://localhost:8000"
->>>>>>> [Feature #158174601] Remove changes from travis
-=======
-SITE_ROOT = os.environ.get('SITE_ROOT') or "http://localhost:8000"
->>>>>>> [Feature #158174601] Update settings
-=======
-SITE_ROOT = os.environ.get('SITE_ROOT', 'http://localhost:8000')
->>>>>>> [Feature #158174601] Fix remove shopify check
-=======
-=======
->>>>>>> [Feature #158174601] Add site root
-=======
->>>>>>> [Feature #158174601] Update travis file
-=======
->>>>>>> [Feature #158174601] Remove changes from travis
-=======
->>>>>>> [Feature #158174601] Make changes to travis
-=======
->>>>>>> [Feature #158174601] Remove changes from travis
-=======
->>>>>>> [Feature #158174601] Update settings
-=======
->>>>>>> [Feature #158174601] Fix remove shopify check
-SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
-=======
-SITE_ROOT = os.environ.get['SITE_ROOT']
->>>>>>> [Feature #158174601] Enable site root to be picked from environment
-<<<<<<< HEAD
->>>>>>> [Feature #158174601] Enable site root to be picked from environment
-=======
-=======
-SITE_ROOT = "http://localhost:8000"
->>>>>>> [Feature #158174601] Add site root
-<<<<<<< HEAD
->>>>>>> [Feature #158174601] Add site root
-=======
-=======
-SITE_ROOT = os.environ.get('SITE_ROOT')
->>>>>>> [Feature #158174601] Update travis file
-<<<<<<< HEAD
->>>>>>> [Feature #158174601] Update travis file
-=======
-=======
-SITE_ROOT = "http://localhost:8000"
->>>>>>> [Feature #158174601] Remove changes from travis
-<<<<<<< HEAD
->>>>>>> [Feature #158174601] Remove changes from travis
-=======
-=======
-SITE_ROOT = os.environ.get('SITE_ROOT')
->>>>>>> [Feature #158174601] Make changes to travis
-<<<<<<< HEAD
->>>>>>> [Feature #158174601] Make changes to travis
-=======
-=======
-SITE_ROOT = "http://localhost:8000"
->>>>>>> [Feature #158174601] Remove changes from travis
-<<<<<<< HEAD
->>>>>>> [Feature #158174601] Remove changes from travis
-=======
-=======
-SITE_ROOT = os.environ.get('SITE_ROOT') or "http://localhost:8000"
->>>>>>> [Feature #158174601] Update settings
-<<<<<<< HEAD
->>>>>>> [Feature #158174601] Update settings
-=======
-=======
-SITE_ROOT = os.environ.get('SITE_ROOT', 'http://localhost:8000')
->>>>>>> [Feature #158174601] Fix remove shopify check
->>>>>>> [Feature #158174601] Fix remove shopify check
-=======
-
-SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
->>>>>>> [Feature #158174601] Update requirements.txt
 PING_ENDPOINT = SITE_ROOT + "/ping/"
 PING_EMAIL_DOMAIN = HOST
 STATIC_URL = '/static/'
@@ -246,35 +143,8 @@ STATICFILES_FINDERS = (
 )
 COMPRESS_OFFLINE = True
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-EMAIL_BACKEND = os.environ.get(
-    'EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
-=======
-=======
->>>>>>> [Feature #158174601] Update requirements.txt
-=======
->>>>>>> [Feature #158174601] Fix remove shopify check
-<<<<<<< HEAD
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
->>>>>>> [Feature #158174601] Enable site root to be picked from environment
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-=======
-EMAIL_BACKEND = "djmail.backends.default.EmailBackend"
-EMAIL_HOST = 'smtp.gmail.com'
->>>>>>> [Feature #158174601] Enable site root to be picked from environment
-=======
-=======
->>>>>>> [Feature #158174601] Update requirements.txt
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-=======
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'EMAIL_BACKEND')
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'EMAIL_HOST')
->>>>>>> c0cc05692d499ba8ec4336a8a1d2d79fdb912e37
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get(
