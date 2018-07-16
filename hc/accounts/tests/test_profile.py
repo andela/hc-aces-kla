@@ -9,8 +9,9 @@ from hc.api.models import Check
 class ProfileTestCase(BaseTestCase):
 
     def test_it_sends_set_password_link(self):
-        """tests that a set passowrd link is sent
-        to the user's email address"""
+        """
+        tests that a set password link is sent to the user's email address
+        """
         self.client.login(username="alice@example.org", password="password")
 
         form = {"set_password": "1"}
@@ -101,8 +102,9 @@ class ProfileTestCase(BaseTestCase):
         self.assertEqual(self.alice.profile.team_name, "Alpha Team")
 
     def test_set_team_name_checks_team_access_allowed_flag(self):
-        """Test that team access allowed flag
-        is checked when team name is set"""
+        """
+        Test that team access allowed flag is checked when team name is set
+        """
         self.client.login(username="charlie@example.org", password="password")
 
         form = {"set_team_name": "1", "team_name": "Charlies Team"}
@@ -163,7 +165,7 @@ class ProfileTestCase(BaseTestCase):
         url = "/accounts/profile/"
         form = {
             "update_reports_allowed": True,
-            "report_frequency": "day",
+            "frequency": "day",
             "reports_allowed": True}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
@@ -176,7 +178,7 @@ class ProfileTestCase(BaseTestCase):
         url = "/accounts/profile/"
         form = {
             "update_reports_allowed": True,
-            "report_frequency": "week",
+            "frequency": "week",
             "reports_allowed": True}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
@@ -189,7 +191,7 @@ class ProfileTestCase(BaseTestCase):
         url = "/accounts/profile/"
         form = {
             "update_reports_allowed": True,
-            "report_frequency": "month",
+            "frequency": "month",
             "reports_allowed": True}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)

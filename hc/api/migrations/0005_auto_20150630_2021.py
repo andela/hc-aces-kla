@@ -15,7 +15,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='check',
             name='user',
-            field=models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL,
-                                    null=True),
+            field=models.ForeignKey(
+                blank=True,
+                to=settings.AUTH_USER_MODEL,
+                null=True),
         ),
     ]

@@ -29,6 +29,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='channel',
             name='value',
-            field=models.CharField(blank=True, max_length=25),
+            field=models.CharField(
+                blank=True,
+                max_length=25),
         ),
     ]

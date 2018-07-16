@@ -1,5 +1,6 @@
 import uuid
 import re
+from datetime import timedelta as td
 
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
@@ -11,11 +12,12 @@ from django.contrib.auth.models import User
 from django.core import signing
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
 from django.shortcuts import redirect, render
+from django.utils import timezone
 from hc.accounts.forms import (EmailPasswordForm, InviteTeamMemberForm,
                                RemoveTeamMemberForm, ReportSettingsForm,
-                               SetPasswordForm, TeamNameForm)
+                               ScheduleTaskForm, SetPasswordForm, TeamNameForm)
 from hc.accounts.models import Profile, Member
-from hc.api.models import Channel, Check
+from hc.api.models import Channel, Check, Task, TaskSchedule
 from hc.lib.badges import get_badge_url
 
 
@@ -155,7 +157,6 @@ def profile(request):
         elif "show_api_key" in request.POST:
             show_api_key = True
         elif "update_reports_allowed" in request.POST:
-            # print(request.POST)
             form = ReportSettingsForm(request.POST)
             if form.is_valid():
                 profile.reports_allowed = form.cleaned_data["reports_allowed"]
@@ -163,6 +164,75 @@ def profile(request):
                     form.cleaned_data["report_frequency"]
                 profile.save()
                 messages.success(request, "Your settings have been updated!")
+        elif "export_reports" in request.POST:
+            form = ScheduleTaskForm(request.POST)
+            if not profile.reports_allowed:
+                messages.warning(
+                    request, "Reports are not enabled for this profile!")
+            else:
+                tasks = Task.objects.filter(
+                    profile=profile, task_type="export_reports")
+                if tasks:
+                    messages.warning(
+                        request, "Report exports are already setup!")
+                else:
+                    if form.is_valid():
+                        task = Task(profile=profile)
+                        task.name = form.cleaned_data["name"]
+                        task.task_type = form.cleaned_data["task_type"]
+                        task.frequency = form.cleaned_data["frequency"]
+                        task.save()
+
+                        task_schedule = TaskSchedule(task=task)
+                        task_schedule.date_created = timezone.now()
+                        if task.frequency == "daily":
+                            task_schedule.next_run_date = task_schedule.date_created + \
+                                td(days=1)
+                        elif task.frequency == "weekly":
+                            task_schedule.next_run_date = task_schedule.date_created + \
+                                td(days=7)
+                        elif task.frequency == "monthly":
+                            task_schedule.next_run_date = task_schedule.date_created + \
+                                td(days=30)
+
+                        task_schedule.send_email_updates \
+                            = form.cleaned_data["receive_email_updates"]
+                        task_schedule.save()
+                        messages.info(
+                            request, "Reports will be exported periodically!")
+
+        elif "database_backups" in request.POST:
+            form = ScheduleTaskForm(request.POST)
+            tasks = Task.objects.filter(
+                profile=profile, task_type="database_backups")
+            if tasks:
+                messages.warning(
+                    request, "Database backups are already setup!")
+            else:
+                if form.is_valid():
+                    task = Task(profile=profile)
+                    task.name = form.cleaned_data["name"]
+                    task.task_type = form.cleaned_data["task_type"]
+                    task.frequency = form.cleaned_data["frequency"]
+                    task.save()
+                    task.refresh_from_db()
+
+                    task_schedule = TaskSchedule(task=task)
+                    task_schedule.date_created = timezone.now()
+                    if task.frequency == "daily":
+                        task_schedule.next_run_date = task_schedule.date_created + \
+                            td(days=1)
+                    elif task.frequency == "weekly":
+                        task_schedule.next_run_date = task_schedule.date_created + \
+                            td(days=7)
+                    elif task.frequency == "monthly":
+                        task_schedule.next_run_date = task_schedule.date_created + \
+                            td(days=30)
+
+                    task_schedule.send_email_updates = form.cleaned_data["receive_email_updates"]
+                    task_schedule.save()
+
+                    messages.info(request, "Database backups have been setup!")
         elif "invite_team_member" in request.POST:
             if not profile.team_access_allowed:
                 return HttpResponseForbidden()
@@ -213,7 +283,10 @@ def profile(request):
 
         badge_urls.append(get_badge_url(username, tag))
 
+    tasks = Task.objects.filter(profile=profile)
+
     ctx = {
+        "tasks": tasks,
         "page": "profile",
         "badge_urls": badge_urls,
         "profile": profile,

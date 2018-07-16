@@ -15,7 +15,18 @@ class EmailPasswordForm(forms.Form):
 
 class ReportSettingsForm(forms.Form):
     reports_allowed = forms.BooleanField(required=False)
-    report_frequency = forms.CharField(required=False)
+    frequency = forms.CharField(required=False)
+
+
+class ScheduleTaskForm(forms.Form):
+    name = forms.CharField(required=True)
+    task_type = forms.CharField(required=True)
+    receive_email_updates = forms.TypedChoiceField(
+        coerce=lambda x: x == 'True',
+        choices=((False, 'False'), (True, 'True')),
+        widget=forms.RadioSelect
+    )
+    frequency = forms.CharField(required=True)
 
 
 class SetPasswordForm(forms.Form):

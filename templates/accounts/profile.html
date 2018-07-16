@@ -36,15 +36,15 @@
                     <label name="report_interval">
                         <p>Choose an interval to receive reports</p>
                         <input
-                               name="reports_frequency"
+                               name="frequency"
                                type="radio"
                                value="day" checked required> Daily<br/>
                         <input
-                               name="reports_frequency"
+                               name="frequency"
                                type="radio"
                                value="week"> Weekly<br/>
                         <input
-                               name="reports_frequency"
+                               name="frequency"
                                type="radio"
                                value="month"> Monthly<br/>
                     </label>
@@ -173,13 +173,55 @@
     <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-body settings-block">
-                <h2 class="settings-title">Scheduled Database Backups</h2>
-                You currently have not setup database backups
+                <h2 class="settings-title">Scheduled Tasks</h2>
+                {% if tasks %}
+                <table class="table table-striped" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Frequency</th>
+                            <th>Actions</th>
+                        </tr>
+                        {% for task in tasks %}
+                        <tr>
+                            <td>
+                                {{task.name}}
+                            </td>
+                            <td>
+                                {{task.task_type}}
+                            </td>
+                            <td>
+                                {{task.frequency}}
+                            </td>
+                            <td>
+                                <button 
+                                type="button" 
+                                class="btn btn-xs btn-info" 
+                                data-toggle="modal" 
+                                data-target="#edit-task">Edit</button>
+                                <button 
+                                type="button" 
+                                class="btn btn-xs btn-danger" 
+                                data-toggle="modal" 
+                                data-target="#delete-task">Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    You currently have no scheduled tasks
+                {% endif %}
+                <br/>
                 <button 
                     type="button" 
                     class="btn btn-default" 
                     data-toggle="modal" 
-                    data-target="#add-schedule-db-backup-modal">Setup</button>
+                    data-target="#add-schedule-db-backup-modal">Setup database backups</button>
+                <button 
+                    type="button" 
+                    class="btn btn-default" 
+                    data-toggle="modal" 
+                    data-target="#add-schedule-export_reports-modal">Export reports</button>
             </div>
         </div>
     </div>
@@ -216,7 +258,8 @@
 
 <div id="add-schedule-db-backup-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
-        <form id="add-scheduled-task" method="post">
+        <form id="add-database_backup_task" action="/accounts/profile/" method="post">
+            {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -224,28 +267,97 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="name">Task Name:</label>
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Enter name here"/>
+                    </div>
+                    <div class="form-group">
                         <label for="frequency">Determine frequency:</label>
-                        <select class="form-control" id="frequency">
-                            <option>Daily</option>
-                            <option>Weekly</option>
-                            <option>Monthly</option>
+                        <select class="form-control" name="frequency"  id="frequency">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
                         </select>
                     </div>
                     <div class="form-group">
-                            <label for="frequency">Receive email updates:</label>
-                            <div class="radio-inline">
-                                    <label><input type="radio" name="receive_updates">Yes</label>
-                                  </div>
-                                  <div class="radio">
-                                    <label><input type="radio" name="receive_updates">No</label>
-                                  </div>
+                        <label for="frequency">Receive email updates:</label><br/>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="receive_email_updates" value="True">Yes
+                            </label>
                         </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="receive_email_updates" value="False">No
+                            </label>
+                        </div>
+                    </div>
+                    <input type="hidden" 
+                        name="task_type" 
+                        class="form-control" 
+                        id="task_type" 
+                        value="database_backups"/>
                 </div>  
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button
                         type="submit"
-                        name="add_scheduled_task"
+                        name="database_backups"
+                        class="btn btn-success">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="add-schedule-export_reports-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <form id="add-reports_export_task" action="/accounts/profile/" method="post">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="add-schedule-db-backup-title">
+                        <strong>Export reports as CSVs</strong>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name">Task Name:</label>
+                        <input type="text" name="name" class="form-control" id="name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="frequency">Determine frequency:</label>
+                        <select class="form-control" name="frequency"  id="frequency">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="frequency">Receive email updates:</label><br/>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="receive_email_updates" value="True">Yes
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="receive_email_updates" value="False">No
+                            </label>
+                        </div>
+                    </div>
+                    <input 
+                        type="hidden" 
+                        name="task_type" 
+                        class="form-control" 
+                        id="task_type" 
+                        value="export_reports"/>
+                </div>  
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button
+                        type="submit"
+                        name="export_reports"
                         class="btn btn-success">Submit</button>
                 </div>
             </div>

@@ -30,16 +30,9 @@ CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("victorops", "VictorOps"), ("twiliosms", "TwilioSms"),
                  ("twiliovoice", "TwilioVoice"))
 
-SCHEDULE_INTERVALS = Choices(
-    ('daily', 'Daily'),
-    ('weekly', 'Weekly'),
-    ('monthly', 'Monthly')
-)
+SCHEDULE_INTERVALS = Choices('daily', 'weekly', 'monthly')
 
-TASK_TYPES = Choices(
-    ('database_backups', 'Database_backups'),
-    ('export_reports', 'Export_Reports')
-)
+TASK_TYPES = Choices('database_backups', 'export_reports')
 
 PO_PRIORITIES = {
     -2: "lowest",
@@ -153,7 +146,7 @@ class Check(models.Model):
     def assign_all_channels(self):
         if self.user:
             channels = Channel.objects.filter(user=self.user)
-            self.channel_set.add(*channels)
+            self.channel_set.add(* channels)
 
     def tags_list(self):
         return [t.strip() for t in self.tags.split(" ") if t.strip()]
@@ -203,7 +196,7 @@ class Channel(models.Model):
 
     def assign_all_checks(self):
         checks = Check.objects.filter(user=self.user)
-        self.checks.add(*checks)
+        self.checks.add(* checks)
 
     def make_token(self):
         seed = "%s%s" % (self.code, settings.SECRET_KEY)
@@ -321,23 +314,19 @@ class Notification(models.Model):
 
 
 class Task(models.Model):
-    name = models.CharField(max_length=100, blank=True)
-    task_type = models.CharField(default=TASK_TYPES.database_backups,
+    name = models.CharField(max_length=100)
+    task_type = models.CharField(
         max_length=100,
         choices=TASK_TYPES)
-    profile = models.ManyToManyField(Profile)
+    profile = models.ForeignKey(Profile, null=True, blank=True)
+    frequency = models.CharField(
+        choices=SCHEDULE_INTERVALS,
+        max_length=20)
 
 
 class TaskSchedule(models.Model):
-    task = models.ForeignKey(Task, blank=True, null=True)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     send_email_updates = models.BooleanField(default=False)
-    frequency = models.CharField(
-        choices=SCHEDULE_INTERVALS,
-        default=SCHEDULE_INTERVALS.daily,
-        max_length=20)
-    next_run_date = models.DateTimeField()
+    next_run_date = models.DateTimeField(null=True, blank=True)
     run_count = models.IntegerField(default=0)
-
-
-
