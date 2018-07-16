@@ -224,19 +224,11 @@ def create_shopify_alerts(request):
     form = ShopifyForm(request.POST)
     if form.is_valid():
         topic = form.cleaned_data["event"]
-<<<<<<< HEAD
-        API_KEY = form.cleaned_data["api_key"]
-        PASSWORD = form.cleaned_data["password"]
-        SHOP_NAME = form.cleaned_data['shop_name']
-        shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
-            API_KEY, PASSWORD, SHOP_NAME)
-=======
         api_key = form.cleaned_data["api_key"]
         password = form.cleaned_data["password"]
         shop_name = form.cleaned_data['shop_name']
         shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
             api_key, password, shop_name)
->>>>>>> c0cc05692d499ba8ec4336a8a1d2d79fdb912e37
         try:
             shopify.ShopifyResource.set_site(shop_url)
             shopify.Shop.current
@@ -251,15 +243,9 @@ def create_shopify_alerts(request):
             check = Check(user=request.team.user)
             check.name = form.cleaned_data["name"]
             check.shopify = True
-<<<<<<< HEAD
-            check.shopify_api_key = API_KEY
-            check.shopify_password = PASSWORD
-            check.shopify_name = SHOP_NAME
-=======
             check.shopify_api_key = api_key
             check.shopify_password = password
             check.shopify_name = shop_name
->>>>>>> c0cc05692d499ba8ec4336a8a1d2d79fdb912e37
             check.save()
             check_created = Check.objects.filter(
                 name=form.cleaned_data["name"]).first()
@@ -302,19 +288,11 @@ def remove_check(request, code):
         return HttpResponseForbidden()
     if check.shopify:
         try:
-<<<<<<< HEAD
-            API_KEY = check.shopify_api_key
-            PASSWORD = check.shopify_password
-            SHOP_NAME = check.shopify_name
-            shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
-                API_KEY, PASSWORD, SHOP_NAME)
-=======
             api_key = check.shopify_api_key
             password = check.shopify_password
             shop_name = check.shopify_name
             shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
                 api_key, password, shop_name)
->>>>>>> c0cc05692d499ba8ec4336a8a1d2d79fdb912e37
             shopify.ShopifyResource.set_site(shop_url)
             shopify.Shop.current
             webhook = shopify.Webhook.find()
