@@ -62,6 +62,7 @@ class Check(models.Model):
     escalate = models.BooleanField(default=False)
     twilio_number = models.TextField(default="+00000000000", null=True,
                                      blank=True)
+    check_owner = models.CharField(max_length=100, blank=True, null=True)
 
     def name_then_code(self):
         if self.name:
@@ -108,7 +109,10 @@ class Check(models.Model):
                         errors.append((channel, error))
 
         else:
-            for channel in self.channel_set.all():
+            # use email check user
+            user = User.objects.get(email=self.check_owner)
+            channels = Channel.objects.filter(user=user)
+            for channel in channels:
                 error = channel.notify(self)
                 if error not in ("", "no-op"):
                     errors.append((channel, error))
