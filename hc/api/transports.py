@@ -1,5 +1,6 @@
 import json
 import requests
+from hc.lib import emails
 from six.moves.urllib.parse import quote
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -8,8 +9,6 @@ from twilio.rest import Client
 import datetime
 import telegram
 now = datetime.datetime.now()
-
-from hc.lib import emails
 
 
 def tmpl(template_name, **ctx):

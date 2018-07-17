@@ -1,6 +1,4 @@
 from django.test.utils import override_settings
-from django.contrib.auth.models import User
-from hc.api.models import Channel, Check
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from hc.api.models import Channel
@@ -104,7 +102,6 @@ class AddChannelTestCase(BaseTestCase):
         alice_channel = User.objects.get(email="alice@example.org")
         alice_before = Channel.objects.filter(user=alice_channel).count()
         self.client.login(username="bob@example.org", password="password")
-        url = "/integrations/add/"
         form = {"kind": "twiliovoice", "value": "+256703357610"}
         self.client.post(reverse("hc-add-channel"), form)
         alice_after = Channel.objects.filter(user=alice_channel).count()
