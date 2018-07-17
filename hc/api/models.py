@@ -12,7 +12,6 @@ from django.utils import timezone
 from model_utils import Choices
 from hc.accounts.models import Profile
 from hc.api import transports
-from hc.accounts.models import Profile
 from hc.lib import emails
 
 STATUSES = (

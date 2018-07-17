@@ -2,7 +2,6 @@ import logging
 import time
 from concurrent.futures import ThreadPoolExecutor
 from django.core.management.base import BaseCommand
-from django.db.models import Q
 from django.db import connection
 from django.utils import timezone
 from hc.api.models import Check

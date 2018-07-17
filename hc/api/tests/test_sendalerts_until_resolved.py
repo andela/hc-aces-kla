@@ -22,4 +22,4 @@ class SendAlertsUntilResolvedTestCase(BaseTestCase):
             check.save()
 
         result = Command().handle_many()
-        self.assertEqual(result, True)  
+        self.assertEqual(result, True)

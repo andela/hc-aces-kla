@@ -46,4 +46,3 @@ class SendAlertsTestCase(BaseTestCase, TransactionTestCase):
         # True
         result = Command().handle_many()
         assert result, True
-
