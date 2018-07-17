@@ -1,8 +1,6 @@
 from datetime import timedelta
 
 from django.utils import timezone
-from django.contrib.auth.models import User
-from hc.accounts.models import Profile
 from hc.api.models import Check, Channel
 from hc.test import BaseTestCase
 from mock import patch
@@ -28,12 +26,13 @@ class SendOwnerAlertsTestCase(BaseTestCase):
         channel = Channel(user=self.bob, kind="email",
                           value="bob@example.org")
         channel.save()
-        check = Check(user=self.alice, status="down", check_owner="bob@example.org")
+        check = Check(user=self.alice, status="down",
+                      check_owner="bob@example.org")
         check.last_ping = timezone.now() - timedelta(minutes=30)
         check.number_of_nags = 2
         check.priority = 3
         check.save()
         check.send_alert()
 
-        assert check.escalate==False
+        self.assertFalse(check.escalate)
         assert check.number_of_nags == 3
