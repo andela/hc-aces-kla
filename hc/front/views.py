@@ -55,11 +55,13 @@ def my_checks(request):
                 grace_tags.add(tag)
 
     state = {1: "low", 2: "medium", 3: "high"}
+    # list of all team members #members = 
 
     ctx = {
         "page": "checks",
         "checks": checks,
         "state": state,
+        # "team_members":members,
         "now": timezone.now(),
         "tags": counter.most_common(),
         "down_tags": down_tags,
