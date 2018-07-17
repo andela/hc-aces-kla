@@ -1,13 +1,16 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 asn1crypto==0.24.0
 amqp==2.3.2
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
-asn1crypto==0.24.0
 =======
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
+asn1crypto==0.24.0
 amqp==2.3.2
+<<<<<<< HEAD
 >>>>>>> [Feature #158174602]Added task and task schedule models
 <<<<<<< HEAD
 >>>>>>> [Feature #158174602]Added task and task schedule models
@@ -30,8 +33,17 @@ autoflake==1.2
 =======
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
+=======
+astroid==1.6.5
+autoflake==1.2
+autopep8==1.3.5
+astroid==1.6.5
+autoflake==1.2
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
 backports.functools-lru-cache==1.5
+billiard==3.5.0.4
 boto==2.48.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 celery==4.2.1
@@ -42,11 +54,12 @@ chardet==3.0.4
 =======
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
 <<<<<<< HEAD
-cffi==1.11.5
-certifi==2018.4.16
-coverage==4.5.1
 =======
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
+cffi==1.11.5
+coverage==4.5.1
 celery==4.2.0
+<<<<<<< HEAD
 >>>>>>> [Feature #158174602]Added task and task schedule models
 >>>>>>> [Feature #158174602]Added task and task schedule models
 configparser==3.5.0
@@ -63,6 +76,11 @@ configparser==3.5.0
 coverage==4.5.1
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
+=======
+cryptography==2.2.2
+certifi==2018.4.16
+configparser==3.5.0
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
 cssselect==1.0.3
 cssutils==1.0.2
 dj-database-url==0.5.0
@@ -88,13 +106,13 @@ gunicorn==19.8.1
 idna==2.7
 ipaddress==1.0.22
 isort==4.3.4
+kombu==4.2.1
 lazy-object-proxy==1.3.1
 lxml==4.2.1
 mccabe==0.6.1
 mock==2.0.0
-<<<<<<< HEAD
-<<<<<<< HEAD
 ndg-httpsclient==0.5.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 numpy==1.14.5
 pandas==0.23.2
@@ -115,33 +133,41 @@ premailer==2.9.6
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
+=======
+more-itertools==4.2.0
+pbr==4.0.4
+premailer==2.9.6
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
 psycopg2==2.7.5
 psycopg2-binary==2.7.5
 pyasn1==0.4.3
 pycodestyle==2.3.1
 pycparser==2.18
 <<<<<<< HEAD
+<<<<<<< HEAD
 py==1.5.4
 psycopg2-binary==2.7.5
 =======
 =======
 psycopg2==2.7.1
-py==1.5.4
 =======
-psycopg2==2.7.5
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
+py==1.5.4
 psycopg2-binary==2.7.5
+<<<<<<< HEAD
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
 pycodestyle==2.3.0
 >>>>>>> [Chore #158174593] Fixed environment settings
 >>>>>>> [Feature #158174602]Added task and task schedule models
+=======
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
 pyflakes==1.6.0
 pyactiveresource==2.1.2
 PyJWT==1.6.4
 pylint==1.9.2
-<<<<<<< HEAD
-<<<<<<< HEAD
 pyOpenSSL==18.0.0
 PySocks==1.6.8
+<<<<<<< HEAD
 <<<<<<< HEAD
 pytest==3.6.3
 pytest-django==3.3.2
@@ -152,18 +178,26 @@ pytest==3.6.3
 pytest-django==3.3.2
 >>>>>>> [Feature #158174602]Added task and task schedule models
 >>>>>>> [Feature #158174602]Added task and task schedule models
+=======
+pytest==3.6.3
+pytest-django==3.3.2
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
 python-decouple==3.1
 python-http-client==3.1.0
 python-telegram-bot==10.1.0
 pytz==2018.5
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
+=======
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
 PySocks==1.6.8
 python-decouple==3.1
 python-http-client==3.1.0
 python-telegram-bot==10.1.0
+<<<<<<< HEAD
 <<<<<<< HEAD
 rcssmin==1.0.6
 redis==2.10.6
@@ -173,6 +207,8 @@ requests==2.19.1
 =======
 pytz==2018.4
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
+=======
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
 rcssmin==1.0.6
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
 requests==2.9.1
@@ -190,6 +226,7 @@ shopify-trois==1.0
 ShopifyAPI==3.1.0
 six==1.11.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 twilio==6.14.6
 urllib3==1.23
 vine==1.1.4
@@ -197,9 +234,11 @@ vine==1.1.4
 <<<<<<< HEAD
 twilio==6.14.7
 =======
+=======
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
 twilio==6.14.6
-<<<<<<< HEAD
 vine==1.1.4
+<<<<<<< HEAD
 >>>>>>> [Feature #158174602]Added task and task schedule models
 <<<<<<< HEAD
 >>>>>>> [Feature #158174602]Added task and task schedule models
@@ -207,5 +246,7 @@ vine==1.1.4
 =======
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
+=======
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
 whitenoise==3.3.1
 wrapt==1.10.11

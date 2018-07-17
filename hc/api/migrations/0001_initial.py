@@ -23,6 +23,9 @@ class Migration(migrations.Migration):
             name='Channel',
             fields=[
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('code', models.UUIDField(default=uuid.uuid4, editable=False)),
                 ('created', models.DateTimeField(auto_now_add=True)),
@@ -80,6 +83,7 @@ class Migration(migrations.Migration):
                 ('method', models.CharField(blank=True, max_length=10)),
                 ('ua', models.CharField(blank=True, max_length=200)),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Check')),
+<<<<<<< HEAD
             ],
         ),
         migrations.CreateModel(
@@ -112,6 +116,21 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+=======
+            ],
+        ),
+        migrations.CreateModel(
+            name='Task',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=100)),
+                ('task_type', models.CharField(choices=[(b'database_backups', b'database_backups'), (b'export_reports', b'export_reports')], max_length=100)),
+                ('frequency', models.CharField(choices=[(b'daily', b'daily'), (b'weekly', b'weekly'), (b'monthly', b'monthly')], max_length=20)),
+                ('profile', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='accounts.Profile')),
+            ],
+        ),
+        migrations.CreateModel(
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
             name='TaskSchedule',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),

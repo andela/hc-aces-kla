@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.8/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
+# flake8: noqa
 import os
 import dj_database_url
 from decouple import config
@@ -41,7 +42,11 @@ INSTALLED_APPS = (
     'hc.front',
     'hc.payments',
 
+<<<<<<< HEAD
     'dbbackup',
+=======
+    'dbbackup',  # django-dbbackup
+>>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
 )
 
 MIDDLEWARE = (
@@ -203,3 +208,18 @@ if os.path.exists(os.path.join(BASE_DIR, "hc/local_settings.py")):
     from .local_settings import *
 else:
     warnings.warn("local_settings.py not found, using defaults")
+
+# REDIS server settings
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_TIMEZONE = 'Africa/Nairobi'
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, "hc/backups")}
+DBBACKUP_CONNECTORS = {
+    'default': {
+        'NAME': 'hc',
+        'USER': 'postgres',
+        'TEST': {'CHARSET': 'UTF8'}
+    }
+}
