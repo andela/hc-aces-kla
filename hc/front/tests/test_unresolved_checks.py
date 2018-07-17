@@ -23,7 +23,7 @@ class UnresolvedChecksTestCase(BaseTestCase):
     def test_grace_checks_not_returned(self):
         """Test checks with status grace are not returned"""
 
-        self.check.last_ping = timezone.now() - td(days=1, minutes=30)
+        self.check.last_ping = timezone.now() - td(minutes=30)
         self.check.status = "up"
         self.check.save()
 
