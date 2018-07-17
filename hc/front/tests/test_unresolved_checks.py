@@ -2,6 +2,7 @@ from hc.api.models import Check
 from hc.test import BaseTestCase
 from datetime import timedelta as td
 from django.utils import timezone
+from django.urls import reverse
 
 
 class UnresolvedChecksTestCase(BaseTestCase):
@@ -16,7 +17,7 @@ class UnresolvedChecksTestCase(BaseTestCase):
         """Test the unresolved checks url works"""
 
         self.client.login(username="alice@example.org", password="password")
-        response = self.client.get("/unresolved_checks/")
+        response = self.client.get(reverse("hc-unresolved-checks"))
         self.assertEqual(response.status_code, 200)
 
     def test_grace_checks_not_returned(self):
@@ -27,7 +28,7 @@ class UnresolvedChecksTestCase(BaseTestCase):
         self.check.save()
 
         self.client.login(username="alice@example.org", password="password")
-        response = self.client.get("/unresolved_checks/")
+        response = self.client.get(reverse("hc-unresolved-checks"))
         self.assertNotIn("Alice", response)
 
     def test_only_unresolved_checks_are_returned(self):
@@ -38,7 +39,7 @@ class UnresolvedChecksTestCase(BaseTestCase):
         self.check.save()
 
         self.client.login(username="alice@example.org", password="password")
-        response = self.client.get("/unresolved_checks/")
+        response = self.client.get(reverse("hc-unresolved-checks"))
         self.assertContains(response, "Alice")
 
     def test_checks_up_not_returned(self):
@@ -49,5 +50,5 @@ class UnresolvedChecksTestCase(BaseTestCase):
         self.check.save()
 
         self.client.login(username="alice@example.org", password="password")
-        response = self.client.get("/unresolved_checks/")
+        response = self.client.get(reverse("hc-unresolved-checks"))
         self.assertNotIn("Alice", response)
