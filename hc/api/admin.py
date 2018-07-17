@@ -24,7 +24,7 @@ class ChecksAdmin(admin.ModelAdmin):
 
     class Media:
         css = {
-            'all': ('css/admin/checks.css',)
+            'all': ('css/admin/checks.css', )
         }
 
     search_fields = ["name", "user__email", "code"]
@@ -141,7 +141,7 @@ class PingsAdmin(admin.ModelAdmin):
 class ChannelsAdmin(admin.ModelAdmin):
     class Media:
         css = {
-            'all': ('css/admin/channels.css',)
+            'all': ('css/admin/channels.css', )
         }
 
     search_fields = ["value", "user__email"]

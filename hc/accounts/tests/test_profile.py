@@ -55,7 +55,6 @@ class ProfileTestCase(BaseTestCase):
         member_emails = set()
         for member in self.alice.profile.member_set.all():
             member_emails.add(member.user.email)
-
         # Assert the existence of the member emails
 
         self.assertTrue("frank@example.org" in member_emails)

@@ -4,7 +4,6 @@ from django.test import TestCase
 from django.utils import timezone
 from hc.api.models import Check
 
-
 check = Check()
 
 
@@ -25,7 +24,6 @@ class CheckModelTestCase(TestCase):
 
         self.assertTrue(check.in_grace_period())
         self.assertEqual(check.get_status(), "up")
-
         # The above 2 asserts fail. Make them pass
         # We did not find anything wrong with the asserts
 
@@ -37,6 +35,6 @@ class CheckModelTestCase(TestCase):
         check.status = "paused"
         self.assertFalse(check.in_grace_period())
 
-    # Test that when a new check is created, it is not in the grace period
+        # Test that when a new check is created, it is not in the grace period
         check.status = "new"
         self.assertFalse(check.in_grace_period())

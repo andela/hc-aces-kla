@@ -15,7 +15,7 @@ def uuid_or_400(f):
         except ValueError:
             return HttpResponseBadRequest()
 
-        return f(request, *args, **kwds)
+        return f(request, * args, ** kwds)
     return wrapper
 
 
@@ -46,7 +46,7 @@ def check_api_key(f):
         except User.DoesNotExist:
             return make_error("wrong api_key")
 
-        return f(request, *args, **kwds)
+        return f(request, * args, ** kwds)
 
     return wrapper
 
@@ -77,6 +77,6 @@ def validate_json(schema):
                     if "maximum" in spec and value > spec["maximum"]:
                         return make_error("%s is too large" % key)
 
-            return f(request, *args, **kwds)
+            return f(request, * args, ** kwds)
         return wrapper
     return decorator

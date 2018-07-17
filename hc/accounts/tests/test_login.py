@@ -41,7 +41,6 @@ class LoginTestCase(TestCase):
         self.client.session["bad_link"] = True
         self.client.get("/accounts/login/")
         assert "bad_link" not in self.client.session
-
         # Any other tests?
 
     def test_it_loads_login_page(self):

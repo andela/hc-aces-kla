@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.8/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
+# flake8: noqa
 import os
 import dj_database_url
 from decouple import config
@@ -25,7 +26,6 @@ ALLOWED_HOSTS = []
 DEFAULT_FROM_EMAIL = 'healthchecks@example.org'
 USE_PAYMENTS = False
 
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,9 +40,10 @@ INSTALLED_APPS = (
     'hc.accounts',
     'hc.api',
     'hc.front',
-    'hc.payments'
-)
+    'hc.payments',
 
+    'dbbackup',  # django-dbbackup
+)
 
 MIDDLEWARE = (
     'django.middleware.security.SecurityMiddleware',
@@ -82,7 +83,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hc.wsgi.application'
 TEST_RUNNER = 'hc.api.tests.CustomRunner'
 
-
 # Default database engine is SQLite. So one can just check out code,
 # install requirements.txt and do manage.py runserver and it works
 DATABASES = {
@@ -121,7 +121,7 @@ if os.environ.get("DB") == "mysql":
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
@@ -168,7 +168,6 @@ TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 TWILIO_NUMBER = os.environ.get("TWILIO_NUMBER")
 
-
 # Pushbullet integration -- override these in local_settings
 PUSHBULLET_CLIENT_ID = None
 PUSHBULLET_CLIENT_SECRET = None
@@ -177,3 +176,18 @@ if os.path.exists(os.path.join(BASE_DIR, "hc/local_settings.py")):
     from .local_settings import *
 else:
     warnings.warn("local_settings.py not found, using defaults")
+
+# REDIS server settings
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_TIMEZONE = 'Africa/Nairobi'
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, "hc/backups")}
+DBBACKUP_CONNECTORS = {
+    'default': {
+        'NAME': 'hc',
+        'USER': 'postgres',
+        'TEST': {'CHARSET': 'UTF8'}
+    }
+}
