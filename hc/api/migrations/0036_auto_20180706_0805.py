@@ -15,21 +15,21 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='channel',
             name='kind',
-<<<<<<< HEAD
+            << << << < HEAD
             field=models.CharField(choices=[
-                                            ('email', 'Email'),
-                                            ('webhook', 'Webhook'),
-                                            ('hipchat', 'HipChat'),
-                                            ('slack', 'Slack'),
-                                            ('pd', 'PagerDuty'),
-                                            ('po', 'Pushover'),
-                                            ('victorops', 'VictorOps'),
-                                            ('twiliosms', 'TwilioSms'),
-                                            ('twiliovoice', 'TwilioVoice'),
-                                            ('telegram', 'Telegram')],
-                                   max_length=20),
-=======
+                ('email', 'Email'),
+                ('webhook', 'Webhook'),
+                ('hipchat', 'HipChat'),
+                ('slack', 'Slack'),
+                ('pd', 'PagerDuty'),
+                ('po', 'Pushover'),
+                ('victorops', 'VictorOps'),
+                ('twiliosms', 'TwilioSms'),
+                ('twiliovoice', 'TwilioVoice'),
+                ('telegram', 'Telegram')],
+                max_length=20),
+            == == == =
             field=models.CharField(choices=[('email', 'Email'), ('webhook', 'Webhook'), ('hipchat', 'HipChat'), ('slack', 'Slack'), ('pd', 'PagerDuty'), ('po', 'Pushover'), ('victorops', 'VictorOps'), ('twiliosms', 'TwilioSms'), ('twiliovoice', 'TwilioVoice'), ('telegram', 'Telegram')], max_length=20),
->>>>>>> 736d560a74129020aa74a3b4835fe3967949f814
+            >>>>>> > 736d560a74129020aa74a3b4835fe3967949f814
         ),
     ]

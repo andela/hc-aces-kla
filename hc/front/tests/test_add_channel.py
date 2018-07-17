@@ -34,7 +34,16 @@ class AddChannelTestCase(BaseTestCase):
 
     def test_instructions_work(self):
         self.client.login(username="alice@example.org", password="password")
-        kinds = ("email", "webhook", "pd", "pushover", "hipchat", "victorops", "twiliosms", "twiliovoice", "telegram")
+        kinds = (
+            "email",
+            "webhook",
+            "pd",
+            "pushover",
+            "hipchat",
+            "victorops",
+            "twiliosms",
+            "twiliovoice",
+            "telegram")
         kinds = (
             "email",
             "webhook",
@@ -122,7 +131,6 @@ class AddChannelTestCase(BaseTestCase):
         self.assertEqual(alice_after, (alice_before + 1))
 
     def test_it_shows_instructions(self):
-         self.client.login(username="alice@example.org", password="password")
-         response = self.client.get("/integrations/add_telegram/")
-         self.assertContains(response, "@aces_kla_bot", status_code=200)
-
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.get("/integrations/add_telegram/")
+        self.assertContains(response, "@aces_kla_bot", status_code=200)

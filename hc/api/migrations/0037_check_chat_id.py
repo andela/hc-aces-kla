@@ -15,10 +15,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='check',
             name='chat_id',
-<<<<<<< HEAD
+            << << << < HEAD
             field=models.TextField(default='549751449', null=True),
-=======
+            == == == =
             field=models.TextField(default='549751449'),
->>>>>>> 736d560a74129020aa74a3b4835fe3967949f814
+            >>>>>> > 736d560a74129020aa74a3b4835fe3967949f814
         ),
     ]
