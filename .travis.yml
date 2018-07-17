@@ -3,37 +3,19 @@ python:
 - '2.7'
 - '3.4'
 install:
-<<<<<<< HEAD
-- pip install -r requirements.txt
-- pip install braintree coveralls mock mysqlclient
-- createdb hc
-=======
     - pip install -r requirements.txt
     - pip install braintree coveralls mock mysqlclient
     - createdb hc
->>>>>>> Fix travis
 env:
   matrix:
   - DB=postgres
 addons:
-<<<<<<< HEAD
   postgresql: '9.4'
 before_script:
-- python manage.py migrate
-=======
-  postgresql: "9.4"
-<<<<<<< HEAD
-<<<<<<< HEAD
-before_script:
   - python manage.py migrate
->>>>>>> Sms voice (#12)
-=======
->>>>>>> Fix the UI to allow integrations
-=======
 before script:
   - ./manage.py makemigrations
   - ./manage.py migrate
->>>>>>> Fix travis
 script:
 - coverage run --omit=*/tests/* --source=hc manage.py test
 after_success: coveralls
