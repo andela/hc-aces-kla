@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 # flake8: noqa
 import os
-import warnings
 import dj_database_url
 from decouple import config
+import warnings
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -163,11 +163,13 @@ PUSHOVER_EMERGENCY_EXPIRATION = 86400
 
 # Twilio integration
 TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID", "1326573647")
-TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN", "qwertyuiopEVJ123456789")
+TWILIO_AUTH_TOKEN = os.environ.get(
+    "TWILIO_AUTH_TOKEN", "qwertyuiopEVJ123456789")
 TWILIO_NUMBER = os.environ.get("TWILIO_NUMBER", "+256700000000")
 
-#Telegram integration
-TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', "QWERTdfghj5ghYUIOP123456789")
+# Telegram integration
+TELEGRAM_TOKEN = os.environ.get(
+    'TELEGRAM_TOKEN', "QWERTdfghj5ghYUIOP123456789")
 
 # Pushbullet integration -- override these in local_settings
 PUSHBULLET_CLIENT_ID = None

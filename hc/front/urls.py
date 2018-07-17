@@ -4,6 +4,7 @@ from hc.front import views
 
 check_urls = [
     url(r'^name/$', views.update_name, name="hc-update-name"),
+    url(r'^priority/$', views.update_priority, name="hc-update-priority"),
     url(r'^timeout/$', views.update_timeout, name="hc-update-timeout"),
     url(r'^nag_interval/$', views.update_nag_interval,
         name="hc-update-nag-interval"),
@@ -29,9 +30,9 @@ channel_urls = [
     url(r'^([\w-]+)/verify/([\w-]+)/$',
         views.verify_email, name="hc-verify-email"),
     url(r'^add_twiliosms/$', views.add_twiliosms, name="hc-add-twiliosms"),
-    url(r'^add_twiliovoice/$', views.add_twiliovoice,
-        name="hc-add-twiliovoice"),
+    url(r'^add_twiliovoice/$', views.add_twiliovoice, name="hc-add-twiliovoice"),
     url(r'^add_telegram/$', views.add_telegram, name="hc-add-telegram"),
+
 ]
 
 urlpatterns = [

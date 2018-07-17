@@ -1,4 +1,6 @@
 from django.test.utils import override_settings
+from django.contrib.auth.models import User
+from hc.api.models import Channel, Check
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from hc.api.models import Channel
@@ -32,6 +34,7 @@ class AddChannelTestCase(BaseTestCase):
 
     def test_instructions_work(self):
         self.client.login(username="alice@example.org", password="password")
+        kinds = ("email", "webhook", "pd", "pushover", "hipchat", "victorops", "twiliosms", "twiliovoice", "telegram")
         kinds = (
             "email",
             "webhook",
@@ -51,6 +54,7 @@ class AddChannelTestCase(BaseTestCase):
                 status_code=200)
 
     def test_team_access_works(self):
+        """A member of a team can access a channel added by a team member"""
         self.client.login(username="alice@example.org", password="password")
         channel = Channel(
             user=self.alice,
@@ -101,6 +105,7 @@ class AddChannelTestCase(BaseTestCase):
         alice_channel = User.objects.get(email="alice@example.org")
         alice_before = Channel.objects.filter(user=alice_channel).count()
         self.client.login(username="bob@example.org", password="password")
+        url = "/integrations/add/"
         form = {"kind": "twiliovoice", "value": "+256703357610"}
         self.client.post(reverse("hc-add-channel"), form)
         alice_after = Channel.objects.filter(user=alice_channel).count()
@@ -110,13 +115,14 @@ class AddChannelTestCase(BaseTestCase):
         """ test telegram integration works"""
         alice_channel = User.objects.get(email="alice@example.org")
         alice_before = Channel.objects.filter(user=alice_channel).count()
-        self.client.login(username="alice@example.org", password="password")
+        self.client.login(username="bob@example.org", password="password")
         form = {"kind": "telegram", "value": "549751449"}
         self.client.post(reverse("hc-add-channel"), form)
         alice_after = Channel.objects.filter(user=alice_channel).count()
         self.assertEqual(alice_after, (alice_before + 1))
 
     def test_it_shows_instructions(self):
-        self.client.login(username="alice@example.org", password="password")
-        response = self.client.get("/integrations/add_telegram/")
-        self.assertContains(response, "@aces_kla_bot", status_code=200)
+         self.client.login(username="alice@example.org", password="password")
+         response = self.client.get("/integrations/add_telegram/")
+         self.assertContains(response, "@aces_kla_bot", status_code=200)
+

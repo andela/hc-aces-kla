@@ -1,8 +1,8 @@
 import logging
 import time
-
 from concurrent.futures import ThreadPoolExecutor
 from django.core.management.base import BaseCommand
+from django.db.models import Q
 from django.db import connection
 from django.utils import timezone
 from hc.api.models import Check
@@ -13,46 +13,52 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Sends UP/DOWN email alerts'
+    help = 'Sends email alerts on status of checks'
 
     def handle_many(self):
         """ Send alerts for many checks simultaneously. """
+
         query = Check.objects.filter(user__isnull=False).select_related("user")
 
+        running_checks = running_checks = query.filter(
+            Q(status="up") | Q(status="down"))
+
         now = timezone.now()
-        going_down = query.filter(alert_after__lt=now, status="up")
-        going_up = query.filter(alert_after__gt=now, status="down")
         repeat_list_approved = query.filter(
-            alert_after__lt=now, status="down", nag_after_time__lt=now)
-        repeat_list = query.filter(alert_after__lt=now, status="down")
+            alert_after__lt=now,
+            status="down",
+            nag_after_time__lt=now)
+        repeat_list = query.filter(
+            alert_after__lt=now,
+            status="down")
+
         for check in repeat_list:
             if check.nag_after_time is None:
                 check.nag_after_time = now + check.nag_intervals
                 check.save()
-        for check in repeat_list_approved:
 
+        for check in repeat_list_approved:
             if (now - check.nag_after_time) > (check.nag_intervals):
                 check.nag_after_time = now + check.nag_intervals
             else:
+
                 check.nag_after_time = check.nag_after_time + \
                     check.nag_intervals
             check.save()
 
-        if len(repeat_list_approved) == 1:
+        if repeat_list_approved:
             checks = (
                 list(
-                    going_down.iterator()) +
-                list(
-                    going_up.iterator()) +
+                    running_checks.iterator()) +
                 list(repeat_list_approved))
         else:
             checks = (
-                list(going_down.iterator()) +
-                list(going_up.iterator()) +
+                list(running_checks.iterator()) +
                 list(repeat_list_approved.iterator()))
 
         if not checks:
             return False
+
         # Solve the problem of the difference of the nag_after_time and now()
         # being huge
         futures = [executor.submit(self.handle_one, check) for check in checks]
@@ -69,6 +75,14 @@ class Command(BaseCommand):
 
         """
 
+        try:
+            if connection.connection is None:
+                connection.ensure_connection()
+        except Exception:
+            self.stdout.write(
+                "Error starting: "
+                "Connection to database cannot be established.")
+
         # Save the new status. If sendalerts crashes,
         # it won't process this check again.
         check.status = check.get_status()
@@ -76,6 +90,10 @@ class Command(BaseCommand):
 
         tmpl = "\nSending alert, status=%s, code=%s\n"
         self.stdout.write(tmpl % (check.status, check.code))
+
+        if check.runs_too_often:
+            self.stdout.write("Check %s is running too often" % check.name)
+
         errors = check.send_alert()
         for ch, error in errors:
             self.stdout.write("ERROR: %s %s %s\n" % (ch.kind, ch.value, error))
