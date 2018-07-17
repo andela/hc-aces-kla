@@ -244,12 +244,6 @@ class VictorOps(HttpTransport):
         return self.post(self.channel.value, payload)
 
 
-def custom_message(check):
-    message = "Healthchecks updates\n Name: {}\nLast ping: {}\nstatus:{}".format(
-        check.name, check.last_ping.strftime('%x, %X'), check.status)
-    return message
-
-
 class Telegram(Transport):
     def telegram_message(self, check):
         return "HealthchecksUpdates\nName:{}\nLastPing:{}\nstatus:{}".format(
