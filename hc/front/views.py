@@ -17,7 +17,7 @@ from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm,
                             AddWebhookForm,
-                            NameTagsForm,
+                            NameTagsDepartmentForm,
                             TimeoutForm,
                             NagIntervalForm,
                             ShopifyForm,
@@ -55,12 +55,12 @@ def my_checks(request):
             elif check.in_grace_period():
                 grace_tags.add(tag)
 
-    state = {1: "low", 2: "medium", 3: "high"}
+        for department in check.departments.split(" "):
+            if department == "":
+                continue
+            deck[department] += 1
 
-    for department in check.departments.split(" "):
-        if department == "":
-            continue
-        deck[department] += 1
+    state = {1: "low", 2: "medium", 3: "high"}
     departments = [department[0] for department in deck.most_common()]
     ctx = {
         "page": "checks",
