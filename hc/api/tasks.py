@@ -66,7 +66,7 @@ def upload_csv_to_dropbox(file, path):
 
 @shared_task
 @periodic_task(
-    run_every=(crontab(minute='*/1')),
+    run_every=(crontab(hour='*/12')),
     name="run_db_backup",
     ignore_result=True
 )
@@ -80,7 +80,7 @@ def run_db_backup():
             task.id,
             current_time
         )
-        if timezone.now() < schedule.next_run_date:
+        if timezone.now() > schedule.next_run_date:
             management.call_command('dbbackup',
                                     '--output-filename={}'.format(file_name))
 
@@ -94,7 +94,7 @@ def run_db_backup():
 
 @shared_task
 @periodic_task(
-    run_every=(crontab(minute='*/1')),
+    run_every=(crontab(hour='*/12')),
     name="export_reports_as_csv"
 )
 def export_reports_as_csv():
@@ -103,7 +103,7 @@ def export_reports_as_csv():
     current_time = timezone.now().strftime("%Y_%m_%d %H-%M-%S")
     for task in tasks:
         schedule = TaskSchedule.objects.filter(task_id=task.id).first()
-        if timezone.now() < schedule.next_run_date:
+        if timezone.now() > schedule.next_run_date:
             # For each task, find the checks to be exported to CSV
             checks = Check.objects.filter(
                 user=task.profile.user).order_by("created")

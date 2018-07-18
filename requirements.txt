@@ -124,6 +124,7 @@ mock==2.0.0
 ndg-httpsclient==0.5.0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 numpy==1.14.5
 pandas==0.23.2
 =======
@@ -145,6 +146,10 @@ premailer==2.9.6
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
 =======
 more-itertools==4.2.0
+=======
+numpy==1.14.5
+pandas==0.23.3
+>>>>>>> [Feature #158174602] Added feature to backup reports in CSV format and save to dropbox
 pbr==4.0.4
 premailer==2.9.6
 >>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
@@ -186,12 +191,16 @@ python-dateutil==2.7.3
 =======
 pytest==3.6.3
 pytest-django==3.3.2
+<<<<<<< HEAD
 >>>>>>> [Feature #158174602]Added task and task schedule models
 >>>>>>> [Feature #158174602]Added task and task schedule models
 =======
 pytest==3.6.3
 pytest-django==3.3.2
 >>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
+=======
+python-dateutil==2.7.3
+>>>>>>> [Feature #158174602] Added feature to backup reports in CSV format and save to dropbox
 python-decouple==3.1
 python-http-client==3.1.0
 python-telegram-bot==10.1.0
