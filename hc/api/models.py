@@ -329,3 +329,10 @@ class TaskSchedule(models.Model):
     send_email_updates = models.BooleanField(default=False)
     next_run_date = models.DateTimeField(null=True, blank=True)
     run_count = models.IntegerField(default=0)
+
+
+class Backup(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    schedule = models.ForeignKey(TaskSchedule, on_delete=models.CASCADE)
+    file_name = models.CharField(max_length=100)
+    date_run = models.DateTimeField(auto_now_add=True)

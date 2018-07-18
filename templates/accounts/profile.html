@@ -174,8 +174,22 @@
         <div class="panel panel-default">
             <div class="panel-body settings-block">
                 <h2 class="settings-title">Scheduled Tasks</h2>
+               
+                <button 
+                    type="button" 
+                    class="btn btn-sm btn-default pull-right" 
+                    data-toggle="modal" 
+                    data-target="#add-schedule-db-backup-modal">Backup database</button>
+                <button 
+                    type="button" 
+                    class="btn btn-sm btn-default pull-right" 
+                    data-toggle="modal" 
+                    style="margin-right:10px;"
+                    data-target="#add-schedule-export_reports-modal">Export reports</button>
+                <br/>
                 {% if tasks %}
-                <table class="table table-striped" cellpadding="0" cellspacing="0">
+                <br/>
+                    <table class="table table-striped" cellpadding="0" cellspacing="0">
                         <tr>
                             <th>Name</th>
                             <th>Type</th>
@@ -206,17 +220,34 @@
                 {% else %}
                     You currently have no scheduled tasks
                 {% endif %}
-                <br/>
-                <button 
-                    type="button" 
-                    class="btn btn-default" 
-                    data-toggle="modal" 
-                    data-target="#add-schedule-db-backup-modal">Setup database backups</button>
-                <button 
-                    type="button" 
-                    class="btn btn-default" 
-                    data-toggle="modal" 
-                    data-target="#add-schedule-export_reports-modal">Export reports</button>
+                {% if activity %}
+                <hr/>
+                <h4>Backup Activity</h4>
+                <table class="table table-striped" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <th>Task Name</th>
+                            <th>File Name</th>
+                            <th>Last Run</th>
+                            <th>Next Scheduled</th>
+                        </tr>
+                        {% for instance in activity %}
+                        <tr>
+                            <td>
+                                {{instance.task.name}}
+                            </td>
+                            <td>
+                                {{instance.file_name}}
+                            </td>
+                            <td>
+                                {{instance.date_run}}
+                            </td>
+                            <td>
+                                {{instance.schedule.next_run_date}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
             </div>
         </div>
     </div>

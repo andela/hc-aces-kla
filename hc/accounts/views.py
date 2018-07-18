@@ -17,7 +17,7 @@ from hc.accounts.forms import (EmailPasswordForm, InviteTeamMemberForm,
                                RemoveTeamMemberForm, ReportSettingsForm,
                                ScheduleTaskForm, SetPasswordForm, TeamNameForm)
 from hc.accounts.models import Profile, Member
-from hc.api.models import Channel, Check, Task, TaskSchedule
+from hc.api.models import Channel, Check, Task, TaskSchedule, Backup
 from hc.lib.badges import get_badge_url
 
 
@@ -284,9 +284,10 @@ def profile(request):
         badge_urls.append(get_badge_url(username, tag))
 
     tasks = Task.objects.filter(profile=profile)
-
+    task_activity = Backup.objects.all()[:5]
     ctx = {
         "tasks": tasks,
+        "activity": task_activity,
         "page": "profile",
         "badge_urls": badge_urls,
         "profile": profile,
