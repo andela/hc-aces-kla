@@ -50,7 +50,10 @@ def save_backup(task, schedule, file_name):
 
 
 def upload_csv_to_dropbox(file, path):
+<<<<<<< HEAD
     logger.info(settings.DROPBOX_TOKEN)
+=======
+>>>>>>> [Feature #158174602] Added feature to backup reports in CSV format and save to dropbox
     dbox = dropbox.Dropbox(settings.DROPBOX_TOKEN)
     path = "/{}".format(path)
 
@@ -95,7 +98,11 @@ def run_db_backup():
 
 @shared_task
 @periodic_task(
+<<<<<<< HEAD
     run_every=(crontab(minute='*/12')),
+=======
+    run_every=(crontab(minute='*/1')),
+>>>>>>> [Feature #158174602] Added feature to backup reports in CSV format and save to dropbox
     name="export_reports_as_csv"
 )
 def export_reports_as_csv():
@@ -104,6 +111,7 @@ def export_reports_as_csv():
     current_time = timezone.now().strftime("%Y_%m_%d %H-%M-%S")
     for task in tasks:
         schedule = TaskSchedule.objects.filter(task_id=task.id).first()
+<<<<<<< HEAD
         # For each task, find the checks to be exported to CSV
         checks = Check.objects.filter(
             user=task.profile.user).order_by("created")
@@ -144,3 +152,45 @@ def export_reports_as_csv():
         response = upload_csv_to_dropbox(filepath, filename)
         logger.info(response)
         update_schedule(schedule, task)
+=======
+        if timezone.now() < schedule.next_run_date:
+            # For each task, find the checks to be exported to CSV
+            checks = Check.objects.filter(
+                user=task.profile.user).order_by("created")
+            checks_dict = checks.values(
+                        "name",
+                        "last_ping",
+                        "status",
+                        "priority",
+                        "escalate")
+            path = os.path.join(os.path.dirname(
+                os.path.dirname(current_dir)), 'csv_reports')
+
+            if not os.path.exists(path):
+                os.mkdir(path)
+            filename = "hc-report-task#{}-{}.csv".format(
+                task.id,
+                current_time
+            )
+            filepath = os.path.join(path, filename)
+
+            # Write to CSV file
+            with open(filepath, 'w') as my_csv:
+                fields = [
+                    "name", "last_ping", "status", "priority", "escalate"]
+                writer = csv.DictWriter(
+                    my_csv,
+                    fields,
+                    restval='n/a',
+                    )
+                writer.writeheader()
+
+                for check in checks_dict:
+                    writer.writerow(check)
+
+            response = upload_csv_to_dropbox(filepath, filename)
+            logger.info(response)
+            update_schedule(schedule, task)
+        else:
+            logger.info("Too early to export reports")
+>>>>>>> [Feature #158174602] Added feature to backup reports in CSV format and save to dropbox
