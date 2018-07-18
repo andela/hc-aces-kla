@@ -54,7 +54,7 @@ class AddShopifyAlertTestCase(BaseTestCase):
 
     @patch('hc.front.views.shopify.Webhook')
     @patch('hc.front.views.shopify')
-    def est_it_creates_alert_and_redirects(self, mock, mock_hook):
+    def test_it_creates_alert_and_redirects(self, mock, mock_hook):
         form = {"api_key": self.api_key,
                 "password": self.password,
                 "event": self.event,
