@@ -59,9 +59,9 @@ def my_checks(request):
             if department == "":
                 continue
             deck[department] += 1
+    departments = [department[0] for department in deck.most_common()]
 
     state = {1: "low", 2: "medium", 3: "high"}
-    departments = [department[0] for department in deck.most_common()]
     ctx = {
         "page": "checks",
         "checks": checks,

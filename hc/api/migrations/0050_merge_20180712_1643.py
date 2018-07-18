@@ -9,7 +9,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('api', '0036_check_departments'),
-        # ('api', '0049_auto_20180712_0611'),
     ]
 
     operations = [
