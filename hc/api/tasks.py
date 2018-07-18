@@ -2,7 +2,6 @@ from __future__ import absolute_import, unicode_literals
 
 import csv
 import os
-import pandas as pd
 import dropbox
 
 from datetime import timedelta as td
@@ -22,11 +21,6 @@ current_dir = os.path.abspath(__file__)
 def get_profile_tasks(task_type):
     tasks = Task.objects.filter(task_type=task_type)
     return tasks
-
-
-def results_to_dataframe(values):
-    data_frame = pd.DataFrame.from_records(values)
-    return data_frame
 
 
 def update_schedule(schedule, task):
