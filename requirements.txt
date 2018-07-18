@@ -8,7 +8,11 @@ autoflake==1.2
 backports.functools-lru-cache==1.5
 billiard==3.5.0.4
 boto==2.48.0
+celery==4.2.1
+certifi==2018.4.16
 cffi==1.11.5
+chardet==3.0.4
+configparser==3.5.0
 coverage==4.5.1
 celery==4.2.0
 cryptography==2.2.2
@@ -21,9 +25,12 @@ Django==1.10
 django-appconf==1.0.1
 django-compressor==2.1
 django-model-utils==3.1.2
+django-redis-cache==1.7.1
 django-sendgrid-v5==0.6.893
 django-ses-backend==0.1.1
+django-storages==1.6.6
 djmail==0.11.0
+dropbox==9.0.0
 enum34==1.1.6
 flake8==3.5.0
 funcsigs==1.0.2
@@ -66,7 +73,8 @@ python-decouple==3.1
 python-http-client==3.1.0
 python-telegram-bot==10.1.0
 rcssmin==1.0.6
-requests==2.9.1
+redis==2.10.6
+requests==2.19.1
 rjsmin==1.0.12
 sendgrid==5.4.1
 PyYAML==3.12
@@ -80,6 +88,7 @@ shopify-trois==1.0
 ShopifyAPI==3.1.0
 six==1.11.0
 twilio==6.14.6
+urllib3==1.23
 vine==1.1.4
 whitenoise==3.3.1
 wrapt==1.10.11

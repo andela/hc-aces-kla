@@ -13,3 +13,4 @@ pytest.ini
 celerybeat-schedule.db
 dump.rdb
 celerybeat.pid
+.env
