@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 # flake8: noqa
 import os
+import dj_database_url
+from decouple import config
 import warnings
 import dj_database_url
 from decouple import config
@@ -141,14 +143,16 @@ STATICFILES_FINDERS = (
 )
 COMPRESS_OFFLINE = True
 
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'EMAIL_HOST')
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get(
+    'EMAIL_HOST_PASSWORD', 'EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
-SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL',
+     'DEFAULT_FROM_EMAIL')
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', 'SENDGRID_API_KEY')
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 
 # Slack integration -- override these in local_settings

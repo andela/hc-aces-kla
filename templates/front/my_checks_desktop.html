@@ -39,7 +39,8 @@
                     data-tags="{{ check.tags }}"
                     data-url="{% url 'hc-update-name' check.code %}"
                     class="my-checks-name {% if not check.name %}unnamed{% endif %}">
-                <div>{{ check.name|default:"unnamed" }}</div>
+                <div>{{ check.name|default:"unnamed" }}
+                </div>
                 {% for tag in check.tags_list %}
                 <span class="label label-tag">{{ tag }}</span>
                 {% endfor %}
@@ -87,11 +88,18 @@
         </td>
         <td>
         {% if check.last_ping %}
+            {% if check.runs_too_often %}
+            <span class="status icon-bell" 
+            data-toggle="tooltip" 
+            data-placement="top" 
+            title="Check running too often"></span>
+            {% endif %}
             <span
                 data-toggle="tooltip"
                 title="{{ check.last_ping|date:'N j, Y, P e' }}">
                 {{ check.last_ping|naturaltime }}
             </span>
+            
         {% else %}
             Never
         {% endif %}

@@ -8,3 +8,5 @@ hc-venv/
 .DS_Store
 static/.DS_Store
 .vscode/
+pytest.ini
+.pytest_cache/
