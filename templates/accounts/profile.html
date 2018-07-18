@@ -175,10 +175,27 @@
             <div class="panel-body settings-block">
                 <h2 class="settings-title">Scheduled Tasks</h2>
 <<<<<<< HEAD
+<<<<<<< HEAD
                
 =======
+=======
+               
+                <button 
+                    type="button" 
+                    class="btn btn-sm btn-default pull-right" 
+                    data-toggle="modal" 
+                    data-target="#add-schedule-db-backup-modal">Backup database</button>
+                <button 
+                    type="button" 
+                    class="btn btn-sm btn-default pull-right" 
+                    data-toggle="modal" 
+                    style="margin-right:10px;"
+                    data-target="#add-schedule-export_reports-modal">Export reports</button>
+                <br/>
+>>>>>>> [Feature #158174602] Added schedule status feed to frontend
                 {% if tasks %}
-                <table class="table table-striped" cellpadding="0" cellspacing="0">
+                <br/>
+                    <table class="table table-striped" cellpadding="0" cellspacing="0">
                         <tr>
                             <th>Name</th>
                             <th>Type</th>
@@ -209,6 +226,7 @@
                 {% else %}
                     You currently have no scheduled tasks
                 {% endif %}
+<<<<<<< HEAD
                 <br/>
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
                 <button 
@@ -258,6 +276,8 @@
                     <br/>
                     You currently have no scheduled tasks
                 {% endif %}
+=======
+>>>>>>> [Feature #158174602] Added schedule status feed to frontend
                 {% if activity %}
                 <hr/>
                 <h4>Backup Activity</h4>
@@ -286,6 +306,7 @@
                         {% endfor %}
                     </table>
                     {% endif %}
+<<<<<<< HEAD
 =======
                     data-target="#add-schedule-db-backup-modal">Setup database backups</button>
                 <button 
@@ -294,6 +315,8 @@
                     data-toggle="modal" 
                     data-target="#add-schedule-export_reports-modal">Export reports</button>
 >>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
+=======
+>>>>>>> [Feature #158174602] Added schedule status feed to frontend
             </div>
         </div>
     </div>
