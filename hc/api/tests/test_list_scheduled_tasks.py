@@ -1,3 +1,5 @@
+from django.utils import timezone
+from datetime import timedelta as td
 from hc.api.models import Task, TaskSchedule
 from hc.test import BaseTestCase
 
@@ -27,8 +29,6 @@ class ScheduledTasksTestCase(BaseTestCase):
         self.sched_2.date_created = timezone.now()
         self.sched_2.next_run_date = self.sched_2.date_created + \
             td(days=1)
-=======
->>>>>>> [Chore #158174602] Applied pep8 standards to file
         self.sched_2.save()
 
     def get(self):

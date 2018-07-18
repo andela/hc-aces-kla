@@ -41,16 +41,7 @@ INSTALLED_APPS = (
     'hc.api',
     'hc.front',
     'hc.payments',
-
-<<<<<<< HEAD
-<<<<<<< HEAD
     'dbbackup',
-=======
-    'dbbackup',  # django-dbbackup
->>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
-=======
-    'dbbackup',
->>>>>>> [Feature #158174602] Added backup support on dropbox
 )
 
 MIDDLEWARE = (
@@ -185,7 +176,6 @@ TWILIO_NUMBER = os.environ.get("TWILIO_NUMBER")
 PUSHBULLET_CLIENT_ID = None
 PUSHBULLET_CLIENT_SECRET = None
 
-<<<<<<< HEAD
 # REDIS server settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
@@ -219,8 +209,6 @@ if os.path.exists(os.path.join(BASE_DIR, "hc/local_settings.py")):
 else:
     warnings.warn("local_settings.py not found, using defaults")
 
-=======
->>>>>>> [Feature #158174602] Added backup support on dropbox
 # REDIS server settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'

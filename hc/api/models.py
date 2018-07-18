@@ -329,10 +329,6 @@ class TaskSchedule(models.Model):
     send_email_updates = models.BooleanField(default=False)
     next_run_date = models.DateTimeField(null=True, blank=True)
     run_count = models.IntegerField(default=0)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> [Feature #158174602] Added schedule status feed to frontend
 
 
 class Backup(models.Model):
@@ -340,8 +336,3 @@ class Backup(models.Model):
     schedule = models.ForeignKey(TaskSchedule, on_delete=models.CASCADE)
     file_name = models.CharField(max_length=100)
     date_run = models.DateTimeField(auto_now_add=True)
-<<<<<<< HEAD
-=======
->>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
-=======
->>>>>>> [Feature #158174602] Added schedule status feed to frontend

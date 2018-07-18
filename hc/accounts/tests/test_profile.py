@@ -164,7 +164,7 @@ class ProfileTestCase(BaseTestCase):
         url = "/accounts/profile/"
         form = {
             "update_reports_allowed": True,
-            "frequency": "day",
+            "report_frequency": "day",
             "reports_allowed": True}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
@@ -177,7 +177,7 @@ class ProfileTestCase(BaseTestCase):
         url = "/accounts/profile/"
         form = {
             "update_reports_allowed": True,
-            "frequency": "week",
+            "report_frequency": "week",
             "reports_allowed": True}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)
@@ -190,7 +190,7 @@ class ProfileTestCase(BaseTestCase):
         url = "/accounts/profile/"
         form = {
             "update_reports_allowed": True,
-            "frequency": "month",
+            "report_frequency": "month",
             "reports_allowed": True}
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(url, form)

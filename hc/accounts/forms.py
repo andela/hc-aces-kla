@@ -15,7 +15,7 @@ class EmailPasswordForm(forms.Form):
 
 class ReportSettingsForm(forms.Form):
     reports_allowed = forms.BooleanField(required=False)
-    frequency = forms.CharField(required=False)
+    report_frequency = forms.CharField(required=False)
 
 
 class ScheduleTaskForm(forms.Form):
