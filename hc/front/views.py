@@ -231,7 +231,7 @@ def create_shopify_alerts(request):
             api_key, password, shop_name)
         try:
             shopify.ShopifyResource.set_site(shop_url)
-            shopify.Shop.current
+            shopify.Shop.current()
             webhook = shopify.Webhook()
             webhook_list = shopify.Webhook.find(topic=topic)
             if len(webhook_list) > 0:
