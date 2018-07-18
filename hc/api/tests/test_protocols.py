@@ -18,7 +18,7 @@ class SendProtocolAlertsTestCase(BaseTestCase):
         self.profile.token = make_password("secret-token")
         self.profile.save()
         self.channel = Channel(user=self.bob, kind="email",
-                          value="bob@example.com")
+                               value="bob@example.com")
         self.channel.save()
         self.check = Check(user=self.alice, status="down")
         self.check.last_ping = timezone.now() - timedelta(minutes=300)
