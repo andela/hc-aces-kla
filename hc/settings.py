@@ -177,6 +177,8 @@ CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_TIMEZONE = 'Africa/Nairobi'
 
+DROPBOX_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN') or 'b9E7x19dj4UAAAAAAAABhok2PnCE2YQURfBCeXkCE9CJXaTqjpN0iwJQ2BEq4DhA'
+
 DBBACKUP_CONNECTORS = {
     'default': {
         'NAME': 'hc',
@@ -187,7 +189,7 @@ DBBACKUP_CONNECTORS = {
 
 DBBACKUP_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 DBBACKUP_STORAGE_OPTIONS = {
-    'oauth2_access_token': os.environ.get('DROPBOX_OAUTH2_TOKEN'),
+    'oauth2_access_token': DROPBOX_TOKEN,
 }
 
 if os.environ.get('REDIS_URL'):

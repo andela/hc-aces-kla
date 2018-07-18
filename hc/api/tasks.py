@@ -1,15 +1,22 @@
 from __future__ import absolute_import, unicode_literals
 
+import csv
+import os
+import pandas as pd
+import dropbox
+
 from datetime import timedelta as td
 from django.core import management
 from django.utils import timezone
+from django.conf import settings
 from celery import shared_task
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
-from hc.api.models import Task, TaskSchedule, Backup
+from hc.api.models import Check, Task, TaskSchedule, Backup
 
 logger = get_task_logger(__name__)
+current_dir = os.path.abspath(__file__)
 
 
 def get_profile_tasks(task_type):
@@ -17,9 +24,50 @@ def get_profile_tasks(task_type):
     return tasks
 
 
+def results_to_dataframe(values):
+    data_frame = pd.DataFrame.from_records(values)
+    return data_frame
+
+
+def update_schedule(schedule, task):
+    schedule.run_count = schedule.run_count + 1
+    if task.frequency == "daily":
+        schedule.next_run_date = schedule.date_created + td(days=1)
+    elif task.frequency == "weekly":
+        schedule.next_run_date = schedule.date_created + td(days=7)
+    elif task.frequency == "monthly":
+        schedule.next_run_date = schedule.date_created + td(days=30)
+
+    schedule.save()
+
+
+def save_backup(task, schedule, file_name):
+    backup = Backup(
+                task=task,
+                schedule=schedule,
+                file_name=file_name)
+    backup.save()
+
+
+def upload_csv_to_dropbox(file, path):
+    logger.info(settings.DROPBOX_TOKEN)
+    dbox = dropbox.Dropbox(settings.DROPBOX_TOKEN)
+    path = "/{}".format(path)
+
+    with open(file, 'rb') as f:
+        data = f.read()
+    try:
+        response = dbox.files_upload(
+            data, path)
+    except dropbox.exceptions.ApiError as error:
+        print('Error', error)
+        return None
+    return response
+
+
 @shared_task
 @periodic_task(
-    run_every=(crontab(minute='*/1')),
+    run_every=(crontab(hour='*/12')),
     name="run_db_backup",
     ignore_result=True
 )
@@ -33,29 +81,66 @@ def run_db_backup():
             task.id,
             current_time
         )
-        if timezone.now() < schedule.next_run_date:
+        if timezone.now() > schedule.next_run_date:
             management.call_command('dbbackup',
                                     '--output-filename={}'.format(file_name))
 
-            schedule.run_count = schedule.run_count + 1
-            if task.frequency == "daily":
-                schedule.next_run_date = schedule.date_created + td(days=1)
-            elif task.frequency == "weekly":
-                schedule.next_run_date = schedule.date_created + td(days=7)
-            elif task.frequency == "monthly":
-                schedule.next_run_date = schedule.date_created + td(days=30)
+            update_schedule(schedule, task)
 
-            schedule.save()
             logger.info("Backup successful")
-            backup = Backup(
-                        task=task,
-                        schedule=schedule,
-                        file_name=file_name)
-            backup.save()
+            save_backup(task, schedule, file_name)
         else:
             logger.info("Backup not run, too early")
 
 
 @shared_task
+@periodic_task(
+    run_every=(crontab(minute='*/12')),
+    name="export_reports_as_csv"
+)
 def export_reports_as_csv():
-    pass
+    '''Export CSV file with status of checks at a given time'''
+    tasks = get_profile_tasks('export_reports')
+    current_time = timezone.now().strftime("%Y_%m_%d %H-%M-%S")
+    for task in tasks:
+        schedule = TaskSchedule.objects.filter(task_id=task.id).first()
+        # For each task, find the checks to be exported to CSV
+        checks = Check.objects.filter(
+            user=task.profile.user).order_by("created")
+        checks_dict = checks.values(
+                    "name",
+                    "last_ping",
+                    "status",
+                    "priority",
+                    "escalate")
+        data_frame = results_to_dataframe(checks_dict)
+        logger.info(data_frame.head())
+        path = os.path.join(os.path.dirname(
+            os.path.dirname(current_dir)), 'csv_reports')
+        logger.info(path)
+        if not os.path.exists(path):
+            os.mkdir(path)
+
+        logger.info("1")
+        filename = "hc-report-task#{}-{}.csv".format(
+            task.id,
+            current_time
+        )
+        filepath = os.path.join(path, filename)
+
+        # Write to CSV file
+        with open(filepath, 'w') as my_csv:
+            fields = ["name", "last_ping", "status", "priority", "escalate"]
+            writer = csv.DictWriter(
+                my_csv,
+                fields,
+                restval='n/a',
+                )
+            writer.writeheader()
+            for check in checks_dict:
+                writer.writerow(check)
+        logger.info("2")
+
+        response = upload_csv_to_dropbox(filepath, filename)
+        logger.info(response)
+        update_schedule(schedule, task)
