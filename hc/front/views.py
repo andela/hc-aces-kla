@@ -16,7 +16,8 @@ from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 
-from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsDepartmentForm,
+from hc.front.forms import (AddChannelForm, AddWebhookForm,
+                            NameTagsDepartmentForm,
                             TimeoutForm, NagIntervalForm, PriorityForm)
 
 
@@ -54,7 +55,7 @@ def my_checks(request):
                 continue
             deck[department] += 1
     departments = [department[0] for department in deck.most_common()]
-    
+
     state = {1: "low", 2: "medium", 3: "high"}
 
     ctx = {
