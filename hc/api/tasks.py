@@ -66,7 +66,7 @@ def upload_csv_to_dropbox(file, path):
 
 @shared_task
 @periodic_task(
-    run_every=(crontab(hour='*/12')),
+    run_every=(crontab(minute='*/1')),
     name="run_db_backup",
     ignore_result=True
 )
@@ -80,7 +80,7 @@ def run_db_backup():
             task.id,
             current_time
         )
-        if timezone.now() > schedule.next_run_date:
+        if timezone.now() < schedule.next_run_date:
             management.call_command('dbbackup',
                                     '--output-filename={}'.format(file_name))
 
@@ -93,7 +93,6 @@ def run_db_backup():
 
 
 @shared_task
-<<<<<<< HEAD
 @periodic_task(
     run_every=(crontab(minute='*/1')),
     name="export_reports_as_csv"
@@ -144,10 +143,3 @@ def export_reports_as_csv():
             update_schedule(schedule, task)
         else:
             logger.info("Too early to export reports")
-=======
-def export_reports_as_csv():
-    pass
-<<<<<<< HEAD
->>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery
-=======
->>>>>>> [Feature #158174602] Setup scheduled task for database backups with celery

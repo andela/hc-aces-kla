@@ -8,6 +8,7 @@ hc-venv/
 .DS_Store
 static/.DS_Store
 .vscode/
+hc/csv_reports/*
 pytest.ini
 .pytest_cache/
 hc/csv_reports/*
