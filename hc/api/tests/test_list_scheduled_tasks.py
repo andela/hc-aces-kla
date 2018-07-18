@@ -18,7 +18,6 @@ class ScheduledTasksTestCase(BaseTestCase):
         self.task2.save()
 
         self.sched_1 = TaskSchedule(task=self.task1, send_email_updates=False)
-<<<<<<< HEAD
         self.sched_1.date_created = timezone.now()
         self.sched_1.next_run_date = self.sched_1.date_created + \
             td(days=1)
@@ -29,10 +28,7 @@ class ScheduledTasksTestCase(BaseTestCase):
         self.sched_2.next_run_date = self.sched_2.date_created + \
             td(days=1)
 =======
-        self.sched_1.save()
-
-        self.sched_2 = TaskSchedule(task=self.task2, send_email_updates=False)
->>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
+>>>>>>> [Chore #158174602] Applied pep8 standards to file
         self.sched_2.save()
 
     def get(self):
