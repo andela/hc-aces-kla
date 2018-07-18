@@ -83,11 +83,17 @@
                             <td>{{ profile.user.email }}</td>
                             <td>Owner</td>
                             <td></td>
+                            <td></td>
                         </tr>
                         {% for member in profile.member_set.all %}
                         <tr>
                             <td>{{ member.user.email }} </td>
                             <td>Member</td>
+                            <td>
+                                <a  href="#" 
+                                    data-email="{{ member.user.email }}" 
+                                    class="pull-right assign-checks">Assign Checks</a>
+                            </td>
                             <td>
                                 <a
                                     href="#"
@@ -226,6 +232,56 @@
                         type="submit"
                         name="revoke_api_key"
                         class="btn btn-danger">Revoke API Key</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="assign-check-modal" class="modal">
+    <div class="modal-dialog">
+        <form id="assign-check-form" method="post">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="assign-check-title">Assign Check</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td>Check Name</td>
+                            <td>Code</td>
+                            <td>Priority</td>
+                            <td>Status</td>
+                        </tr>
+                        {% for check in checks %}
+                        <tr>
+                            <td>{{check.name}}</td>
+                            <td>{{check.code}}</td>
+                            <td>
+                                <select name="priority" style="max-width:90%;">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </td>
+                            {% if not profile.api_key %}
+                            <td>Assigned</td>
+                            {% else %}
+                            <td>Not Assigned</td>
+                            {% endif %}
+                            <input type="hidden" name="email" id="remove-team-member-email" />
+                            <input type="hidden" name="check_code" value={{check.code}} />
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <!-- <input type="hidden" name="email" id="remove-team-member-email" /> -->
+                    <!-- <input type="hidden" name="check_code" id="remove-team-member-email" value= /> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" name="assign_checks" class="btn btn-danger">Assign</button>
                 </div>
             </div>
         </form>

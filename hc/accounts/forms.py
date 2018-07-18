@@ -30,5 +30,14 @@ class RemoveTeamMemberForm(forms.Form):
     email = LowercaseEmailField()
 
 
+class AssignChecksForm(forms.Form):
+    email = LowercaseEmailField()
+    check_code = forms.UUIDField(required=False)
+    priority = forms.IntegerField(min_value=0, max_value=5)
+
+class UnAssignChecksForm(forms.Form):
+    email = LowercaseEmailField()
+    check_code = forms.UUIDField(required=False)
+
 class TeamNameForm(forms.Form):
     team_name = forms.CharField(max_length=200, required=True)

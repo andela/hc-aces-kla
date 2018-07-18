@@ -1,10 +1,11 @@
 from datetime import timedelta
 
 from django.utils import timezone
-from hc.api.models import Check, Channel
+from hc.api.models import Check, Channel, Assigned
 from hc.test import BaseTestCase
 from mock import patch
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 
 
 def fake_twilio_notify():
@@ -31,6 +32,9 @@ class SendProtocolAlertsTestCase(BaseTestCase):
         check.number_of_nags = 5
         check.priority = 3
         check.save()
+        user = User.objects.filter(email="bob@example.org").first()
+        assign = Assigned(check_assigned=check, priority=1, user_id=user.id)
+        assign.save()
         check.send_alert()
 
         assert check.escalate
@@ -63,5 +67,27 @@ class SendProtocolAlertsTestCase(BaseTestCase):
         check2.send_alert()
 
         assert check1.escalate
-        assert check1.number_of_nags == 16
+        assert check1.number_of_nags == 20
         assert check2.number_of_nags == 6
+
+    @patch("hc.api.transports.TwilioSms.notify", fake_twilio_notify())
+    def test_it_escalates_to_different_members_priorities_if_empty(self):
+        """
+            test it escalates
+        """
+        channel = Channel(user=self.bob, kind="email",
+                          value="bob@example.org")
+        channel.save()
+        check = Check(user=self.alice, status="down")
+        check.last_ping = timezone.now() - timedelta(minutes=300)
+        check.number_of_nags = 10
+        check.priority = 2
+        check.save()
+        user = User.objects.filter(email="bob@example.org").first()
+        assign = Assigned(check_assigned=check, priority=2, user_id=user.id)
+        assign.save()
+        check.send_alert()
+        assigns = Assigned.objects.filter(check_assigned=check, priority=2)
+
+        assert check.escalate
+        assert check.number_of_nags == 15

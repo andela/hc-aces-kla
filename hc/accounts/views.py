@@ -12,10 +12,11 @@ from django.core import signing
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from hc.accounts.forms import (EmailPasswordForm, InviteTeamMemberForm,
-                               RemoveTeamMemberForm, ReportSettingsForm,
-                               SetPasswordForm, TeamNameForm)
+                            RemoveTeamMemberForm, ReportSettingsForm,
+                            SetPasswordForm, TeamNameForm, AssignChecksForm,
+                            UnAssignChecksForm)
 from hc.accounts.models import Profile, Member
-from hc.api.models import Channel, Check
+from hc.api.models import Channel, Check, Assigned
 from hc.lib.badges import get_badge_url
 
 
@@ -191,6 +192,29 @@ def profile(request):
                                       user=farewell_user).delete()
 
                 messages.info(request, "%s removed from team!" % email)
+        elif "assign_checks" in request.POST:
+            form = AssignChecksForm(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data["email"]
+                check_code = form.cleaned_data['check_code']
+                priority = form.cleaned_data['priority']
+                assigned_check = Check.objects.filter(code=check_code).first()
+                user = User.objects.filter(email=email).first()
+                assign = Assigned(check_assigned=assigned_check, priority=priority, user_id=user.id)
+                assign.save()
+                messages.info(request, "%s assigned to checks!" % email)
+            else:
+                print("fail")    
+        elif "unassign_check" in request.POST:
+            form = UnAssignChecksForm(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data["email"]
+                check_code = form.cleaned_data["check_code"]
+                assigned_check = Check.objects.filter(code=check_code).first()
+                user = User.objects.filter(email=email).first()
+                Assigned.objects.filter(check_assigned=assigned_check,
+                                      user_id=user.id).delete()
+                messages.success(request, "Assignment Removed!")
         elif "set_team_name" in request.POST:
             if not profile.team_access_allowed:
                 return HttpResponseForbidden()
@@ -212,12 +236,15 @@ def profile(request):
             continue
 
         badge_urls.append(get_badge_url(username, tag))
-
+    checks = Check.objects.filter(user=request.team.user)
+    assigned = Assigned.objects.all()
     ctx = {
         "page": "profile",
         "badge_urls": badge_urls,
         "profile": profile,
-        "show_api_key": show_api_key
+        "show_api_key": show_api_key,
+        "checks": checks,
+        "assigned": assigned
     }
 
     return render(request, "accounts/profile.html", ctx)

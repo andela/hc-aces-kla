@@ -10,4 +10,14 @@ $(function() {
         return false;
     });
 
+    $(".assign-checks").click(function () {
+        var $this = $(this);
+
+        $("#rtm-email").text($this.data("email"));
+        $("#remove-team-member-email").val($this.data("email"));
+        $('#assign-check-modal').modal("show");
+
+        return false;
+    });
+
 });
