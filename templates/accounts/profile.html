@@ -173,68 +173,11 @@
     <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-body settings-block">
-                <h2 class="settings-title">Scheduled Tasks</h2>
-<<<<<<< HEAD
-<<<<<<< HEAD
-               
-=======
-=======
-               
+                <h2 class="settings-title">Scheduled Tasks</h2>              
                 <button 
                     type="button" 
                     class="btn btn-sm btn-default pull-right" 
                     data-toggle="modal" 
-                    data-target="#add-schedule-db-backup-modal">Backup database</button>
-                <button 
-                    type="button" 
-                    class="btn btn-sm btn-default pull-right" 
-                    data-toggle="modal" 
-                    style="margin-right:10px;"
-                    data-target="#add-schedule-export_reports-modal">Export reports</button>
-                <br/>
->>>>>>> [Feature #158174602] Added schedule status feed to frontend
-                {% if tasks %}
-                <br/>
-                    <table class="table table-striped" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Frequency</th>
-                            <th>Actions</th>
-                        </tr>
-                        {% for task in tasks %}
-                        <tr>
-                            <td>
-                                {{task.name}}
-                            </td>
-                            <td>
-                                {{task.task_type}}
-                            </td>
-                            <td>
-                                {{task.frequency}}
-                            </td>
-                            <td>
-                                <button 
-                                type="button" 
-                                class="btn btn-xs btn-danger" 
-                                data-toggle="modal" 
-                                data-target="#delete-task">Delete</button>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                {% else %}
-                    <br/>
-                    You currently have no scheduled tasks
-                {% endif %}
-<<<<<<< HEAD
-                <br/>
->>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
-                <button 
-                    type="button" 
-                    class="btn btn-sm btn-default pull-right" 
-                    data-toggle="modal" 
-<<<<<<< HEAD
                     data-target="#add-schedule-db-backup-modal">Backup database</button>
                 <button 
                     type="button" 
@@ -277,8 +220,8 @@
                     <br/>
                     You currently have no scheduled tasks
                 {% endif %}
-=======
->>>>>>> [Feature #158174602] Added schedule status feed to frontend
+                <br/>
+
                 {% if activity %}
                 <hr/>
                 <h4>Backup Activity</h4>
@@ -307,17 +250,6 @@
                         {% endfor %}
                     </table>
                     {% endif %}
-<<<<<<< HEAD
-=======
-                    data-target="#add-schedule-db-backup-modal">Setup database backups</button>
-                <button 
-                    type="button" 
-                    class="btn btn-default" 
-                    data-toggle="modal" 
-                    data-target="#add-schedule-export_reports-modal">Export reports</button>
->>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
-=======
->>>>>>> [Feature #158174602] Added schedule status feed to frontend
             </div>
         </div>
     </div>
@@ -435,21 +367,12 @@
                             <label>
                                 <input type="radio" name="receive_email_updates" value="True">Yes
                             </label>
-<<<<<<< HEAD
                         </div>
                         <div class="radio">
                             <label>
                                 <input type="radio" name="receive_email_updates" value="False">No
                             </label>
                         </div>
-=======
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="receive_email_updates" value="False">No
-                            </label>
-                        </div>
->>>>>>> [Feature #158174602] Finished code for saving tasks, applied pep8 standards
                     </div>
                     <input 
                         type="hidden" 

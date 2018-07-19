@@ -195,39 +195,6 @@ DBBACKUP_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 DBBACKUP_STORAGE_OPTIONS = {
     'oauth2_access_token': DROPBOX_TOKEN,
 }
-
-if os.environ.get('REDIS_URL'):
-    CACHES = {
-        "default": {
-            "BACKEND": "redis_cache.RedisCache",
-            "LOCATION": os.environ.get('REDIS_URL'),
-        }
-    }
-
-if os.path.exists(os.path.join(BASE_DIR, "hc/local_settings.py")):
-    from .local_settings import *
-else:
-    warnings.warn("local_settings.py not found, using defaults")
-
-# REDIS server settings
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_TIMEZONE = 'Africa/Nairobi'
-
-DROPBOX_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN') or 'b9E7x19dj4UAAAAAAAABhok2PnCE2YQURfBCeXkCE9CJXaTqjpN0iwJQ2BEq4DhA'
-
-DBBACKUP_CONNECTORS = {
-    'default': {
-        'NAME': 'hc',
-        'USER': 'postgres',
-        'TEST': {'CHARSET': 'UTF8'}
-    }
-}
-
-DBBACKUP_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DBBACKUP_STORAGE_OPTIONS = {
-    'oauth2_access_token': DROPBOX_TOKEN,
-}
 if os.environ.get('REDIS_URL'):
     CACHES = {
         "default": {
