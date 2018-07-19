@@ -26,7 +26,8 @@ class SendProtocolAlertsTestCase(BaseTestCase):
         channel = Channel(user=self.bob, kind="email",
                           value="bob@example.com")
         channel.save()
-        check = Check(user=self.alice, status="down")
+        check = Check(user=self.alice, status="down",
+                      check_owner="bob@example.org")
         check.last_ping = timezone.now() - timedelta(minutes=300)
         check.number_of_nags = 5
         check.priority = 3
@@ -41,11 +42,15 @@ class SendProtocolAlertsTestCase(BaseTestCase):
         """
             test it escalates
         """
-        channel = Channel(user=self.bob, kind="email", value="bob@example.com")
+        channel = Channel(user=self.bob, kind="email",
+                          value="bob@example.com")
         channel.save()
-        check = Check(user=self.alice, status="down")
-        check1 = Check(user=self.alice, status="down")
-        check2 = Check(user=self.alice, status="down")
+        check = Check(user=self.alice, status="down",
+                      check_owner="bob@example.org")
+        check1 = Check(user=self.alice, status="down",
+                       check_owner="bob@example.org")
+        check2 = Check(user=self.alice, status="down",
+                       check_owner="bob@example.org")
         check.last_ping = timezone.now() - timedelta(minutes=300)
         check1.last_ping = timezone.now() - timedelta(minutes=300)
         check2.last_ping = timezone.now() - timedelta(minutes=300)

@@ -33,7 +33,8 @@ class SendAlertsTestCase(BaseTestCase, TransactionTestCase):
 
     @patch("hc.api.management.commands.sendalerts.Command.handle_many")
     def test_it_handles_grace_period(self, mock):
-        check = Check(user=self.alice, status="up")
+        check = Check(user=self.alice, status="up",
+                      check_owner="bob@example.org")
 
         # 1 day 30 minutes after ping the check is in grace period:
         check.last_ping = timezone.now() - timedelta(days=1, minutes=30)
