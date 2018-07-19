@@ -15,6 +15,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='check',
             name='twilio_number',
-            field=models.TextField(blank=True, default='+00000000000', null=True),
+            field=models.TextField(blank=True,
+                                   default='+00000000000',
+                                   null=True),
         ),
     ]
