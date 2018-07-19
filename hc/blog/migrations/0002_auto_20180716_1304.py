@@ -20,6 +20,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='post',
             name='status',
-            field=models.CharField(choices=[('draft', 'Draft'), ('published', 'Published')], default='draft', max_length=50),
+            field=models.CharField(choices=[('draft', 'Draft'),
+                                            ('published', 'Published')],
+                                   default='draft', max_length=50),
         ),
     ]

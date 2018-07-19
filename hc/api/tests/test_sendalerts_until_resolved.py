@@ -25,4 +25,3 @@ class SendAlertsUntilResolvedTestCase(BaseTestCase):
         self.assertEqual(result, True)
 
     # def test_set_priority_level(self)
-    
