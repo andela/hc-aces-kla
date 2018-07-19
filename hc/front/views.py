@@ -15,8 +15,14 @@ from django.utils.crypto import get_random_string
 from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
-from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
-                            TimeoutForm, NagIntervalForm, PriorityForm)
+from hc.front.forms import (AddChannelForm,
+                            AddWebhookForm,
+                            NameTagsForm,
+                            TimeoutForm,
+                            NagIntervalForm,
+                            ShopifyForm,
+                            PriorityForm)
+import shopify
 
 
 # from itertools recipes:
@@ -208,6 +214,59 @@ def update_nag_interval(request, code):
 
 
 @login_required
+def shopify_alerts(request, code):
+    assert request.method == "POST"
+
+    return redirect("hc-checks")
+
+
+@login_required
+def create_shopify_alerts(request):
+    assert request.method == "POST"
+
+    form = ShopifyForm(request.POST)
+    if form.is_valid():
+        topic = form.cleaned_data["event"]
+        api_key = form.cleaned_data["api_key"]
+        password = form.cleaned_data["password"]
+        shop_name = form.cleaned_data['shop_name']
+        shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
+            api_key, password, shop_name)
+        try:
+            shopify.ShopifyResource.set_site(shop_url)
+            shopify.Shop.current()
+            webhook = shopify.Webhook()
+            webhook_list = shopify.Webhook.find(topic=topic)
+            if len(webhook_list) > 0:
+                messages.info(
+                    request, "Trying to add alert for event already created.")
+                return render(request, "integrations/add_shopify.html",
+                              status=400)
+            webhook.topic = topic
+            check = Check(user=request.team.user)
+            check.name = form.cleaned_data["name"]
+            check.shopify = True
+            check.shopify_api_key = api_key
+            check.shopify_password = password
+            check.shopify_name = shop_name
+            check.save()
+            check_created = Check.objects.filter(
+                name=form.cleaned_data["name"]).first()
+            webhook.address = check_created.url()
+            webhook.format = 'json'
+            webhook.save()
+            return redirect("hc-checks")
+        except Exception:
+            messages.info(
+                request, "Unauthorized Access. Cannot access shop in Shopify")
+            return render(request, "integrations/add_shopify.html", status=403)
+
+    messages.info(
+        request, "Missing/Wrong field types")
+    return render(request, "integrations/add_shopify.html", status=400)
+
+
+@login_required
 @uuid_or_400
 def pause(request, code):
     assert request.method == "POST"
@@ -230,6 +289,24 @@ def remove_check(request, code):
     check = get_object_or_404(Check, code=code)
     if check.user != request.team.user:
         return HttpResponseForbidden()
+    if check.shopify:
+        try:
+            api_key = check.shopify_api_key
+            password = check.shopify_password
+            shop_name = check.shopify_name
+            shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
+                api_key, password, shop_name)
+            shopify.ShopifyResource.set_site(shop_url)
+            shopify.Shop.current
+            webhook = shopify.Webhook.find()
+            for hook in webhook:
+                if hook.address == check.url():
+                    hook.destroy()
+        except Exception:
+            messages.info(
+                request, "Unauthorized Access. Cannot access shop in Shopify\
+                 to delete Webhook")
+            return redirect("hc-checks")
 
     check.delete()
 
@@ -470,6 +547,12 @@ def add_twiliovoice(request):
 
 
 @login_required
+def add_shopify(request):
+    ctx = {"page": "channels"}
+    return render(request, "integrations/add_shopify.html", ctx)
+
+
+@login_required
 def add_slack_btn(request):
     code = request.GET.get("code", "")
     if len(code) < 8:
@@ -619,3 +702,26 @@ def privacy(request):
 
 def terms(request):
     return render(request, "front/terms.html", {})
+
+
+@login_required
+def unresolved_checks(request):
+    """function for unresolved jobs tab with jobs that are down"""
+    checks = list(
+        Check.objects.filter(
+            user=request.team.user).order_by("created"))
+    unresolved_checks = []
+
+    for check in checks:
+        status = check.get_status()
+        if status == "down":
+            unresolved_checks.append(check)
+
+    ctx = {
+        "page": "unresolved_checks",
+        "checks": unresolved_checks,
+        "now": timezone.now(),
+        "ping_endpoint": settings.PING_ENDPOINT
+    }
+
+    return render(request, "front/unresolved_checks.html", ctx)

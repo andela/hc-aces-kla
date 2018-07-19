@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% load compress staticfiles %}
 
-{% block title %}My Checks - healthchecks.io{% endblock %}
+{% block title %}My Unresolved Checks - healthchecks.io{% endblock %}
+
 
 {% block content %}
 <div class="row">
     <div class="col-sm-12">
         <h1>
         {% if request.team == request.user.profile %}
-            My Checks
+            Unresolved Checks
         {% else %}
             {{ request.team.team_name }}
         {% endif %}
@@ -29,35 +30,18 @@
     {% endif %}
 
 </div>
-<div class="row check-list">
+<div class="row">
     <div class="col-sm-12">
-    <div class="row">
-        {% if messages %}
-        <div class="col-sm-12">
-            {% for message in messages %}
-            <p class="alert alert-{{ message.tags }}">{{ message }}</p>
-            {% endfor %}
-        </div>
-        {% endif %}
-    </div>
+
 
     {% if checks %}
         {% include "front/my_checks_mobile.html" %}
         {% include "front/my_checks_desktop.html" %}
     {% else %}
-    <div class="alert alert-info">You don't have any checks yet.</div>
+    <div class="alert alert-info">You don't have any unresolved checks yet.</div>
     {% endif %}
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-12">
-        <form method="post" action="{% url 'hc-add-check' %}" class="text-center">
-            {% csrf_token %}
-            <input type="submit" class="btn btn-primary btn-lg" value="Add Check">
-        </form>
-    </div>
-</div>
-
 <div id="update-name-modal" class="modal">
     <div class="modal-dialog">
         <form id="update-name-form" class="form-horizontal" method="post">
@@ -240,32 +224,6 @@
         </form>
     </div>
 </div>
-
-<div id="update-check-modal" class="modal">
-        <div class="modal-dialog">
-            <form id="update-check-form" method="post">
-                {% csrf_token %}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="remove-check-title">Update Priority
-                            <span class="update-check-priority"></span>
-                        </h4>
-                    </div>
-                    <input id="update-check-input" name="priority" type="hidden">
-                    <div class="modal-body">
-                        <p>You are about to update check priority status
-                        </p>
-                        <p>Proceed if you are sure.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger">Update</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
 <div id="show-usage-modal" class="modal">
     <div class="modal-dialog">
