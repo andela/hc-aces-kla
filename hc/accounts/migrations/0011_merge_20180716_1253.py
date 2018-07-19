@@ -13,4 +13,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+<<<<<<< HEAD
     ]
+=======
+    ]
+>>>>>>> [Chore #158174602] Synced migrations with develop branch

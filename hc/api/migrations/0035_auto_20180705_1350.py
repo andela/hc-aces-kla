@@ -32,4 +32,8 @@ class Migration(migrations.Migration):
             name='shopify_password',
             field=models.CharField(blank=True, max_length=500),
         ),
+<<<<<<< HEAD
     ]
+=======
+    ]
+>>>>>>> [Chore #158174602] Synced migrations with develop branch

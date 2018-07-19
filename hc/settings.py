@@ -176,9 +176,17 @@ TWILIO_NUMBER = os.environ.get("TWILIO_NUMBER")
 PUSHBULLET_CLIENT_ID = None
 PUSHBULLET_CLIENT_SECRET = None
 
+if os.environ.get('REDIS_URL'):
+    CACHES = {
+        "default": {
+            "BACKEND": "redis_cache.RedisCache",
+            "LOCATION": os.environ.get('REDIS_URL'),
+        }
+    }
+
 # REDIS server settings
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = os.environ.get('REDIS_URL') or 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL') or 'redis://localhost:6379'
 CELERY_TIMEZONE = 'Africa/Nairobi'
 
 DROPBOX_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN') or 'b9E7x19dj4UAAAAAAAABhok2PnCE2YQURfBCeXkCE9CJXaTqjpN0iwJQ2BEq4DhA'
@@ -195,13 +203,6 @@ DBBACKUP_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 DBBACKUP_STORAGE_OPTIONS = {
     'oauth2_access_token': DROPBOX_TOKEN,
 }
-if os.environ.get('REDIS_URL'):
-    CACHES = {
-        "default": {
-            "BACKEND": "redis_cache.RedisCache",
-            "LOCATION": os.environ.get('REDIS_URL'),
-        }
-    }
 
 if os.path.exists(os.path.join(BASE_DIR, "hc/local_settings.py")):
     from .local_settings import *

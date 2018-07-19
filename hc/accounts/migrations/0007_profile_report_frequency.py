@@ -12,4 +12,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.AddField(
+            model_name='profile',
+            name='report_frequency',
+            field=models.CharField(blank=True, max_length=20, null=True),
+        ),
     ]

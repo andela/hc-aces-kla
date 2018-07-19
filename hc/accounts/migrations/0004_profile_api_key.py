@@ -12,4 +12,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.AddField(
+            model_name='profile',
+            name='api_key',
+            field=models.CharField(blank=True, max_length=128),
+        ),
     ]
