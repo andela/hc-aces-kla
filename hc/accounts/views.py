@@ -362,3 +362,22 @@ def switch_team(request, target_username):
     request.user.profile.save()
 
     return redirect("hc-checks")
+
+
+def delete_scheduled_task(request, id):
+    assert request.method == "POST"
+
+    task = Task.objects.filter(id=id).first()
+    if task:
+        schedule = TaskSchedule.objects.filter(task=task)
+        backups = Backup.objects.filter(task=task)
+
+        if backups:
+            for backup in backups:
+                backup.delete()
+
+        schedule.delete()
+        task.delete()
+        messages.success(request, "Task deleted!")
+    
+    return redirect("hc-profile")

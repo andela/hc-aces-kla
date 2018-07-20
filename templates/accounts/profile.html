@@ -209,9 +209,9 @@
                             <td>
                                 <button 
                                 type="button" 
-                                class="btn btn-xs btn-danger" 
-                                data-toggle="modal" 
-                                data-target="#delete-task">Delete</button>
+                                class="btn btn-xs btn-danger"
+                                onclick="deleteTask({{task.id}})"
+                                >Delete</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -224,7 +224,7 @@
 
                 {% if activity %}
                 <hr/>
-                <h4>Backup Activity</h4>
+                <h4>Task Activity</h4>
                 <table class="table table-striped" cellpadding="0" cellspacing="0">
                         <tr>
                             <th>Task Name</th>
@@ -523,7 +523,7 @@
     </div>
 </div>
 
-<div id="delete_task" class="modal fade">
+<div id="delete_task_modal" class="modal fade">
 	<div class="modal-dialog modal-confirm">
 		<div class="modal-content">
 			<div class="modal-header">			
@@ -535,7 +535,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-				<button type="button" name="delete_task" class="btn btn-danger">Delete</button>
+				<button type="button" id="delete_task" class="btn btn-danger">Delete</button>
 			</div>
 		</div>
 	</div>
@@ -573,4 +573,24 @@
         });
     });
 </script>
+<script>
+        var del_id = 0;
+        function deleteTask(id){
+            del_id = id;
+            $("#delete_task_modal").modal('show');
+        }
+        $("#delete_task").on("click", function(){
+            $.ajax({
+                url: `scheduled_task/${del_id}/remove/`,
+                type: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                success: function(result) {
+                    window.location.reload();
+                }
+            });
+            $("#delete_task_modal").modal('hide');
+        });
+    </script>
 {% endblock %}
