@@ -14,6 +14,14 @@
         {% endif %}
         </h1>
     </div>
+    <div id="my-checks-departments" class="col-sm-12">
+        {% if departments %}
+        <a href="#" style="font-size:18px">Departments </a>
+            {% for department in departments %}
+                | <a href="#">{{ department }}</a>
+            {% endfor %}
+        {% endif %}
+    </div>
     {% if tags %}
     <div id="my-checks-tags" class="col-sm-12">
         {% for tag, count in tags %}
@@ -104,6 +112,25 @@
                                 <span class="help-block">
                                     Optionally, assign tags for easy filtering.
                                     Separate multiple tags with spaces.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="update-department-input" class="col-sm-2 control-label">
+                                Department
+                            </label>
+                            <div class="col-sm-9">
+                                <input
+                                    id="update-department-input"
+                                    name="department"
+                                    type="text"
+                                    value=""
+                                    placeholder="IT Finance"
+                                    class="form-control" />
+
+                                <span class="help-block">
+                                    You may assign departments for easy filtering.
+                                    Separate multiple departments with spaces.
                                 </span>
                             </div>
                         </div>
