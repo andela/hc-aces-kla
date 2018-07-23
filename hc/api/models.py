@@ -102,38 +102,8 @@ class Check(models.Model):
             assigns = []
             if self.priority == 2:
                 assigns = self.escalate_priority(9)
-                # if self.number_of_nags > 9 and self.number_of_nags < 15:
-                #     assigns = Assigned.objects.filter(
-                #         check_assigned=self, priority=1)   
-                #     if len(assigns) == 0:
-                #         self.number_of_nags += 4
-                #         self.save()
-                # if self.number_of_nags > 14 and self.number_of_nags < 20:
-                #     assigns = Assigned.objects.filter(
-                #         check_assigned=self, priority=2)
-                #     if len(assigns) == 0:
-                #         self.number_of_nags += 4
-                #         self.save()
-                # if self.number_of_nags > 19:
-                #     assigns = Assigned.objects.filter(
-                #         check_assigned=self, priority=3)
             elif self.priority == 3:
                 assigns = self.escalate_priority(3)
-                # if self.number_of_nags > 3 and self.number_of_nags < 9:
-                #     assigns = Assigned.objects.filter(
-                #         check_assigned=self, priority=1)
-                #     if len(assigns) == 0:
-                #         self.number_of_nags += 4
-                #         self.save()
-                # if self.number_of_nags > 8 and self.number_of_nags < 14:
-                #     assigns = Assigned.objects.filter(
-                #         check_assigned=self, priority=2)
-                #     if len(assigns) == 0:
-                #         self.number_of_nags += 4
-                #         self.save()
-                # if self.number_of_nags > 13:
-                #     assigns = Assigned.objects.filter(
-                #         check_assigned=self, priority=3)
             if len(assigns) > 0:
                 for assign in assigns:
                     user = User.objects.filter(id=assign.user_id).first()
@@ -142,21 +112,6 @@ class Check(models.Model):
                         error = channel.notify(self)
                         if error not in ("", "no-op"):
                             errors.append((channel, error))
-
-            # find members in team of user
-            # profile = Profile.objects.filter(user=self.user)
-            # team_members = Profile.objects.filter(current_team=profile)
-            # # get channels they ascribe to
-            # for member in team_members:
-            #     team_member = member.user
-            #     print("====")
-            #     print(member.user.id)
-            #     print("xxxx")
-            #     channels = Channel.objects.filter(user=team_member)
-            #     for channel in channels:
-            #         error = channel.notify(self)
-            #         if error not in ("", "no-op"):
-            #             errors.append((channel, error))
 
         else:
             for channel in self.channel_set.all():

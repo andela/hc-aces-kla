@@ -18,6 +18,7 @@ from hc.accounts.forms import (EmailPasswordForm, InviteTeamMemberForm,
 from hc.accounts.models import Profile, Member
 from hc.api.models import Channel, Check, Assigned
 from hc.lib.badges import get_badge_url
+import json
 
 
 def _make_user(email):
@@ -193,18 +194,27 @@ def profile(request):
 
                 messages.info(request, "%s removed from team!" % email)
         elif "assign_checks" in request.POST:
-            form = AssignChecksForm(request.POST)
-            if form.is_valid():
-                email = form.cleaned_data["email"]
-                check_code = form.cleaned_data['check_code']
-                priority = form.cleaned_data['priority']
+            email_show = request.POST.get('email')
+            assigned_show = request.POST.getlist('assigned_list')
+            priority = request.POST.get('priority')
+            user = User.objects.filter(email=email_show).first()
+            delete_list = Assigned.objects.filter(user_id=user.id)  
+            for value in delete_list:
+                if str(value.check_assigned.code) not in assigned_show:
+                    assigned_check = Check.objects.filter(
+                        code=value.check_assigned.code).first()
+                    Assigned.objects.filter(check_assigned=assigned_check,
+                                            user_id=user.id).delete()
+            for check_code in assigned_show:
+                user = User.objects.filter(email=email_show).first()
                 assigned_check = Check.objects.filter(code=check_code).first()
-                user = User.objects.filter(email=email).first()
-                assign = Assigned(check_assigned=assigned_check, priority=priority, user_id=user.id)
-                assign.save()
-                messages.info(request, "%s assigned to checks!" % email)
-            else:
-                print("fail")    
+                minus_list = Assigned.objects.filter(
+                    check_assigned=assigned_check, user_id=user.id)
+                if len(list(minus_list)) == 0:
+                    assign = Assigned(
+                        check_assigned=assigned_check, priority=priority, user_id=user.id)
+                    assign.save()
+                    messages.success(request, "Team member has been assigned to check")       
         elif "unassign_check" in request.POST:
             form = UnAssignChecksForm(request.POST)
             if form.is_valid():
@@ -238,13 +248,38 @@ def profile(request):
         badge_urls.append(get_badge_url(username, tag))
     checks = Check.objects.filter(user=request.team.user)
     assigned = Assigned.objects.all()
+    # print(len(checks))
+    # print(len(assigned))
+    # print(len(profile.member_set.all()))
+    # print("idsss")
+    # for member in profile.member_set.all():
+    #     print(member.user.id)
+    # assigned_user = []
+    # if len(assigned) > 0 :
+    #     for count, check in enumerate(checks):
+    #         print(assigned[count])
+    assigned_list = []
+    
+    for member in profile.member_set.all():
+        for check in checks:
+            is_assigned = Assigned.objects.filter(check_assigned=check, user_id=member.user.id).first()
+            if is_assigned:
+                assigned_list.append(1)
+            else:
+                assigned_list.append(0)    
+    assigned_list_js = json.dumps(assigned_list)
+   
+    test = ["plius@gmail.com", "press_gmail.com", "ma@gmail.com"]
+    test_list = json.dumps(test)
     ctx = {
         "page": "profile",
         "badge_urls": badge_urls,
         "profile": profile,
         "show_api_key": show_api_key,
         "checks": checks,
-        "assigned": assigned
+        "assigned": assigned,
+        "test_list": test_list,
+        "assigned_list":  assigned_list
     }
 
     return render(request, "accounts/profile.html", ctx)
