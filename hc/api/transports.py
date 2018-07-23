@@ -1,12 +1,12 @@
 import json
 import requests
+from hc.lib import emails
 from six.moves.urllib.parse import quote
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils import timezone
 from twilio.rest import Client
-
-from hc.lib import emails
+import telegram
 
 
 def tmpl(template_name, **ctx):
@@ -37,7 +37,7 @@ class Transport(object):
 
         raise NotImplementedError()
 
-    def checks(self):
+    def checks(self, api=None):
         return self.channel.user.check_set.order_by("created")
 
 
@@ -239,3 +239,15 @@ class VictorOps(HttpTransport):
         }
 
         return self.post(self.channel.value, payload)
+
+
+class Telegram(Transport):
+    def telegram_message(self, check):
+        return "HealthchecksUpdates\nName:{}\nLastPing:{}\nstatus:{}".format(
+            check.name, check.last_ping.strftime('%x, %X'), check.status)
+
+    def notify(self, check):
+        api = telegram.Bot(token=settings.TELEGRAM_TOKEN)
+        api.send_message(
+            chat_id=self.channel.value, text=self.telegram_message(check))
+        return "no-op"

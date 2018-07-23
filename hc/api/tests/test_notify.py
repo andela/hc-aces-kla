@@ -1,5 +1,4 @@
 import json
-
 from django.core import mail
 from django.test import override_settings
 from hc.api.models import Channel, Check, Notification

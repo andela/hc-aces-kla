@@ -555,6 +555,11 @@ def add_twiliovoice(request):
 
 
 @login_required
+def add_telegram(request):
+    ctx = {"page": "channels"}
+    return render(request, "integrations/add_telegram.html", ctx)
+
+
 def add_shopify(request):
     ctx = {"page": "channels"}
     return render(request, "integrations/add_shopify.html", ctx)
