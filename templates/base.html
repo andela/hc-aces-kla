@@ -110,6 +110,24 @@
                 <li {% if page == 'about' %} class="active" {% endif %}>
                     <a href="{% url 'hc-about' %}">About</a>
                 </li>
+                {% if request.user.is_authenticated %}
+                <li {% if page == 'helpcenter' %} class="active check-menu dropdown" {% endif %}>
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">Help Center</a>
+                    <ul class="dropdown-menu">
+                        <li {% if page == 'faqs' %} class="active" {% endif %}>
+                            <a href="{% url 'hc-faqs' %}" class="faqs">
+                                FAQs
+                            </a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li {% if page == 'videos' %} class="active" {% endif %}>
+                            <a href="{% url 'hc-help-videos' %}" >
+                               videos
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
             </ul>
 
 

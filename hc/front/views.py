@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
+<<<<<<< HEAD
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm,
                             AddWebhookForm,
@@ -23,6 +24,12 @@ from hc.front.forms import (AddChannelForm,
                             ShopifyForm,
                             PriorityForm)
 import shopify
+=======
+from hc.api.models import (DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check,
+                           Ping, Video, Faq)
+from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
+                            TimeoutForm, NagIntervalForm, PriorityForm)
+>>>>>>> Feature User needs a help center with FAQ’s, help videos, live chat
 
 
 # from itertools recipes:
@@ -713,6 +720,7 @@ def terms(request):
 
 
 @login_required
+<<<<<<< HEAD
 def unresolved_checks(request):
     """function for unresolved jobs tab with jobs that are down"""
     checks = list(
@@ -733,3 +741,27 @@ def unresolved_checks(request):
     }
 
     return render(request, "front/unresolved_checks.html", ctx)
+=======
+def help_videos(request):
+    q = Video.objects.order_by("id")
+    videos = list(q)
+
+    ctx = {
+        "page": "help_videos",
+        "help_videos": videos
+    }
+
+    return render(request, "front/help_videos.html", ctx)
+
+
+@login_required
+def faq(request):
+    q = Faq.objects.order_by("id")
+    faqs = list(q)
+
+    ctx = {
+        "page": "faqs",
+        "faqs": faqs
+    }
+    return render(request, "front/faqs.html", ctx)
+>>>>>>> Feature User needs a help center with FAQ’s, help videos, live chat

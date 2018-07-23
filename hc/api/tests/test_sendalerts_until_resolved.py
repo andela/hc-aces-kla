@@ -23,3 +23,5 @@ class SendAlertsUntilResolvedTestCase(BaseTestCase):
 
         result = Command().handle_many()
         self.assertEqual(result, True)
+
+    # def test_set_priority_level(self)
