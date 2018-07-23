@@ -57,8 +57,6 @@ class Email(Transport):
             "now": timezone.now(),
             "show_upgrade_note": show_upgrade_note
         }
-        print("here")
-        print(self.channel.value)
         emails.alert(self.channel.value, ctx)
 
 
