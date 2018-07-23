@@ -24,9 +24,14 @@ from hc.front.forms import (AddChannelForm,
                             ShopifyForm,
                             PriorityForm)
 import shopify
-
+from hc.api.models import (DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check,
+                           Ping, Video, Faq)
+from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
+                            TimeoutForm, NagIntervalForm, PriorityForm)
 
 # from itertools recipes:
+
+
 def pairwise(iterable):
     "s -> (s0,s1), (s1,s2), (s2, s3), ..."
     a, b = tee(iterable)
