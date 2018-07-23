@@ -7,10 +7,6 @@ from mock import patch
 from requests.exceptions import Timeout
 
 
-def notifier(self):
-    pass
-
-
 class NotifyTestCase(BaseTestCase):
 
     def _setup_data(self, kind, value, status="down", email_verified=True):

@@ -6,9 +6,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils import timezone
 from twilio.rest import Client
-import datetime
 import telegram
-now = datetime.datetime.now()
 
 
 def tmpl(template_name, **ctx):
