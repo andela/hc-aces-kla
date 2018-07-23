@@ -16,10 +16,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Assigned',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False, verbose_name='ID')),
                 ('user_id', models.IntegerField(default=0)),
                 ('priority', models.IntegerField(default=0)),
-                ('check_assigned', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Check')),
+                ('check_assigned', models.ForeignKey(on_delete=django.db.
+                                                     models.deletion.CASCADE,
+                                                     to='api.Check')),
             ],
         ),
     ]

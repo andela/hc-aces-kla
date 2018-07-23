@@ -253,7 +253,6 @@
                 <div class="modal-body">
                     <table class="assign table">
                         <tr>
-                            <td></td>
                             <td>Check Name</td>
                             <td>Code</td>
                             <td>Priority</td>
@@ -262,7 +261,6 @@
                         {% for check in checks %}
                         
                         <tr class="load-assigns">
-                            <td class="loads2"><input type="checkbox" name="assigned_list" class="assigned_test" value={{check.code}}></td>
                             <td>{{check.name}}</td>
                             <td>{{check.code}}</td>
                             <td>
@@ -274,11 +272,9 @@
                             </td>
                             <input type="hidden" name="email" class="remove-team-member-email" />
                             <input type="hidden" name="check_code" value={{check.code}} />
-                            {% if not profile.api_key %}
-                            <td class="loads"></td>
-                            {% else %}
-                            <td>Not Assigned</td>
-                            {% endif %}                            
+                            <td class="loads2">
+                                <input type="checkbox" name="assigned_list" class="assigned_test" value={{check.code}}>
+                            </td>                           
                         </tr>
                         
                         {% endfor %}

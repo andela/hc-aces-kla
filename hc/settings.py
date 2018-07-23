@@ -99,9 +99,8 @@ if os.environ.get("DB") == "postgres":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'hcpriority',
+            'NAME': 'hc,
             'USER': 'postgres',
-            'PASSWORD':'12345',
             'TEST': {'CHARSET': 'UTF8'}
         }
     }
@@ -144,8 +143,7 @@ STATICFILES_FINDERS = (
 )
 COMPRESS_OFFLINE = True
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'EMAIL_BACKEND')
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'EMAIL_BACKEND')
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'EMAIL_HOST')
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'EMAIL_HOST_USER')

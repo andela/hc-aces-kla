@@ -11,14 +11,15 @@ from django.contrib.auth.models import User
 from django.core import signing
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
 from django.shortcuts import redirect, render
-from hc.accounts.forms import (EmailPasswordForm, InviteTeamMemberForm,
-                            RemoveTeamMemberForm, ReportSettingsForm,
-                            SetPasswordForm, TeamNameForm, AssignChecksForm,
-                            UnAssignChecksForm)
+from hc.accounts.forms import (EmailPasswordForm,
+                               InviteTeamMemberForm,
+                               RemoveTeamMemberForm,
+                               ReportSettingsForm,
+                               SetPasswordForm,
+                               TeamNameForm)
 from hc.accounts.models import Profile, Member
 from hc.api.models import Channel, Check, Assigned
 from hc.lib.badges import get_badge_url
-import json
 
 
 def _make_user(email):
@@ -157,7 +158,6 @@ def profile(request):
         elif "show_api_key" in request.POST:
             show_api_key = True
         elif "update_reports_allowed" in request.POST:
-            # print(request.POST)
             form = ReportSettingsForm(request.POST)
             if form.is_valid():
                 profile.reports_allowed = form.cleaned_data["reports_allowed"]
@@ -198,7 +198,7 @@ def profile(request):
             assigned_show = request.POST.getlist('assigned_list')
             priority = request.POST.get('priority')
             user = User.objects.filter(email=email_show).first()
-            delete_list = Assigned.objects.filter(user_id=user.id)  
+            delete_list = Assigned.objects.filter(user_id=user.id)
             for value in delete_list:
                 if str(value.check_assigned.code) not in assigned_show:
                     assigned_check = Check.objects.filter(
@@ -212,9 +212,11 @@ def profile(request):
                     check_assigned=assigned_check, user_id=user.id)
                 if len(list(minus_list)) == 0:
                     assign = Assigned(
-                        check_assigned=assigned_check, priority=priority, user_id=user.id)
+                        check_assigned=assigned_check,
+                        priority=priority, user_id=user.id)
                     assign.save()
-                    messages.success(request, "Team member has been assigned to check")       
+                    messages.success(request,
+                                     "Team member has been assigned to check")
         elif "set_team_name" in request.POST:
             if not profile.team_access_allowed:
                 return HttpResponseForbidden()
@@ -239,17 +241,16 @@ def profile(request):
     checks = Check.objects.filter(user=request.team.user)
     assigned = Assigned.objects.all()
     assigned_list = []
-    
+
     for member in profile.member_set.all():
         for check in checks:
-            is_assigned = Assigned.objects.filter(check_assigned=check, user_id=member.user.id).first()
+            is_assigned = Assigned.objects.filter(check_assigned=check,
+                                                  user_id=member.user.id).\
+                                                  first()
             if is_assigned:
                 assigned_list.append(1)
             else:
-                assigned_list.append(0)    
-   
-    test = ["plius@gmail.com", "press_gmail.com", "ma@gmail.com"]
-    test_list = json.dumps(test)
+                assigned_list.append(0)
     ctx = {
         "page": "profile",
         "badge_urls": badge_urls,
@@ -257,7 +258,6 @@ def profile(request):
         "show_api_key": show_api_key,
         "checks": checks,
         "assigned": assigned,
-        "test_list": test_list,
         "assigned_list":  assigned_list
     }
 

@@ -10,7 +10,6 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from hc.api import transports
-from hc.accounts.models import Profile
 from hc.lib import emails
 
 STATUSES = (
@@ -82,6 +81,7 @@ class Check(models.Model):
         return "%s@%s" % (self.code, settings.PING_EMAIL_DOMAIN)
 
     def send_alert(self):
+        print("I reach ")
         if self.status not in ("up", "down"):
             raise NotImplementedError("Unexpected status: %s" % self.status)
         if self.priority == 3 and self.number_of_nags < 4:
@@ -137,8 +137,8 @@ class Check(models.Model):
                 self.save()
         if self.number_of_nags > (n + 10):
             assigns = Assigned.objects.filter(
-                check_assigned=self, priority=3)   
-        return assigns         
+                check_assigned=self, priority=3)
+        return assigns
 
     def get_status(self):
         if self.status in ("new", "paused"):

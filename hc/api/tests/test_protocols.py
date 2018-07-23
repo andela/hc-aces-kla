@@ -87,7 +87,6 @@ class SendProtocolAlertsTestCase(BaseTestCase):
         assign = Assigned(check_assigned=check, priority=2, user_id=user.id)
         assign.save()
         check.send_alert()
-        assigns = Assigned.objects.filter(check_assigned=check, priority=2)
 
         assert check.escalate
         assert check.number_of_nags == 15

@@ -18,11 +18,12 @@ $(function() {
         var start = forloop_count * checks_count
         var end = ((forloop_count + 1) * checks_count)
         var assign_list = $this.data("checksx")
+        console.log(assign_list)
         var compare = []
         for (var i = start; i < end; i++){
             compare.push(assign_list[i])
         }
-
+        console.log(compare)
         function applyFilters(index, element) {
             if (compare[index] == 1){
                 $(element).find("input.assigned_test").prop("checked", true);
