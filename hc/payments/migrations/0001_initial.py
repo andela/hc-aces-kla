@@ -19,12 +19,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Subscription',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('customer_id', models.CharField(blank=True, max_length=36)),
-                ('payment_method_token', models.CharField(blank=True, max_length=35)),
-                ('subscription_id', models.CharField(blank=True, max_length=10)),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False,
+                                        verbose_name='ID')),
+                ('customer_id', models.CharField(blank=True,
+                                                 max_length=36)),
+                ('payment_method_token', models.CharField(blank=True,
+                                                          max_length=35)),
+                ('subscription_id', models.CharField(blank=True,
+                                                     max_length=10)),
                 ('plan_id', models.CharField(blank=True, max_length=10)),
-                ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(
+                    blank=True, null=True,
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

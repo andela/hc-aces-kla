@@ -38,7 +38,8 @@ class Command(BaseCommand):
             if (now - check.nag_after_time) > (check.nag_intervals):
                 check.nag_after_time = now + check.nag_intervals
             else:
-                check.nag_after_time = check.nag_after_time + check.nag_intervals
+                check.nag_after_time = check.nag_after_time +\
+                                        check.nag_intervals
                 check.save()
 
         if repeat_list_approved:

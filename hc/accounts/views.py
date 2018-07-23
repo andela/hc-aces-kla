@@ -184,17 +184,8 @@ def profile(request):
                         task.save()
 
                         task_schedule = TaskSchedule(task=task)
-                        task_schedule.date_created = timezone.now()
-                        if task.frequency == "daily":
-                            task_schedule.next_run_date = task_schedule.date_created + \
-                                td(days=1)
-                        elif task.frequency == "weekly":
-                            task_schedule.next_run_date = task_schedule.date_created + \
-                                td(days=7)
-                        elif task.frequency == "monthly":
-                            task_schedule.next_run_date = task_schedule.date_created + \
-                                td(days=30)
-
+                        task_schedule = setup_scheduled_time(task,
+                                                             task_schedule)
                         task_schedule.send_email_updates \
                             = form.cleaned_data["receive_email_updates"]
                         task_schedule.save()
@@ -218,18 +209,11 @@ def profile(request):
                     task.refresh_from_db()
 
                     task_schedule = TaskSchedule(task=task)
-                    task_schedule.date_created = timezone.now()
-                    if task.frequency == "daily":
-                        task_schedule.next_run_date = task_schedule.date_created + \
-                            td(days=1)
-                    elif task.frequency == "weekly":
-                        task_schedule.next_run_date = task_schedule.date_created + \
-                            td(days=7)
-                    elif task.frequency == "monthly":
-                        task_schedule.next_run_date = task_schedule.date_created + \
-                            td(days=30)
+                    task_schedule = \
+                        setup_scheduled_time(task, task_schedule)
 
-                    task_schedule.send_email_updates = form.cleaned_data["receive_email_updates"]
+                    task_schedule.send_email_updates =\
+                        form.cleaned_data["receive_email_updates"]
                     task_schedule.save()
 
                     messages.info(request, "Database backups have been setup!")
@@ -379,5 +363,18 @@ def delete_scheduled_task(request, id):
         schedule.delete()
         task.delete()
         messages.success(request, "Task deleted!")
-    
     return redirect("hc-profile")
+
+
+def setup_scheduled_time(task, schedule):
+    schedule.date_created = timezone.now()
+    if task.frequency == "daily":
+        schedule.next_run_date = schedule.date_created + \
+            td(days=1)
+    elif task.frequency == "weekly":
+        schedule.next_run_date = schedule.date_created + \
+            td(days=7)
+    elif task.frequency == "monthly":
+        schedule.next_run_date = schedule.date_created + \
+            td(days=30)
+    return schedule

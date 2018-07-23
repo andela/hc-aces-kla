@@ -43,13 +43,4 @@ class ScheduledTasksTestCase(BaseTestCase):
     def test_task_scheduled_next_run(self):
         self.client.login(username="alice@example.org", password="password")
         schedules = TaskSchedule.objects.all()
-        print(schedules[0])
         assert schedules[0].next_run_date is not None
-
-    def test_it_shows_only_users_checks(self):
-        self.client.login(username="alice@example.org", password="password")
-        self.get()
-
-        # self.assertEqual(len(data["tasks"]), 2)
-        # for task in data["tasks"]:
-        #     self.assertEqual(task["profile"], self.profile)

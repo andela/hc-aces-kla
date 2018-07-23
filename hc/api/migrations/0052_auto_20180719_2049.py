@@ -17,7 +17,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Backup',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False,
+                                        verbose_name='ID')),
                 ('file_name', models.CharField(max_length=100)),
                 ('date_run', models.DateTimeField(auto_now_add=True)),
             ],
@@ -25,32 +28,55 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Task',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False,
+                                        verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
-                ('task_type', models.CharField(choices=[(b'database_backups', b'database_backups'), (b'export_reports', b'export_reports')], max_length=100)),
-                ('frequency', models.CharField(choices=[(b'daily', b'daily'), (b'weekly', b'weekly'), (b'monthly', b'monthly')], max_length=20)),
-                ('profile', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='accounts.Profile')),
+                ('task_type', models.CharField(
+                                choices=[
+                                    (b'database_backups', b'database_backups'),
+                                    (b'export_reports', b'export_reports')],
+                                max_length=100)),
+                ('frequency', models.CharField(
+                    choices=[(b'daily', b'daily'),
+                             (b'weekly', b'weekly'),
+                             (b'monthly', b'monthly')],
+                    max_length=20)),
+                ('profile', models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='accounts.Profile')),
             ],
         ),
         migrations.CreateModel(
             name='TaskSchedule',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False,
+                                        verbose_name='ID')),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
                 ('send_email_updates', models.BooleanField(default=False)),
                 ('next_run_date', models.DateTimeField(blank=True, null=True)),
                 ('run_count', models.IntegerField(default=0)),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Task')),
+                ('task', models.ForeignKey(
+                            on_delete=django.db.models.deletion.CASCADE,
+                            to='api.Task')),
             ],
         ),
         migrations.AddField(
             model_name='backup',
             name='schedule',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.TaskSchedule'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='api.TaskSchedule'),
         ),
         migrations.AddField(
             model_name='backup',
             name='task',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Task'),
+            field=models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='api.Task'),
         ),
     ]

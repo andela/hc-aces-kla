@@ -144,14 +144,9 @@ COMPRESS_OFFLINE = True
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_PORT = 587
-<<<<<<< HEAD
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get(
     'EMAIL_HOST_PASSWORD', 'EMAIL_HOST_PASSWORD')
-=======
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
->>>>>>> [Feature #158174602] Added backup support on dropbox
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')

@@ -19,28 +19,43 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Member',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False,
+                                        verbose_name='ID')),
             ],
         ),
         migrations.CreateModel(
             name='Profile',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('team_name', models.CharField(blank=True, max_length=200)),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False,
+                                        verbose_name='ID')),
+                ('team_name', models.CharField(blank=True,
+                                               max_length=200)),
                 ('team_access_allowed', models.BooleanField(default=False)),
-                ('next_report_date', models.DateTimeField(blank=True, null=True)),
+                ('next_report_date', models.DateTimeField(blank=True,
+                                                          null=True)),
                 ('reports_allowed', models.BooleanField(default=True)),
-                ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(
+                            blank=True, null=True,
+                            on_delete=django.db.models.deletion.CASCADE,
+                            to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(
             model_name='member',
             name='team',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='accounts.Profile'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='accounts.Profile'),
         ),
         migrations.AddField(
             model_name='member',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL),
         ),
     ]
