@@ -52,4 +52,6 @@ urlpatterns = [
     url(r'^about/$', views.about, name="hc-about"),
     url(r'^privacy/$', views.privacy, name="hc-privacy"),
     url(r'^terms/$', views.terms, name="hc-terms"),
+    url(r'^faqs/$', views.faq, name="hc-faqs"),
+    url(r'^help_videos/$', views.help_videos, name="hc-help-videos"),
 ]

@@ -306,3 +306,14 @@ class Notification(models.Model):
     channel = models.ForeignKey(Channel)
     created = models.DateTimeField(auto_now_add=True)
     error = models.CharField(max_length=200, blank=True)
+
+
+class Faq(models.Model):
+    question = models.TextField(blank=True, null=False)
+    answer = models.TextField(blank=True, null=False)
+
+
+class Video(models.Model):
+    header = models.TextField(blank=True, null=False)
+    description = models.TextField(blank=True, null=False)
+    video_link = models.URLField(blank=False, null=False)

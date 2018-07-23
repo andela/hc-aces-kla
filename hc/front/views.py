@@ -14,18 +14,16 @@ from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
-from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
-from hc.front.forms import (AddChannelForm,
-                            AddWebhookForm,
-                            NameTagsDepartmentForm,
-                            TimeoutForm,
-                            NagIntervalForm,
-                            ShopifyForm,
-                            PriorityForm)
 import shopify
-
+from hc.api.models import (DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check,
+                           Ping, Video, Faq)
+from hc.front.forms import (AddChannelForm, AddWebhookForm,
+                            TimeoutForm, NagIntervalForm, PriorityForm,
+                            ShopifyForm, NameTagsDepartmentForm)
 
 # from itertools recipes:
+
+
 def pairwise(iterable):
     "s -> (s0,s1), (s1,s2), (s2, s3), ..."
     a, b = tee(iterable)
@@ -733,3 +731,28 @@ def unresolved_checks(request):
     }
 
     return render(request, "front/unresolved_checks.html", ctx)
+
+
+@login_required
+def help_videos(request):
+    q = Video.objects.order_by("id")
+    videos = list(q)
+
+    ctx = {
+        "page": "help_videos",
+        "help_videos": videos
+    }
+
+    return render(request, "front/help_videos.html", ctx)
+
+
+@login_required
+def faq(request):
+    q = Faq.objects.order_by("id")
+    faqs = list(q)
+
+    ctx = {
+        "page": "faqs",
+        "faqs": faqs
+    }
+    return render(request, "front/faqs.html", ctx)
