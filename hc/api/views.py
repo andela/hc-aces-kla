@@ -17,7 +17,6 @@ from hc.lib.badges import check_signature, get_badge_svg
 @uuid_or_400
 @never_cache
 def ping(request, code):
-
     try:
         check = Check.objects.get(code=code)
     except Check.DoesNotExist:

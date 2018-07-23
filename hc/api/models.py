@@ -45,6 +45,7 @@ class Check(models.Model):
 
     name = models.CharField(max_length=100, blank=True)
     tags = models.CharField(max_length=500, blank=True)
+    departments = models.CharField(max_length=200, blank=True)
     code = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
     user = models.ForeignKey(User, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -56,6 +57,10 @@ class Check(models.Model):
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
     nag_intervals = models.DurationField(default=DEFAULT_NAG_TIME)
     nag_after_time = models.DateTimeField(null=True, blank=True)
+    shopify = models.BooleanField(default=False)
+    shopify_api_key = models.CharField(max_length=500, blank=True)
+    shopify_password = models.CharField(max_length=500, blank=True)
+    shopify_name = models.CharField(max_length=500, blank=True)
     runs_too_often = models.BooleanField(default=False)
     priority = models.IntegerField(default=1)
     number_of_nags = models.IntegerField(default=0)
@@ -66,7 +71,6 @@ class Check(models.Model):
     def name_then_code(self):
         if self.name:
             return self.name
-
         return str(self.code)
 
     def url(self):

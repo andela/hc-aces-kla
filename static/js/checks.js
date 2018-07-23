@@ -129,6 +129,7 @@ $(function () {
         $("#update-name-form").attr("action", $this.data("url"));
         $("#update-name-input").val($this.data("name"));
         $("#update-tags-input").val($this.data("tags"));
+        $("#update-department-input").val($this.data("department"));
         $('#update-name-modal').modal("show");
         $("#update-name-input").focus();
 
@@ -204,6 +205,36 @@ $(function () {
             }
 
             $(element).show();
+        }
+
+        // Desktop: for each row, see if it needs to be shown or hidden
+        $("#checks-table tr.checks-row").each(applyFilters);
+        // Mobile: for each list item, see if it needs to be shown or hidden
+        $("#checks-list > li").each(applyFilters);
+
+    });
+
+
+    $("#my-checks-departments a").click(function(e) {
+
+        $(this).toggleClass('checked');
+
+        let value = $(this).text();
+
+        function applyFilters(index, element) {
+            if($(".my-checks-name", element).data("department")!==undefined){
+                let departments = $(".my-checks-name", element).data("department").split(" ");
+                if(value === "Departments "){
+                    $(element).show();
+                }else{
+                if(departments.includes(value)===false){
+                    $(element).hide();
+                    return;
+                }else{
+                    $(element).show();
+                }
+            }
+            }
         }
 
         // Desktop: for each row, see if it needs to be shown or hidden
