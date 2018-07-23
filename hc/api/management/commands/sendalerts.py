@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
         query = Check.objects.filter(user__isnull=False).select_related("user")
 
-        running_checks = running_checks = query.filter(
+        running_checks = query.filter(
             Q(status="up") | Q(status="down"))
 
         now = timezone.now()
