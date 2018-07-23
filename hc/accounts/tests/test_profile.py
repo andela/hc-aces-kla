@@ -208,19 +208,17 @@ class ProfileTestCase(BaseTestCase):
         """test that a team member can be removed"""
         self.check = Check(user=self.alice)
         self.check.save()
-        print(self.check.code)
         self.client.login(username="alice@example.org", password="password")
-
+        assigned_list = []
+        assigned_list.append(self.check.code)
         form = {"assign_checks": "1", "email": "bob@example.org",
-                "check_code": self.check.code, "priority": 3}
+                "check_code": self.check.code, "priority": 3, "assigned_list": assigned_list}
         r = self.client.post("/accounts/profile/", form)
         assert r.status_code == 200
 
         self.assertEqual(Assigned.objects.count(), 1)
         assigned = Assigned.objects.filter(check_assigned=self.check).first()
         self.assertEqual(assigned.priority, 3)
-        # self.bobs_profile.refresh_from_db()
-        # self.assertEqual(self.bobs_profile.current_team, None)
 
     def test_it_assigns_2_checks_to_one_member(self):
         """test that a team member can be removed"""
@@ -229,23 +227,15 @@ class ProfileTestCase(BaseTestCase):
         self.check2 = Check(user=self.alice)
         self.check2.save()
         self.client.login(username="alice@example.org", password="password")
-
+        assigned_list = []
+        assigned_list.append(self.check.code)
+        assigned_list.append(self.check2.code)
         form = {"assign_checks": "1", "email": "bob@example.org",
-                "check_code": self.check.code, "priority": "3"}
-        self.client.post("/accounts/profile/", form)
-        form1 = {"assign_checks": "1", "email": "bob@example.org",
-                 "check_code": self.check2.code, "priority": "3"}
-        r = self.client.post("/accounts/profile/", form1)
-        assert r.status_code == 200
+                "check_code": self.check.code, "priority": "3", "assigned_list": assigned_list}
+        response = self.client.post("/accounts/profile/", form)
+        assert response.status_code == 200
 
         self.assertEqual(Assigned.objects.count(), 2)
-        assigned = Assigned.objects.filter(check_assigned=self.check).first()
-        print(assigned.check_assigned)
-        if assigned.check_assigned:
-            print("Here It is")
-        else:
-            print("Splash")    
-        self.assertEqual(assigned.user_id, 32)
 
     def test_it_unassign_check_from_members(self):
         """test that a team member can be removed"""
@@ -253,30 +243,31 @@ class ProfileTestCase(BaseTestCase):
         self.check.save()
         print(self.check.code)
         self.client.login(username="alice@example.org", password="password")
-
+        assigned_list = []
+        assigned_list.append(self.check.code)
         form = {"assign_checks": "1", "email": "bob@example.org",
-                "check_code": self.check.code, "priority": 3}
+                "check_code": self.check.code, "priority": 3, "assigned_list": assigned_list}
         r = self.client.post("/accounts/profile/", form)
         self.assertEqual(Assigned.objects.count(), 1)
-        
-        form = {"unassign_check": "1", "email": "bob@example.org",
-                "check_code": self.check.code}
+        assigned_empty = []
+        form = {"assign_checks": "1", "email": "bob@example.org",
+                "check_code": self.check.code, "assigned_list": assigned_empty}
         r = self.client.post("/accounts/profile/", form)
         self.assertEqual(Assigned.objects.count(), 0)
 
-    # def test_it_assign_check_to_same_user_twice(self):
-        # """test that a team member can be removed"""
-        # self.check = Check(user=self.alice)
-        # self.check.save()
-        # print(self.check.code)
-        # self.client.login(username="alice@example.org", password="password")
+    def test_it_doesnt_assign_check_to_same_user_twice(self):
+        """test that a team member can be removed"""
+        self.check = Check(user=self.alice)
+        self.check.save()
+        self.client.login(username="alice@example.org", password="password")
+        assigned_list = []
+        assigned_list.append(self.check.code)
+        form = {"assign_checks": "1", "email": "bob@example.org",
+                "check_code": self.check.code, "priority": 3, "assigned_list": assigned_list}
+        r = self.client.post("/accounts/profile/", form)
+        self.assertEqual(Assigned.objects.count(), 1)
 
-        # form = {"assign_checks": "1", "email": "bob@example.org",
-        #         "check_code": self.check.code, "priority": 3}
-        # r = self.client.post("/accounts/profile/", form)
-        # self.assertEqual(Assigned.objects.count(), 1)
-
-        # form = {"unassign_check": "1", "email": "bob@example.org",
-        #         "check_code": self.check.code}
-        # r = self.client.post("/accounts/profile/", form)
-        # self.assertEqual(Assigned.objects.count(), 0)   
+        form = {"unassign_check": "1", "email": "bob@example.org",
+                "check_code": self.check.code, "assigned_list": assigned_list}
+        r = self.client.post("/accounts/profile/", form)
+        self.assertEqual(Assigned.objects.count(), 1)   

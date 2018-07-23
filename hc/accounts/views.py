@@ -215,16 +215,6 @@ def profile(request):
                         check_assigned=assigned_check, priority=priority, user_id=user.id)
                     assign.save()
                     messages.success(request, "Team member has been assigned to check")       
-        elif "unassign_check" in request.POST:
-            form = UnAssignChecksForm(request.POST)
-            if form.is_valid():
-                email = form.cleaned_data["email"]
-                check_code = form.cleaned_data["check_code"]
-                assigned_check = Check.objects.filter(code=check_code).first()
-                user = User.objects.filter(email=email).first()
-                Assigned.objects.filter(check_assigned=assigned_check,
-                                      user_id=user.id).delete()
-                messages.success(request, "Assignment Removed!")
         elif "set_team_name" in request.POST:
             if not profile.team_access_allowed:
                 return HttpResponseForbidden()
@@ -248,16 +238,6 @@ def profile(request):
         badge_urls.append(get_badge_url(username, tag))
     checks = Check.objects.filter(user=request.team.user)
     assigned = Assigned.objects.all()
-    # print(len(checks))
-    # print(len(assigned))
-    # print(len(profile.member_set.all()))
-    # print("idsss")
-    # for member in profile.member_set.all():
-    #     print(member.user.id)
-    # assigned_user = []
-    # if len(assigned) > 0 :
-    #     for count, check in enumerate(checks):
-    #         print(assigned[count])
     assigned_list = []
     
     for member in profile.member_set.all():
@@ -267,7 +247,6 @@ def profile(request):
                 assigned_list.append(1)
             else:
                 assigned_list.append(0)    
-    assigned_list_js = json.dumps(assigned_list)
    
     test = ["plius@gmail.com", "press_gmail.com", "ma@gmail.com"]
     test_list = json.dumps(test)
