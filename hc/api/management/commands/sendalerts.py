@@ -53,8 +53,11 @@ class Command(BaseCommand):
                     going_up.iterator()) +
                 list(repeat_list_approved))
         else:
-            checks = (
-                list(running_checks.iterator()) +
+            checks = (                
+                list(
+                    going_down.iterator()) +
+                list(
+                    going_up.iterator()) +
                 list(repeat_list_approved.iterator()))
 
         if not checks:
