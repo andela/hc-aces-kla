@@ -6,5 +6,8 @@ urlpatterns = [
     url(r'^accounts/', include('hc.accounts.urls')),
     url(r'^', include('hc.api.urls')),
     url(r'^', include('hc.front.urls')),
-    url(r'^', include('hc.payments.urls'))
+    url(r'^', include('hc.payments.urls')),
+
+    # blog
+    url(r'^', include('hc.blog.urls')),
 ]
