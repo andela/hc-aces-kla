@@ -5,7 +5,6 @@ from django.core.management.base import BaseCommand
 from django.db import connection
 from django.utils import timezone
 from hc.api.models import Check
-from hc.api.helpers import get_running_checks
 
 executor = ThreadPoolExecutor(max_workers=10)
 logger = logging.getLogger(__name__)
@@ -17,7 +16,7 @@ class Command(BaseCommand):
     def handle_many(self):
         """ Send alerts for many checks simultaneously. """
         now = timezone.now()
-        
+
         query = Check.objects.filter(user__isnull=False).select_related("user")
         going_down = query.filter(alert_after__lt=now, status="up")
         going_up = query.filter(alert_after__gt=now, status="down")
@@ -40,7 +39,7 @@ class Command(BaseCommand):
                 check.nag_after_time = now + check.nag_intervals
             else:
                 check.nag_after_time = check.nag_after_time +\
-                                        check.nag_intervals
+                    check.nag_intervals
                 check.save()
 
         if repeat_list_approved:

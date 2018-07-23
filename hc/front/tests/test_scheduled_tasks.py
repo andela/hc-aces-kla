@@ -1,4 +1,4 @@
-from hc.api.models import Task
+from hc.api.models import Task, Backup
 from hc.test import BaseTestCase
 
 
@@ -12,16 +12,31 @@ class ScheduledTaskTestCase(BaseTestCase):
         self.url = "/accounts/profile/"
         self.form = {
             "name": "Report backups",
-            "task_type": "export_reports",
+            "task_type": "database_backups",
             "frequency": "daily",
             "receive_email_updates": "True",
             "database_backups": "1"
         }
 
-    def test_it_works(self):
-        """Test that a task can be added """
+    def test_add_export_reports(self):
+        """Test that report backups can be setup """
+        self.client.login(username="alice@example.org", password="password")
+
+        self.form.pop('database_backups')
+        self.form['export_reports'] = '1'
+        self.form['task_type'] = 'export_reports'
+
+        response = self.client.post(self.url, self.form)
+        self.assertIn(b"Reports will be exported periodically!",
+                      response.content)
+        self.assertEqual(response.status_code, 200)
+        assert Task.objects.count() == 1
+
+    def test_add_database_backups(self):
+        """Test that report backups can be setup """
         self.client.login(username="alice@example.org", password="password")
         response = self.client.post(self.url, self.form)
+        self.assertIn(b"Database backups have been setup!", response.content)
         self.assertEqual(response.status_code, 200)
         assert Task.objects.count() == 1
 
@@ -48,6 +63,29 @@ class ScheduledTaskTestCase(BaseTestCase):
         task = Task.objects.filter(frequency='monthly').first()
         self.assertIsNotNone(task)
 
+    def test_cannot_add_duplicate_database_backups(self):
+        self.client.login(username="alice@example.org", password="password")
+
+        self.client.post(self.url, self.form)
+        response = self.client.post(self.url, self.form)
+
+        # Assert that database backups are already present
+        self.assertIn(b"Database backups are already setup!",
+                      response.content)
+
+    def test_cannot_add_duplicate_report_export_task(self):
+        self.client.login(username="alice@example.org", password="password")
+
+        self.form.pop('database_backups')
+        self.form['export_reports'] = '1'
+        self.form['task_type'] = 'export_reports'
+        self.client.post(self.url, self.form)
+        response = self.client.post(self.url, self.form)
+
+        # Assert that reports are already exported
+        self.assertIn(b"Report exports are already setup!",
+                      response.content)
+
     def test_cannot_export_reports_if_not_allowed(self):
         self.client.login(username="alice@example.org", password="password")
 
@@ -58,9 +96,11 @@ class ScheduledTaskTestCase(BaseTestCase):
         # Attempt to add a report
         self.form.pop('database_backups')
         self.form['export_reports'] = '1'
-        self.client.post(self.url, self.form)
+        response = self.client.post(self.url, self.form)
 
         # Assert that no task was added
+        self.assertIn(b"Reports are not enabled for this profile!",
+                      response.content)
         assert Task.objects.count() == 0
 
     def test_remove_scheduled_task(self):
@@ -73,3 +113,4 @@ class ScheduledTaskTestCase(BaseTestCase):
         remove_url = "/accounts/profile/scheduled_task/%s/remove/" % task.id
         self.client.post(remove_url)
         assert Task.objects.count() == 0
+        assert Backup.objects.count() == 0
