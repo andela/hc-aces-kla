@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required
-def my_posts(request):
+def my_post(request):
     author = request.user
     posts_list = Post.objects.filter(author=author).order_by("-created").all()
     paginator = Paginator(posts_list, 7)

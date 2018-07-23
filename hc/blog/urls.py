@@ -2,7 +2,7 @@ from django.conf.urls import url
 from hc.blog import views
 
 urlpatterns = [
-    url(r'^my-blogs/$', views.my_posts, name="hc-my-posts"),
+    url(r'^my-blogs/$', views.my_post, name="hc-my-posts"),
     url(r'^add-post/$', views.add_post, name='hc-add-post'),
     url(r'^post/(?P<post_id>\d+)/edit/$', views.edit_post,
         name='hc-edit-post'),
