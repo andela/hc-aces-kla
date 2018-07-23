@@ -14,20 +14,12 @@ from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
-from hc.api.models import (DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check,
-                           Ping, Video, Faq)
-from hc.front.forms import (AddChannelForm,
-                            AddWebhookForm,
-                            NameTagsDepartmentForm,
-                            TimeoutForm,
-                            NagIntervalForm,
-                            ShopifyForm,
-                            PriorityForm)
 import shopify
 from hc.api.models import (DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check,
                            Ping, Video, Faq)
-from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
-                            TimeoutForm, NagIntervalForm, PriorityForm)
+from hc.front.forms import (AddChannelForm, AddWebhookForm,
+                            TimeoutForm, NagIntervalForm, PriorityForm,
+                            ShopifyForm, NameTagsDepartmentForm)
 
 # from itertools recipes:
 
