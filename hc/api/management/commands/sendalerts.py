@@ -19,10 +19,10 @@ class Command(BaseCommand):
 
         query = Check.objects.filter(user__isnull=False).select_related("user")
 
+        now = timezone.now()
         going_down = query.filter(alert_after__lt=now, status="up")
         going_up = query.filter(alert_after__gt=now, status="down")
-
-        now = timezone.now()
+        
         repeat_list_approved = query.filter(
             alert_after__lt=now,
             status="down",
@@ -47,17 +47,13 @@ class Command(BaseCommand):
 
         if repeat_list_approved:
             checks = (
-                list(
-                    going_down.iterator()) +
-                list(
-                    going_up.iterator()) +
+                list(going_down.iterator()) + 
+                list(going_up.iterator()) +
                 list(repeat_list_approved))
         else:
-            checks = (                
-                list(
-                    going_down.iterator()) +
-                list(
-                    going_up.iterator()) +
+            checks = (
+                list(going_down.iterator()) + 
+                list(going_up.iterator()) +
                 list(repeat_list_approved.iterator()))
 
         if not checks:
