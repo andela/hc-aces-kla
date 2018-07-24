@@ -13,6 +13,6 @@ pytest.ini
 .pytest_cache/
 hc/csv_reports/*
 celerybeat-schedule.db
-dump.rdb
+*.rdb
 celerybeat.pid
 .env

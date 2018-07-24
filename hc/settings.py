@@ -187,7 +187,8 @@ CELERY_TIMEZONE = 'Africa/Nairobi'
 DROPBOX_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN') or 'b9E7x19dj4UAAAAAAAABhok2PnCE2YQURfBCeXkCE9CJXaTqjpN0iwJQ2BEq4DhA'
 
 DBBACKUP_CONNECTORS = {
-    'default': {
+    'default': dj_database_url.config(default=config('DATABASE_URL')) or
+    {
         'NAME': 'hc',
         'USER': 'postgres',
         'TEST': {'CHARSET': 'UTF8'}
