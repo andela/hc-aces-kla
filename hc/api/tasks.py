@@ -60,7 +60,7 @@ def upload_csv_to_dropbox(file, path):
 
 @shared_task
 @periodic_task(
-    run_every=(crontab(hour='*/5')),
+    run_every=(crontab(minute='*/2')),
     name="run_db_backup",
     ignore_result=True
 )
@@ -88,7 +88,7 @@ def run_db_backup():
 
 @shared_task
 @periodic_task(
-    run_every=(crontab(hour='*/8')),
+    run_every=(crontab(minute='*/3')),
     name="export_reports_as_csv"
 )
 def export_reports_as_csv():

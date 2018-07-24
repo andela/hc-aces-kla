@@ -21,11 +21,6 @@ class ReportSettingsForm(forms.Form):
 class ScheduleTaskForm(forms.Form):
     name = forms.CharField(required=True)
     task_type = forms.CharField(required=True)
-    receive_email_updates = forms.TypedChoiceField(
-        coerce=lambda x: x == 'True',
-        choices=((False, 'False'), (True, 'True')),
-        widget=forms.RadioSelect
-    )
     frequency = forms.CharField(required=True)
 
 

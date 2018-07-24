@@ -186,8 +186,7 @@ def profile(request):
                         task_schedule = TaskSchedule(task=task)
                         task_schedule = setup_scheduled_time(task,
                                                              task_schedule)
-                        task_schedule.send_email_updates \
-                            = form.cleaned_data["receive_email_updates"]
+                                                             
                         task_schedule.save()
                         messages.info(
                             request, "Reports will be exported periodically!")
@@ -212,8 +211,6 @@ def profile(request):
                     task_schedule = \
                         setup_scheduled_time(task, task_schedule)
 
-                    task_schedule.send_email_updates =\
-                        form.cleaned_data["receive_email_updates"]
                     task_schedule.save()
 
                     messages.info(request, "Database backups have been setup!")
