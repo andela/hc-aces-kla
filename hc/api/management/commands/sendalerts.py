@@ -2,7 +2,6 @@ import logging
 import time
 from concurrent.futures import ThreadPoolExecutor
 from django.core.management.base import BaseCommand
-from django.db.models import Q
 from django.db import connection
 from django.utils import timezone
 from hc.api.models import Check
@@ -16,13 +15,12 @@ class Command(BaseCommand):
 
     def handle_many(self):
         """ Send alerts for many checks simultaneously. """
+        now = timezone.now()
 
         query = Check.objects.filter(user__isnull=False).select_related("user")
+        going_down = query.filter(alert_after__lt=now, status="up")
+        going_up = query.filter(alert_after__gt=now, status="down")
 
-        running_checks = query.filter(
-            Q(status="up") | Q(status="down"))
-
-        now = timezone.now()
         repeat_list_approved = query.filter(
             alert_after__lt=now,
             status="down",
@@ -40,20 +38,21 @@ class Command(BaseCommand):
             if (now - check.nag_after_time) > (check.nag_intervals):
                 check.nag_after_time = now + check.nag_intervals
             else:
-
-                check.nag_after_time = check.nag_after_time + \
+                check.nag_after_time = check.nag_after_time +\
                     check.nag_intervals
-            check.save()
+                check.save()
 
         if repeat_list_approved:
             checks = (
-                list(
-                    running_checks.iterator()) +
+                list(going_down.iterator()) +
+                list(going_up.iterator()) +
                 list(repeat_list_approved))
         else:
             checks = (
-                list(running_checks.iterator()) +
-                list(repeat_list_approved.iterator()))
+                list(going_down.iterator()) +
+                list(going_up.iterator()) +
+                list(
+                    repeat_list_approved.iterator()))
 
         if not checks:
             return False

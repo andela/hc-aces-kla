@@ -12,7 +12,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
     class Media:
         css = {
-            'all': ('css/admin/profiles.css',)
+            'all': ('css/admin/profiles.css', )
         }
 
     list_display = ("id", "users", "reports_allowed", "next_report_date",

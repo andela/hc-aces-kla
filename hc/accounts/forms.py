@@ -18,6 +18,12 @@ class ReportSettingsForm(forms.Form):
     report_frequency = forms.CharField(required=False)
 
 
+class ScheduleTaskForm(forms.Form):
+    name = forms.CharField(required=True)
+    task_type = forms.CharField(required=True)
+    frequency = forms.CharField(required=True)
+
+
 class SetPasswordForm(forms.Form):
     password = forms.CharField()
 

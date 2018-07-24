@@ -9,8 +9,9 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from hc.api import transports
+from model_utils import Choices
 from hc.accounts.models import Profile
+from hc.api import transports
 from hc.lib import emails
 
 STATUSES = (
@@ -27,6 +28,10 @@ CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("slack", "Slack"), ("pd", "PagerDuty"), ("po", "Pushover"),
                  ("victorops", "VictorOps"), ("twiliosms", "TwilioSms"),
                  ("twiliovoice", "TwilioVoice"))
+
+SCHEDULE_INTERVALS = Choices('daily', 'weekly', 'monthly')
+
+TASK_TYPES = Choices('database_backups', 'export_reports')
 
 PO_PRIORITIES = {
     -2: "lowest",
@@ -141,7 +146,7 @@ class Check(models.Model):
     def assign_all_channels(self):
         if self.user:
             channels = Channel.objects.filter(user=self.user)
-            self.channel_set.add(*channels)
+            self.channel_set.add(* channels)
 
     def tags_list(self):
         return [t.strip() for t in self.tags.split(" ") if t.strip()]
@@ -191,7 +196,7 @@ class Channel(models.Model):
 
     def assign_all_checks(self):
         checks = Check.objects.filter(user=self.user)
-        self.checks.add(*checks)
+        self.checks.add(* checks)
 
     def make_token(self):
         seed = "%s%s" % (self.code, settings.SECRET_KEY)
@@ -306,3 +311,29 @@ class Notification(models.Model):
     channel = models.ForeignKey(Channel)
     created = models.DateTimeField(auto_now_add=True)
     error = models.CharField(max_length=200, blank=True)
+
+
+class Task(models.Model):
+    name = models.CharField(max_length=100)
+    task_type = models.CharField(
+        max_length=100,
+        choices=TASK_TYPES)
+    profile = models.ForeignKey(Profile, null=True, blank=True)
+    frequency = models.CharField(
+        choices=SCHEDULE_INTERVALS,
+        max_length=20)
+
+
+class TaskSchedule(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
+    send_email_updates = models.BooleanField(default=False)
+    next_run_date = models.DateTimeField(null=True, blank=True)
+    run_count = models.IntegerField(default=0)
+
+
+class Backup(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    schedule = models.ForeignKey(TaskSchedule, on_delete=models.CASCADE)
+    file_name = models.CharField(max_length=100)
+    date_run = models.DateTimeField(auto_now_add=True)

@@ -9,4 +9,4 @@ class CustomRunner(DiscoverRunner):
         settings.PASSWORD_HASHERS = \
             ('django.contrib.auth.hashers.MD5PasswordHasher', )
 
-        super(CustomRunner, self).__init__(*args, **kwargs)
+        super(CustomRunner, self).__init__(* args, ** kwargs)

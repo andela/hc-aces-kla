@@ -92,7 +92,7 @@ class HttpTransport(Transport):
             options["timeout"] = 5
             options["headers"]["User-Agent"] = "healthchecks.io"
 
-            r = requests.request(method, url, **options)
+            r = requests.request(method, url, ** options)
             if r.status_code not in (200, 201, 204):
                 return "Received status code %d" % r.status_code
         except requests.exceptions.Timeout:
@@ -105,7 +105,7 @@ class HttpTransport(Transport):
         return self.request("get", url)
 
     def post(self, url, json, **kwargs):
-        return self.request("post", url, json=json, **kwargs)
+        return self.request("post", url, json=json, ** kwargs)
 
     def post_form(self, url, data):
         return self.request("post", url, data=data)
@@ -205,8 +205,8 @@ class Pushover(HttpTransport):
             "check": check,
             "down_checks": others,
         }
-        text = tmpl("pushover_message.html", **ctx)
-        title = tmpl("pushover_title.html", **ctx)
+        text = tmpl("pushover_message.html", ** ctx)
+        title = tmpl("pushover_title.html", ** ctx)
         user_key, prio = self.channel.value.split("|")
         payload = {
             "token": settings.PUSHOVER_API_TOKEN,

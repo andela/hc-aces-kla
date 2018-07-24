@@ -26,7 +26,6 @@ ALLOWED_HOSTS = []
 DEFAULT_FROM_EMAIL = 'healthchecks@example.org'
 USE_PAYMENTS = False
 
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,9 +40,9 @@ INSTALLED_APPS = (
     'hc.accounts',
     'hc.api',
     'hc.front',
-    'hc.payments'
+    'hc.payments',
+    'dbbackup',
 )
-
 
 MIDDLEWARE = (
     'django.middleware.security.SecurityMiddleware',
@@ -83,7 +82,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hc.wsgi.application'
 TEST_RUNNER = 'hc.api.tests.CustomRunner'
 
-
 # Default database engine is SQLite. So one can just check out code,
 # install requirements.txt and do manage.py runserver and it works
 DATABASES = {
@@ -122,7 +120,7 @@ if os.environ.get("DB") == "mysql":
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
@@ -130,7 +128,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-SITE_ROOT = os.environ.get("SITE_ROOT", "http://localhost:8000")
+SITE_ROOT = os.environ.get('SITE_ROOT') or "http://localhost:8000"
 PING_ENDPOINT = SITE_ROOT + "/ping/"
 PING_EMAIL_DOMAIN = HOST
 STATIC_URL = '/static/'
@@ -143,16 +141,15 @@ STATICFILES_FINDERS = (
 )
 COMPRESS_OFFLINE = True
 
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'EMAIL_BACKEND')
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'EMAIL_HOST')
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get(
     'EMAIL_HOST_PASSWORD', 'EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL',
-     'DEFAULT_FROM_EMAIL')
-SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', 'SENDGRID_API_KEY')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 
 # Slack integration -- override these in local_settings
@@ -170,10 +167,38 @@ TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 TWILIO_NUMBER = os.environ.get("TWILIO_NUMBER")
 
-
 # Pushbullet integration -- override these in local_settings
 PUSHBULLET_CLIENT_ID = None
 PUSHBULLET_CLIENT_SECRET = None
+
+if os.environ.get('REDIS_URL'):
+    CACHES = {
+        "default": {
+            "BACKEND": "redis_cache.RedisCache",
+            "LOCATION": os.environ.get('REDIS_URL'),
+        }
+    }
+
+# REDIS server settings
+CELERY_BROKER_URL = os.environ.get('REDIS_URL') or 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL') or 'redis://localhost:6379'
+CELERY_TIMEZONE = 'Africa/Nairobi'
+
+DROPBOX_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN') or 'b9E7x19dj4UAAAAAAAABhok2PnCE2YQURfBCeXkCE9CJXaTqjpN0iwJQ2BEq4DhA'
+
+DBBACKUP_CONNECTORS = {
+    'default': dj_database_url.config(default=config('DATABASE_URL')) or
+    {
+        'NAME': 'hc',
+        'USER': 'postgres',
+        'TEST': {'CHARSET': 'UTF8'}
+    }
+}
+
+DBBACKUP_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+DBBACKUP_STORAGE_OPTIONS = {
+    'oauth2_access_token': DROPBOX_TOKEN,
+}
 
 if os.path.exists(os.path.join(BASE_DIR, "hc/local_settings.py")):
     from .local_settings import *
